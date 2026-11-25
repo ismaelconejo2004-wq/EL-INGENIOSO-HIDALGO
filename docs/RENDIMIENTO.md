@@ -6,9 +6,9 @@ Medido con `node tests/rendimiento.js` (Chromium de Playwright, 25-11-2026). Tra
 
 | Requisito | Límite | Medido | ¿Cumple? |
 |---|---|---|---|
-| Tamaño del archivo | < 1,2 MB | **507 KB** (519 000 bytes) · 170 KB con gzip | Sí |
-| Carga en móvil medio | < 2 s | **1,34 s** hasta `load` con gzip · 0,29 s hasta el primer pintado | Sí (ver nota sin gzip) |
-| Fluidez | 60 fps estables | **60 fps** en las 5 escenas más cargadas, también con CPU 4× más lenta | Sí |
+| Tamaño del archivo | < 1,2 MB | **523 KB** (535 902 bytes) · 175 KB con gzip | Sí |
+| Carga en móvil medio | < 2 s | **1,41 s** hasta `load` con gzip · 0,28 s hasta el primer pintado | Sí (ver nota sin gzip) |
+| Fluidez | 60 fps estables | **60 fps de página, peor fotograma 17 ms** en las 5 escenas más cargadas, también con CPU 4× más lenta. El lienzo se compone a 30 Hz con acción y a 12 Hz en reposo | Sí |
 | Bucle con la pestaña oculta | detenido | **detenido** (escritorio y móvil) | Sí |
 | `prefers-reduced-motion` | respetado | **sin bucle**: un fotograma por cambio, sin letra a letra, sin transiciones ni entradas | Sí |
 | Dependencias externas | ninguna | **ninguna** (se quitó Google Fonts) | Sí |
