@@ -1,0 +1,2607 @@
+{
+ "fecha": "2026-11-25T00:39:40.514Z",
+ "vistas": {
+  "escritorio": {
+   "start": {
+    "fondo": "biblioteca",
+    "hora": "noche",
+    "actores": [
+     "alonso"
+    ],
+    "prob": []
+   },
+   "yard": {
+    "fondo": "patio",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho",
+     "rocinante"
+    ],
+    "prob": []
+   },
+   "book": {
+    "fondo": "biblioteca",
+    "hora": "noche",
+    "actores": [
+     "alonso"
+    ],
+    "prob": []
+   },
+   "sancho": {
+    "fondo": "cocina",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "helmet": {
+    "fondo": "patio",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho",
+     "rocinante"
+    ],
+    "prob": []
+   },
+   "vision": {
+    "fondo": "entrepaginas",
+    "hora": "noche",
+    "actores": [
+     "alonso"
+    ],
+    "prob": []
+   },
+   "road": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "mills": {
+    "fondo": "molinos",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "adventure": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "cabreros": {
+    "fondo": "majada",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cabrero",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "marcela": {
+    "fondo": "encinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "marcela",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "sheep": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "oveja",
+     "oveja",
+     "oveja",
+     "oveja"
+    ],
+    "prob": []
+   },
+   "inn": {
+    "fondo": "venta",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ventero",
+     "maritornes"
+    ],
+    "prob": []
+   },
+   "mambrino": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "barbero"
+    ],
+    "prob": []
+   },
+   "galeotes": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "galeote",
+     "galeote",
+     "galeote",
+     "soldado"
+    ],
+    "prob": []
+   },
+   "sierra": {
+    "fondo": "sierra",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cardenio"
+    ],
+    "prob": []
+   },
+   "toboso": {
+    "fondo": "plaza",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "aldonza",
+     "moza"
+    ],
+    "prob": []
+   },
+   "duques": {
+    "fondo": "salon",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "duque",
+     "duquesa"
+    ],
+    "prob": []
+   },
+   "barataria": {
+    "fondo": "salon",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "labrador",
+     "labrador"
+    ],
+    "prob": []
+   },
+   "booktrap": {
+    "fondo": "liza",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "duque",
+     "duquesa"
+    ],
+    "prob": []
+   },
+   "avellaneda": {
+    "fondo": "ventainterior",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "estudiante",
+     "estudiante"
+    ],
+    "prob": []
+   },
+   "impostor": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "impostor"
+    ],
+    "prob": []
+   },
+   "tarfe": {
+    "fondo": "ventainterior",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "tarfe",
+     "escribano"
+    ],
+    "prob": []
+   },
+   "barcelona": {
+    "fondo": "playa",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "moreno"
+    ],
+    "prob": []
+   },
+   "home": {
+    "fondo": "plaza",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "ama",
+     "cura"
+    ],
+    "prob": []
+   },
+   "end": {
+    "fondo": "alcoba",
+    "hora": "amanecer",
+    "actores": [
+     "alonso",
+     "ama",
+     "cura"
+    ],
+    "prob": []
+   },
+   "embajada": {
+    "fondo": "sierra",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "espejos": {
+    "fondo": "encinar",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "espejos"
+    ],
+    "prob": []
+   },
+   "leones": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "leonero"
+    ],
+    "prob": []
+   },
+   "camacho": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "camacho",
+     "basilio",
+     "moza"
+    ],
+    "prob": []
+   },
+   "barco": {
+    "fondo": "rio",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "desencanto": {
+    "fondo": "encinar",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "merlin",
+     "duque"
+    ],
+    "prob": []
+   },
+   "cabeza": {
+    "fondo": "casanoble",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "moreno"
+    ],
+    "prob": []
+   },
+   "duelo": {
+    "fondo": "playa",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "blanca_luna"
+    ],
+    "prob": []
+   },
+   "amor": {
+    "fondo": "plaza",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "aldonza"
+    ],
+    "prob": []
+   },
+   "ateca": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "clerigo"
+    ],
+    "prob": []
+   },
+   "zaragoza": {
+    "fondo": "ciudad",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "anselmo",
+     "soldado"
+    ],
+    "prob": []
+   },
+   "siguenza": {
+    "fondo": "ciudad",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "corregidor",
+     "alguacil"
+    ],
+    "prob": []
+   },
+   "madrid": {
+    "fondo": "casanoble",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "archipampano"
+    ],
+    "prob": []
+   },
+   "toledo": {
+    "fondo": "calabozo",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "clerigo",
+     "tarfe"
+    ],
+    "prob": []
+   },
+   "a_arg": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "tarfe",
+     "cura"
+    ],
+    "prob": []
+   },
+   "a_venta": {
+    "fondo": "venta",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ventero",
+     "moza"
+    ],
+    "prob": []
+   },
+   "a_melonar": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "carretero"
+    ],
+    "prob": []
+   },
+   "a_azotado": {
+    "fondo": "calabozo",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "galeote",
+     "alguacil"
+    ],
+    "prob": []
+   },
+   "a_carlos": {
+    "fondo": "casanoble",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "anselmo",
+     "bramidan"
+    ],
+    "prob": []
+   },
+   "a_bracamonte": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "bracamonte"
+    ],
+    "prob": []
+   },
+   "a_ermitano": {
+    "fondo": "sierra",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ermitano"
+    ],
+    "prob": []
+   },
+   "a_pinar": {
+    "fondo": "pinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "barbara"
+    ],
+    "prob": []
+   },
+   "a_estudiantes": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "estudiante",
+     "comediante"
+    ],
+    "prob": []
+   },
+   "a_alcala": {
+    "fondo": "ciudad",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "estudiante",
+     "estudiante"
+    ],
+    "prob": []
+   },
+   "a_archi": {
+    "fondo": "ciudad",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "archipampano",
+     "alguacil"
+    ],
+    "prob": []
+   },
+   "a_bramidan": {
+    "fondo": "casanoble",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "bramidan"
+    ],
+    "prob": []
+   },
+   "a_sancho": {
+    "fondo": "casanoble",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "archipampano"
+    ],
+    "prob": []
+   },
+   "a_sanchono": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq"
+    ],
+    "prob": []
+   },
+   "a_epilogo": {
+    "fondo": "calabozo",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho",
+     "cura"
+    ],
+    "prob": []
+   },
+   "ev_refran": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_tormenta": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_viajero": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "arriero"
+    ],
+    "prob": []
+   },
+   "ev_noche": {
+    "fondo": "majada",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_rocin": {
+    "fondo": "vado",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_faint": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_fever": {
+    "fondo": "entrepaginas",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "vizcaino": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "vizcaino",
+     "dama"
+    ],
+    "prob": []
+   },
+   "batanes": {
+    "fondo": "batanes",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "dorotea": {
+    "fondo": "encinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "dorotea",
+     "cardenio"
+    ],
+    "prob": []
+   },
+   "montesinos": {
+    "fondo": "cueva",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "retablo": {
+    "fondo": "ventainterior",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "titiritero"
+    ],
+    "prob": []
+   },
+   "lecho": {
+    "fondo": "alcoba",
+    "hora": "mediodia",
+    "actores": [
+     "alonso",
+     "ama",
+     "cura"
+    ],
+    "prob": []
+   },
+   "salida": {
+    "fondo": "camino",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_adios": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq"
+    ],
+    "prob": []
+   },
+   "yangueses": {
+    "fondo": "vado",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "arriero",
+     "arriero",
+     "yegua"
+    ],
+    "prob": []
+   },
+   "manteo": {
+    "fondo": "venta",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "maritornes",
+     "arriero"
+    ],
+    "prob": []
+   },
+   "encamisados": {
+    "fondo": "camino",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "encamisado",
+     "encamisado",
+     "encamisado"
+    ],
+    "prob": []
+   },
+   "cardenio": {
+    "fondo": "sierra",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cardenio"
+    ],
+    "prob": []
+   },
+   "curioso": {
+    "fondo": "ventainterior",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "cura",
+     "anselmo"
+    ],
+    "prob": []
+   },
+   "cautivo": {
+    "fondo": "ventainterior",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "zoraida"
+    ],
+    "prob": []
+   },
+   "jaula": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio",
+     "canonigo",
+     "cura"
+    ],
+    "prob": []
+   },
+   "disciplinantes": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "penitente",
+     "penitente",
+     "clerigo"
+    ],
+    "prob": []
+   },
+   "sanson": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "sanson",
+     "teresa"
+    ],
+    "prob": []
+   },
+   "muerte": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "muerte",
+     "comediante"
+    ],
+    "prob": []
+   },
+   "gaban": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "diego"
+    ],
+    "prob": []
+   },
+   "lorenzo": {
+    "fondo": "casanoble",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "diego",
+     "estudiante"
+    ],
+    "prob": []
+   },
+   "trifaldi": {
+    "fondo": "salon",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "duena",
+     "duque"
+    ],
+    "prob": []
+   },
+   "rodriguez": {
+    "fondo": "alcoba",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "duena",
+     "altisidora"
+    ],
+    "prob": []
+   },
+   "ricote": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ricote",
+     "peregrino"
+    ],
+    "prob": []
+   },
+   "tosilos": {
+    "fondo": "liza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "tosilos"
+    ],
+    "prob": []
+   },
+   "claudia": {
+    "fondo": "pinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "claudia"
+    ],
+    "prob": []
+   },
+   "roque": {
+    "fondo": "pinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "roque",
+     "bandolero"
+    ],
+    "prob": []
+   },
+   "galeras": {
+    "fondo": "playa",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ana",
+     "ricote",
+     "soldado"
+    ],
+    "prob": []
+   },
+   "arcadia": {
+    "fondo": "llanura",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cabrero",
+     "oveja",
+     "oveja"
+    ],
+    "prob": []
+   },
+   "cerdos": {
+    "fondo": "camino",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cerdo",
+     "cerdo",
+     "cerdo"
+    ],
+    "prob": []
+   },
+   "altisidora": {
+    "fondo": "salon",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "altisidora",
+     "duque",
+     "duquesa"
+    ],
+    "prob": []
+   },
+   "ev_ladrones": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "bandolero",
+     "bandolero"
+    ],
+    "prob": []
+   },
+   "ev_caida": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_aguas": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "oveja",
+     "oveja"
+    ],
+    "prob": []
+   },
+   "ev_cabrero_med": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "ev_calentura": {
+    "fondo": "majada",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_c_hambre": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_c_locura": {
+    "fondo": "entrepaginas",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_c_honor": {
+    "fondo": "venta",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ventero",
+     "arriero"
+    ],
+    "prob": []
+   },
+   "ev_c_sancho": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_c_salud": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_deshonra": {
+    "fondo": "plaza",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "estudiante",
+     "estudiante"
+    ],
+    "prob": []
+   },
+   "ev_muerte": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_locura": {
+    "fondo": "entrepaginas",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_barca": {
+    "fondo": "rio",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_puente": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "alguacil"
+    ],
+    "prob": []
+   },
+   "ev_pregonero": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "pregonero"
+    ],
+    "prob": []
+   },
+   "ev_bandolero": {
+    "fondo": "pinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "bandolero"
+    ],
+    "prob": []
+   },
+   "ev_pescador": {
+    "fondo": "playa",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "pescador"
+    ],
+    "prob": []
+   },
+   "ev_moza": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio",
+     "moza"
+    ],
+    "prob": []
+   },
+   "ev_niebla": {
+    "fondo": "llanura",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_lluvia": {
+    "fondo": "vado",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_rucio": {
+    "fondo": "majada",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_peregrinos": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "peregrino",
+     "peregrino"
+    ],
+    "prob": []
+   },
+   "torneo": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "estudiante",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "sancho_cuenta": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "diego_frio": {
+    "fondo": "casanoble",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "diego"
+    ],
+    "prob": []
+   },
+   "cirujano": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "barbero"
+    ],
+    "prob": []
+   },
+   "_errores": []
+  },
+  "movil": {
+   "start": {
+    "fondo": "biblioteca",
+    "hora": "noche",
+    "actores": [
+     "alonso"
+    ],
+    "prob": []
+   },
+   "yard": {
+    "fondo": "patio",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho",
+     "rocinante"
+    ],
+    "prob": []
+   },
+   "book": {
+    "fondo": "biblioteca",
+    "hora": "noche",
+    "actores": [
+     "alonso"
+    ],
+    "prob": []
+   },
+   "sancho": {
+    "fondo": "cocina",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "helmet": {
+    "fondo": "patio",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho",
+     "rocinante"
+    ],
+    "prob": []
+   },
+   "vision": {
+    "fondo": "entrepaginas",
+    "hora": "noche",
+    "actores": [
+     "alonso"
+    ],
+    "prob": []
+   },
+   "road": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "mills": {
+    "fondo": "molinos",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "adventure": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "cabreros": {
+    "fondo": "majada",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cabrero",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "marcela": {
+    "fondo": "encinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "marcela",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "sheep": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "oveja",
+     "oveja",
+     "oveja",
+     "oveja"
+    ],
+    "prob": []
+   },
+   "inn": {
+    "fondo": "venta",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ventero",
+     "maritornes"
+    ],
+    "prob": []
+   },
+   "mambrino": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "barbero"
+    ],
+    "prob": []
+   },
+   "galeotes": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "galeote",
+     "galeote",
+     "galeote",
+     "soldado"
+    ],
+    "prob": []
+   },
+   "sierra": {
+    "fondo": "sierra",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cardenio"
+    ],
+    "prob": []
+   },
+   "toboso": {
+    "fondo": "plaza",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "aldonza",
+     "moza"
+    ],
+    "prob": []
+   },
+   "duques": {
+    "fondo": "salon",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "duque",
+     "duquesa"
+    ],
+    "prob": []
+   },
+   "barataria": {
+    "fondo": "salon",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "labrador",
+     "labrador"
+    ],
+    "prob": []
+   },
+   "booktrap": {
+    "fondo": "liza",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "duque",
+     "duquesa"
+    ],
+    "prob": []
+   },
+   "avellaneda": {
+    "fondo": "ventainterior",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "estudiante",
+     "estudiante"
+    ],
+    "prob": []
+   },
+   "impostor": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "impostor"
+    ],
+    "prob": []
+   },
+   "tarfe": {
+    "fondo": "ventainterior",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "tarfe",
+     "escribano"
+    ],
+    "prob": []
+   },
+   "barcelona": {
+    "fondo": "playa",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "moreno"
+    ],
+    "prob": []
+   },
+   "home": {
+    "fondo": "plaza",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "ama",
+     "cura"
+    ],
+    "prob": []
+   },
+   "end": {
+    "fondo": "alcoba",
+    "hora": "amanecer",
+    "actores": [
+     "alonso",
+     "ama",
+     "cura"
+    ],
+    "prob": []
+   },
+   "embajada": {
+    "fondo": "sierra",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "espejos": {
+    "fondo": "encinar",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "espejos"
+    ],
+    "prob": []
+   },
+   "leones": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "leonero"
+    ],
+    "prob": []
+   },
+   "camacho": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "camacho",
+     "basilio",
+     "moza"
+    ],
+    "prob": []
+   },
+   "barco": {
+    "fondo": "rio",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "desencanto": {
+    "fondo": "encinar",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "merlin",
+     "duque"
+    ],
+    "prob": []
+   },
+   "cabeza": {
+    "fondo": "casanoble",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "moreno"
+    ],
+    "prob": []
+   },
+   "duelo": {
+    "fondo": "playa",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "blanca_luna"
+    ],
+    "prob": []
+   },
+   "amor": {
+    "fondo": "plaza",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "aldonza"
+    ],
+    "prob": []
+   },
+   "ateca": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "clerigo"
+    ],
+    "prob": []
+   },
+   "zaragoza": {
+    "fondo": "ciudad",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "anselmo",
+     "soldado"
+    ],
+    "prob": []
+   },
+   "siguenza": {
+    "fondo": "ciudad",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "corregidor",
+     "alguacil"
+    ],
+    "prob": []
+   },
+   "madrid": {
+    "fondo": "casanoble",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "archipampano"
+    ],
+    "prob": []
+   },
+   "toledo": {
+    "fondo": "calabozo",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "clerigo",
+     "tarfe"
+    ],
+    "prob": []
+   },
+   "a_arg": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "tarfe",
+     "cura"
+    ],
+    "prob": []
+   },
+   "a_venta": {
+    "fondo": "venta",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ventero",
+     "moza"
+    ],
+    "prob": []
+   },
+   "a_melonar": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "carretero"
+    ],
+    "prob": []
+   },
+   "a_azotado": {
+    "fondo": "calabozo",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "galeote",
+     "alguacil"
+    ],
+    "prob": []
+   },
+   "a_carlos": {
+    "fondo": "casanoble",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "anselmo",
+     "bramidan"
+    ],
+    "prob": []
+   },
+   "a_bracamonte": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "bracamonte"
+    ],
+    "prob": []
+   },
+   "a_ermitano": {
+    "fondo": "sierra",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ermitano"
+    ],
+    "prob": []
+   },
+   "a_pinar": {
+    "fondo": "pinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "barbara"
+    ],
+    "prob": []
+   },
+   "a_estudiantes": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "estudiante",
+     "comediante"
+    ],
+    "prob": []
+   },
+   "a_alcala": {
+    "fondo": "ciudad",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "estudiante",
+     "estudiante"
+    ],
+    "prob": []
+   },
+   "a_archi": {
+    "fondo": "ciudad",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "archipampano",
+     "alguacil"
+    ],
+    "prob": []
+   },
+   "a_bramidan": {
+    "fondo": "casanoble",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "bramidan"
+    ],
+    "prob": []
+   },
+   "a_sancho": {
+    "fondo": "casanoble",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "archipampano"
+    ],
+    "prob": []
+   },
+   "a_sanchono": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq"
+    ],
+    "prob": []
+   },
+   "a_epilogo": {
+    "fondo": "calabozo",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho",
+     "cura"
+    ],
+    "prob": []
+   },
+   "ev_refran": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_tormenta": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_viajero": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "arriero"
+    ],
+    "prob": []
+   },
+   "ev_noche": {
+    "fondo": "majada",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_rocin": {
+    "fondo": "vado",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_faint": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_fever": {
+    "fondo": "entrepaginas",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "vizcaino": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "vizcaino",
+     "dama"
+    ],
+    "prob": []
+   },
+   "batanes": {
+    "fondo": "batanes",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "dorotea": {
+    "fondo": "encinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "dorotea",
+     "cardenio"
+    ],
+    "prob": []
+   },
+   "montesinos": {
+    "fondo": "cueva",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "retablo": {
+    "fondo": "ventainterior",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "titiritero"
+    ],
+    "prob": []
+   },
+   "lecho": {
+    "fondo": "alcoba",
+    "hora": "mediodia",
+    "actores": [
+     "alonso",
+     "ama",
+     "cura"
+    ],
+    "prob": []
+   },
+   "salida": {
+    "fondo": "camino",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_adios": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq"
+    ],
+    "prob": []
+   },
+   "yangueses": {
+    "fondo": "vado",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "arriero",
+     "arriero",
+     "yegua"
+    ],
+    "prob": []
+   },
+   "manteo": {
+    "fondo": "venta",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "maritornes",
+     "arriero"
+    ],
+    "prob": []
+   },
+   "encamisados": {
+    "fondo": "camino",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "encamisado",
+     "encamisado",
+     "encamisado"
+    ],
+    "prob": []
+   },
+   "cardenio": {
+    "fondo": "sierra",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cardenio"
+    ],
+    "prob": []
+   },
+   "curioso": {
+    "fondo": "ventainterior",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "cura",
+     "anselmo"
+    ],
+    "prob": []
+   },
+   "cautivo": {
+    "fondo": "ventainterior",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "zoraida"
+    ],
+    "prob": []
+   },
+   "jaula": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio",
+     "canonigo",
+     "cura"
+    ],
+    "prob": []
+   },
+   "disciplinantes": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "penitente",
+     "penitente",
+     "clerigo"
+    ],
+    "prob": []
+   },
+   "sanson": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "sanson",
+     "teresa"
+    ],
+    "prob": []
+   },
+   "muerte": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "muerte",
+     "comediante"
+    ],
+    "prob": []
+   },
+   "gaban": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "diego"
+    ],
+    "prob": []
+   },
+   "lorenzo": {
+    "fondo": "casanoble",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "diego",
+     "estudiante"
+    ],
+    "prob": []
+   },
+   "trifaldi": {
+    "fondo": "salon",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "duena",
+     "duque"
+    ],
+    "prob": []
+   },
+   "rodriguez": {
+    "fondo": "alcoba",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "duena",
+     "altisidora"
+    ],
+    "prob": []
+   },
+   "ricote": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ricote",
+     "peregrino"
+    ],
+    "prob": []
+   },
+   "tosilos": {
+    "fondo": "liza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "tosilos"
+    ],
+    "prob": []
+   },
+   "claudia": {
+    "fondo": "pinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "claudia"
+    ],
+    "prob": []
+   },
+   "roque": {
+    "fondo": "pinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "roque",
+     "bandolero"
+    ],
+    "prob": []
+   },
+   "galeras": {
+    "fondo": "playa",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ana",
+     "ricote",
+     "soldado"
+    ],
+    "prob": []
+   },
+   "arcadia": {
+    "fondo": "llanura",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cabrero",
+     "oveja",
+     "oveja"
+    ],
+    "prob": []
+   },
+   "cerdos": {
+    "fondo": "camino",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cerdo",
+     "cerdo",
+     "cerdo"
+    ],
+    "prob": []
+   },
+   "altisidora": {
+    "fondo": "salon",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "altisidora",
+     "duque",
+     "duquesa"
+    ],
+    "prob": []
+   },
+   "ev_ladrones": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "bandolero",
+     "bandolero"
+    ],
+    "prob": []
+   },
+   "ev_caida": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_aguas": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "oveja",
+     "oveja"
+    ],
+    "prob": []
+   },
+   "ev_cabrero_med": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "ev_calentura": {
+    "fondo": "majada",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_c_hambre": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_c_locura": {
+    "fondo": "entrepaginas",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_c_honor": {
+    "fondo": "venta",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "ventero",
+     "arriero"
+    ],
+    "prob": []
+   },
+   "ev_c_sancho": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_c_salud": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_deshonra": {
+    "fondo": "plaza",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "estudiante",
+     "estudiante"
+    ],
+    "prob": []
+   },
+   "ev_muerte": {
+    "fondo": "camino",
+    "hora": "ocaso",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_locura": {
+    "fondo": "entrepaginas",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_barca": {
+    "fondo": "rio",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_puente": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "alguacil"
+    ],
+    "prob": []
+   },
+   "ev_pregonero": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "pregonero"
+    ],
+    "prob": []
+   },
+   "ev_bandolero": {
+    "fondo": "pinar",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "bandolero"
+    ],
+    "prob": []
+   },
+   "ev_pescador": {
+    "fondo": "playa",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "pescador"
+    ],
+    "prob": []
+   },
+   "ev_moza": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "rocinante",
+     "sancho",
+     "rucio",
+     "moza"
+    ],
+    "prob": []
+   },
+   "ev_niebla": {
+    "fondo": "llanura",
+    "hora": "amanecer",
+    "actores": [
+     "dq",
+     "sancho"
+    ],
+    "prob": []
+   },
+   "ev_lluvia": {
+    "fondo": "vado",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_rucio": {
+    "fondo": "majada",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "ev_peregrinos": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "peregrino",
+     "peregrino"
+    ],
+    "prob": []
+   },
+   "torneo": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "estudiante",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "sancho_cuenta": {
+    "fondo": "camino",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio"
+    ],
+    "prob": []
+   },
+   "diego_frio": {
+    "fondo": "casanoble",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "diego"
+    ],
+    "prob": []
+   },
+   "cirujano": {
+    "fondo": "plaza",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "sancho",
+     "rucio",
+     "barbero"
+    ],
+    "prob": []
+   },
+   "_errores": []
+  }
+ }
+}

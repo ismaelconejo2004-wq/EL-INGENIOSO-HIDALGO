@@ -1,0 +1,99 @@
+/* ===== VIS · escenario en lienzo y cajas de diálogo ===== */
+.marco{position:relative;margin:28px 0 10px;border:3px double #7a4b26;outline:1px solid #c9a35a;outline-offset:2px;background:#1b1424;box-shadow:0 10px 28px #2a1a0e55}
+.stage.vis{margin:0;height:auto;border:0;background:#0a0a12;overflow:hidden;display:block;position:relative}
+.stage.vis::before,.stage.vis::after{display:none}
+.vis-cv{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
+.stage.vis figcaption{position:absolute;left:8px;top:8px;right:auto;bottom:auto;max-width:70%;padding:3px 8px;font:11px/1.35 'DM Mono',ui-monospace,monospace;letter-spacing:.04em;color:#f3e6c4;background:#1b1424c4;border:1px solid #c9a35a66}
+.dlg{display:flex;flex-direction:column;gap:0;background:#2a1c14}
+.dlg .voice{margin:0;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr;column-gap:14px;align-items:start;padding:12px 16px 14px;border:0;border-top:2px solid #7a4b26;background:linear-gradient(#f3e6c4,#e8d7ad);color:#2a1c14;font-style:italic;font-size:var(--fs,18px);line-height:1.55;min-height:104px;transition:opacity .25s}
+.dlg .voice .speaker{grid-column:2;font:600 11px 'DM Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;font-style:normal;color:#8b2e1f;margin:0 0 4px}
+.dlg .voice .retrato{grid-row:1/span 2;width:80px;height:80px;image-rendering:pixelated;image-rendering:crisp-edges;border:3px solid #5a3418;outline:1px solid #c9a35a;background:#d9c49a;box-shadow:inset 0 0 0 2px #f3e6c4}
+.dlg .voice>:not(.retrato):not(.speaker){grid-column:2}
+.dlg .voice.v-narrador{grid-template-columns:1fr}
+.dlg .voice.v-narrador .speaker,.dlg .voice.v-narrador>*{grid-column:1}
+/* marcos alegóricos: la Razón (plata fría) y el Caballero (oro y fuego) */
+.dlg .voice.v-razon{background:linear-gradient(#e6ebf0,#cfd8e2);color:#1e2a44;border-top-color:#7c8a9c}
+.dlg .voice.v-razon .speaker{color:#34508a}
+.dlg .voice.v-razon .retrato{border-color:#7c8a9c;outline-color:#e6ebf0;background:#a9bccf}
+.dlg .voice.v-caballero{background:linear-gradient(#3a1810,#5a2414);color:#fbe3b0;border-top-color:#d8a640}
+.dlg .voice.v-caballero .speaker{color:#f0b040}
+.dlg .voice.v-caballero .retrato{border-color:#d8a640;outline-color:#ff8a2e;background:#2a1008}
+.dlg .voice.v-impostor{background:repeating-linear-gradient(0deg,#efe6d0 0 3px,#e4d8bc 3px 4px);color:#111;border-top:2px dashed #222}
+.dlg .voice.v-impostor .retrato{border-color:#111;background:#e4d8bc}
+.dlg .voice.v-cuerpo,.dlg .voice.v-estomago{background:linear-gradient(#e6ddd2,#d4c6b6);color:#3a1a14;border-top-color:#8a7a6a}
+.dlg .voice.v-cuerpo .retrato,.dlg .voice.v-estomago .retrato{border-color:#8a7a6a;background:#c8b9a6}
+.dlg .voice.sub{opacity:1}
+.dlg .voice.tw-espera{opacity:.45}
+.tw-h{color:transparent}
+.tw-v{color:inherit}
+html.vis-on .narration{position:relative}
+/* tirada: el escenario queda a la vista detrás de la carta */
+html.vis-on #modal{background:#0a0a1259;align-items:flex-end;padding:0 12px 16px}
+html.vis-on #modal .card{box-shadow:0 12px 40px #000a;max-width:520px;width:100%;padding:14px 22px 14px;display:grid;grid-template-columns:auto 1fr;column-gap:18px;align-items:center;text-align:left}
+html.vis-on #modal .card>*{grid-column:2;margin:2px 0}
+html.vis-on #modal .card .dice-row{grid-column:1;grid-row:1/span 5;margin:0;transform:scale(.72);transform-origin:center}
+html.vis-on #modal .card h2{font-size:22px;line-height:1.15}
+html.vis-on #modal .card .roll{font-size:18px}
+html.vis-on #modal .card button{justify-self:start}
+.marco{scroll-margin-top:8px}
+/* temas con filtro: el lienzo pixel art no se invierte */
+html.vis-on body[data-theme=noche] .app,html.vis-on body[data-theme=bosque] .app,html.vis-on body[data-theme=contraste] .app{filter:none}
+html.vis-on body[data-theme=noche] .app>aside,html.vis-on body[data-theme=noche] .mast,html.vis-on body[data-theme=noche] #scene>:not(.marco),html.vis-on body[data-theme=noche] .dlg{filter:invert(.9) hue-rotate(180deg)}
+html.vis-on body[data-theme=noche] .vis-cv{filter:brightness(.85)}
+html.vis-on body[data-theme=bosque] .app>aside,html.vis-on body[data-theme=bosque] .mast,html.vis-on body[data-theme=bosque] #scene>:not(.marco),html.vis-on body[data-theme=bosque] .dlg{filter:hue-rotate(75deg) saturate(.7)}
+html.vis-on body[data-theme=contraste] .app>aside,html.vis-on body[data-theme=contraste] .mast,html.vis-on body[data-theme=contraste] #scene>:not(.marco),html.vis-on body[data-theme=contraste] .dlg{filter:contrast(1.35) saturate(.5)}
+html.vis-on body[data-theme=contraste] .vis-cv{filter:contrast(1.15)}
+@media(max-width:700px){.marco{margin:20px -12px 8px}.dlg .voice{grid-template-columns:auto 1fr;padding:10px 12px 12px;min-height:0;column-gap:10px}.dlg .voice .retrato{width:56px;height:56px;border-width:2px}.stage.vis figcaption{font-size:10px;max-width:86%}}
+@media(prefers-reduced-motion:reduce){.dlg .voice{transition:none}}
+
+/* ===== VIS · interfaz (fase 3) ===== */
+/* fuentes: alias a tipos instalados en el sistema (sin descargas) */
+@font-face{font-family:'IM Fell English';src:local('Iowan Old Style'),local('Palatino Linotype'),local('Palatino'),local('Book Antiqua'),local('URW Palladio L'),local('P052'),local('Georgia')}
+@font-face{font-family:'IM Fell English';font-style:italic;src:local('Iowan Old Style Italic'),local('Palatino Linotype Italic'),local('Palatino Italic'),local('Book Antiqua Italic'),local('P052 Italic'),local('Georgia Italic')}
+@font-face{font-family:'IM Fell English SC';src:local('Iowan Old Style'),local('Palatino Linotype'),local('Palatino'),local('Book Antiqua'),local('P052'),local('Georgia')}
+@font-face{font-family:'Literata';src:local('Iowan Old Style'),local('Charter'),local('Bitstream Charter'),local('Cambria'),local('Georgia'),local('DejaVu Serif')}
+@font-face{font-family:'Literata';font-style:italic;src:local('Iowan Old Style Italic'),local('Charter Italic'),local('Cambria Italic'),local('Georgia Italic'),local('DejaVu Serif Italic')}
+@font-face{font-family:'DM Mono';src:local('SF Mono'),local('Menlo'),local('Consolas'),local('Cascadia Mono'),local('DejaVu Sans Mono'),local('Liberation Mono')}
+.pxi{display:inline-block;width:16px;height:16px;vertical-align:-3px;margin-right:6px;background-size:16px 16px;background-repeat:no-repeat;image-rendering:pixelated;image-rendering:crisp-edges;flex:none}
+/* pergamino barroco */
+html.vis-on aside.left.pergamino{background:var(--px-papel) repeat,#efe3c4;background-size:64px 64px;border:16px solid transparent;border-image:var(--px-marco) 8 fill / 16px / 0 round;image-rendering:pixelated;padding:22px 16px}
+html.vis-on aside.left.pergamino .brand{text-align:center}
+html.vis-on .meter{margin:16px 0}
+html.vis-on .meter-head{align-items:center;font-variant:small-caps;letter-spacing:.04em}
+html.vis-on .meter-head span:first-child{display:flex;align-items:center}
+html.vis-on .meter-head span:last-child{font:600 13px 'DM Mono',ui-monospace,monospace;color:#4a2c1a}
+html.vis-on .track{position:relative;height:12px;background:#3a2418;border:2px solid #4a2c1a;box-shadow:inset 0 2px 0 #0004,0 1px 0 #fff6;overflow:hidden}
+html.vis-on .track .fill{position:relative;z-index:1;transition:width .6s steps(10,end)}
+html.vis-on .track .fill::after{content:'';position:absolute;inset:0;background:linear-gradient(#fff5 0 2px,transparent 2px 8px,#0003 8px),repeating-linear-gradient(90deg,transparent 0 6px,#0002 6px 8px)}
+html.vis-on .track .ghost{position:absolute;left:0;top:0;bottom:0;width:0;z-index:0;transition:width .9s ease-out .15s}
+html.vis-on .track .ghost.baja{background:#f0d27a}
+html.vis-on .track .ghost.sube{background:#f6f0d0}
+html.vis-on .flot{position:absolute;right:0;top:-6px;font:700 13px 'DM Mono',ui-monospace,monospace;pointer-events:none;animation:flotar 1.6s ease-out forwards;text-shadow:1px 1px 0 #fff8}
+html.vis-on .flot.up{color:#3f6a2e}
+html.vis-on .flot.down{color:#a8261b}
+@keyframes flotar{0%{opacity:0;transform:translateY(6px)}15%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-22px)}}
+html.vis-on .meter.pulso-up .track{animation:pulsoU .6s steps(3) 1}
+html.vis-on .meter.pulso-down .track{animation:pulsoD .6s steps(3) 1}
+@keyframes pulsoU{50%{box-shadow:0 0 0 2px #d8a640}}
+@keyframes pulsoD{50%{box-shadow:0 0 0 2px #b3261e;transform:translateX(-2px)}}
+/* opciones como botones ilustrados */
+html.vis-on .choices{border-top:0;display:grid;gap:10px;margin-top:28px}
+html.vis-on .choice.px-op{position:relative;grid-template-columns:30px 64px minmax(0,1fr) auto;gap:14px;padding:12px 14px 12px 10px;border:12px solid transparent;border-image:var(--px-marco) 8 fill / 12px / 0 round;background:none;image-rendering:pixelated;transition:transform .12s steps(2),filter .12s}
+html.vis-on .choice.px-op:hover,html.vis-on .choice.px-op:focus-visible{transform:translateY(-2px);filter:brightness(1.04) drop-shadow(0 4px 0 #4a2c1a33);padding-left:10px;background:none}
+html.vis-on .choice.px-op:active{transform:translateY(1px)}
+html.vis-on .choice.px-op .num{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c84a34,#7b1f16);color:#f3e6c4;font:700 11px 'DM Mono',ui-monospace,monospace;box-shadow:0 2px 0 #3a120c}
+html.vis-on .choice-art.px{width:64px;height:64px;display:grid;place-items:center;background:none;border:0}
+html.vis-on .choice-art.px img{width:56px;height:56px;image-rendering:pixelated;image-rendering:crisp-edges}
+html.vis-on .effect.pxd{display:inline-flex;align-items:center;padding:3px 7px 3px 4px;border-width:2px;font-size:10px}
+html.vis-on .effect.pxd .pxi{width:12px;height:12px;background-size:12px 12px;margin-right:4px;vertical-align:-2px}
+html.vis-on .effect.up{background:#e3edd2;color:#2f5223;border-color:#7d9a63}
+html.vis-on .effect.down{background:#f4d9cf;color:#8b1f14;border-color:#c47a68}
+html.vis-on .effect-roll .pxi,html.vis-on .check .pxi{width:14px;height:14px;background-size:14px 14px;vertical-align:-3px;margin-right:4px}
+html.vis-on .check{background:#f3e6c4;border:2px solid #9c8a5a;color:#4a2c1a}
+/* mismo lenguaje en mapa, alforjas y libro */
+html.vis-on .mapwrap,html.vis-on .baul,html.vis-on .bk-map{border:12px solid transparent;border-image:var(--px-marco) 8 fill / 12px / 0 round;outline:0;image-rendering:pixelated}
+html.vis-on #bkPage .chapter.pxd{display:flex;align-items:center}
+@media(max-width:700px){html.vis-on .choice.px-op{grid-template-columns:24px 48px minmax(0,1fr);gap:8px;padding:8px}html.vis-on .choice-art.px,html.vis-on .choice-art.px img{width:44px;height:44px}html.vis-on .choice.px-op .check{grid-column:3}}
+@media(prefers-reduced-motion:reduce){html.vis-on .flot{animation:none;opacity:1}html.vis-on .meter.pulso-up .track,html.vis-on .meter.pulso-down .track{animation:none}html.vis-on .track .fill,html.vis-on .track .ghost{transition:none}}
+body.noanim .flot{animation:none!important}
+@media(hover:none) and (pointer:coarse){html.vis-on .hint{display:none}}
