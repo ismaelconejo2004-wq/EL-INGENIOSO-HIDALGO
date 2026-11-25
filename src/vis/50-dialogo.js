@@ -247,6 +247,7 @@
     const _mc = window.mContinue; if (_mc) window.mContinue = function () { const r = _mc.apply(this, arguments); V.pedir(); return r; };
     const _ie = window.introEnd; if (_ie) window.introEnd = function () { const r = _ie.apply(this, arguments); V.pedir(); return r; };
     const _cb = window.closeBook; if (_cb) window.closeBook = function () { const r = _cb.apply(this, arguments); V.pedir(); return r; };
+    if (V.instalarUI) V.instalarUI();
     window.render();
     return true;
   };
