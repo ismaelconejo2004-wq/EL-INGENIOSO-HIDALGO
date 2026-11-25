@@ -154,7 +154,7 @@
   F.alcoba = (L, o) => {
     const b = L.medio; L.interior = true;
     muro(b, 0, 134, C.cal, C.calS, o.seed); viga(b, 0);
-    b.dith(0, 0, W, 134, C.T, C.calS, (x, y) => 0.2 + y / 300);
+    b.bandas(0, 0, W, 134, [C.cal, C.calS], (x, y) => y / 150, 3);
     ventana(b, 64, 40, 30, 40, { noche: o.hora === 'noche' });
     // crucifijo y arcón
     b.r(200, 44, 2, 16, C.maderaO); b.r(196, 48, 10, 2, C.maderaO);
@@ -169,7 +169,7 @@
   F.patio = (L, o) => {
     exterior(L, o, 84, false);
     const b = L.medio;
-    b.r(0, 60, W, 82, C.cal); b.dith(0, 60, W, 82, C.T, C.calS, (x, y) => (y - 60) / 120 + 0.1);
+    b.r(0, 60, W, 82, C.cal); b.bandas(0, 60, W, 82, [C.cal, C.calS], (x, y) => (y - 60) / 82 * 0.9, 3);
     b.poly([0, 60, W, 60, W, 52, 0, 52], C.rojoO); for (let x = 0; x < W; x += 3) b.p(x, 55, C.rojo);
     b.r(40, 90, 30, 52, C.maderaO); b.r(43, 93, 24, 49, C.madera); b.p(63, 118, C.oro); // portón
     ventana(b, 150, 80, 16, 18, {}); ventana(b, 300, 78, 16, 20, {});
@@ -184,7 +184,7 @@
   F.cocina = (L, o) => {
     const b = L.medio; L.interior = true;
     muro(b, 0, 136, C.calS, C.tierraS, o.seed); viga(b, 0); viga(b, 30);
-    b.dith(0, 0, W, 136, C.T, C.violeta, (x, y) => 0.25 + Math.abs(x - 90) / 500);
+    b.bandas(0, 0, W, 136, [C.T, C.T, C.tierraS], (x, y) => Math.min(0.99, Math.abs(x - 85) / 500 + y / 700), 2);
     // lar con fuego
     b.r(40, 70, 90, 66, C.tierraS); b.r(48, 98, 74, 38, C.negro); b.poly([36, 70, 134, 70, 116, 40, 54, 40], C.calS); b.r(70, 0, 30, 40, C.calS);
     b.r(76, 116, 18, 12, C.pano); b.ell(85, 112, 10, 6, C.pano); b.hl(77, 93, 108, C.hierro);
@@ -248,7 +248,7 @@
     exterior(L, o, 108);
     montes(L.medio, 124, 8, o.seed + 6, C.colina, C.tierraL, 3);
     const b = L.medio;
-    b.r(150, 70, 230, 64, C.cal); b.dith(150, 70, 230, 64, C.T, C.calS, (x, y) => (x - 150) / 500 + (y - 70) / 200);
+    b.r(150, 70, 230, 64, C.cal); b.bandas(150, 70, 230, 64, [C.cal, C.calS], (x, y) => (y - 70) / 80, 3);
     b.poly([144, 70, 386, 70, 370, 56, 160, 56], C.rojoO); for (let x = 160; x < 370; x += 3) b.p(x, 62, C.rojo);
     b.r(230, 92, 34, 42, C.maderaO); b.r(233, 95, 28, 39, C.madera); b.r(246, 95, 1, 39, C.maderaO);
     b.r(300, 84, 10, 10, o.hora === 'noche' || o.hora === 'ocaso' ? C.brasa : C.pano); b.r(180, 86, 10, 10, o.hora === 'noche' ? C.brasa : C.pano);
@@ -262,13 +262,13 @@
   // 10 venta (interior)
   F.ventainterior = (L, o) => {
     const b = L.medio, r = rng(o.seed); L.interior = true;
-    muro(b, 0, 136, C.tierraS, C.tierraP, o.seed); b.dith(0, 0, W, 136, C.T, C.violeta, (x, y) => 0.35 + y / 500);
+    muro(b, 0, 136, C.ocre, C.tierraS, o.seed); b.bandas(0, 0, W, 136, [C.T, C.T, C.tierraS], (x, y) => Math.min(0.99, Math.abs(x - 241) / 360 + y / 800), 2);
     viga(b, 0); viga(b, 26); b.r(0, 30, 3, 106, C.maderaO);
     for (let i = 0; i < 4; i++) { const x = 30 + i * 28; b.ell(x, 112, 10, 14, C.tierraP); b.ell(x - 2, 108, 7, 10, C.maderaO); b.r(x - 2, 96, 4, 3, C.madera); } // cueros de vino
     for (let i = 0; i < 5; i++) { b.r(170 + i * 12, 56, 1, 10, C.pano); b.ell(170 + i * 12, 68, 3, 3, C.ocre); }
     b.r(240, 46, 3, 10, C.hierro); L.anim.push({ t: 'llama', x: 241, y: 45 }); L.luces.push({ x: 241, y: 48, r: 110, f: 1 });
     b.r(300, 50, 70, 86, C.maderaO); b.r(304, 54, 62, 82, C.negro); // puerta al patio
-    if (o.hora !== 'noche') b.dith(304, 54, 62, 82, C.tierraL, C.cieloH, (x, y) => 1 - (y - 54) / 120);
+    if (o.hora !== 'noche') { b.bandas(304, 54, 62, 50, [C.cieloM, C.cieloH], (x, y) => (y - 54) / 50, 3); b.r(304, 104, 62, 32, C.tierraL); b.r(304, 104, 62, 2, C.colina); }
     suelobaldosa(L.suelo, 136, C.tierraS, C.tierraP);
     const f = L.frente; f.r(150, 132, 120, 4, C.madera); f.r(154, 136, 3, 22, C.maderaO); f.r(262, 136, 3, 22, C.maderaO);
     f.ell(176, 129, 5, 3, C.cal); f.r(200, 124, 5, 8, C.tierraS); f.ell(230, 129, 6, 3, C.ocre);
@@ -314,7 +314,7 @@
     for (let i = 0; i < 10; i++) { const x = r() * W | 0, y = 104 + r() * 18 | 0; L.medio.ell(x, y, 10 + r() * 10 | 0, 6, C.calS); L.medio.ell(x - 3, y - 2, 6, 3, C.cal); }
     for (let i = 0; i < 12; i++) mata(L.medio, r() * W | 0, 112 + r() * 16 | 0, C.olivo, C.encina);
     suelo(L.suelo, 132, o, [C.ocre, C.tierraS, C.tierraP]);
-    const fr = L.frente; fr.poly([0, 180, 0, 120, 20, 104, 40, 126, 52, 180], C.tierraP); fr.poly([W, 180, W, 110, W - 30, 132, W - 46, 180], C.tierraP); fr.hl(4, 30, 108, C.tierraS);
+    const fr = L.frente; fr.poly([0, 180, 0, 128, 14, 116, 26, 136, 32, 180], C.tierraP); fr.poly([W, 180, W, 118, W - 22, 138, W - 34, 180], C.tierraP); fr.hl(2, 18, 120, C.tierraS);
     if (o.props && o.props.includes('ermita')) { casa(L.medio, 300, 112, 26, 16, { luz: o.hora === 'noche' }); L.medio.r(312, 82, 2, 12, C.calS); L.medio.r(309, 85, 8, 2, C.calS); }
   };
   // 15 plaza de aldea
@@ -362,7 +362,7 @@
   // 18 salón del palacio de los duques
   F.salon = (L, o) => {
     const b = L.medio; L.interior = true;
-    b.r(0, 0, W, 136, C.cal); b.dith(0, 0, W, 136, C.T, C.calS, (x, y) => 0.25 + y / 400);
+    b.r(0, 0, W, 136, C.cal); b.bandas(0, 0, W, 136, [C.cal, C.calS], (x, y) => y / 160, 3);
     for (let i = 0; i < 5; i++) { const x = 10 + i * 82; b.r(x, 20, 12, 116, C.calS); b.r(x + 2, 20, 3, 116, C.cal); b.r(x - 2, 18, 16, 4, C.oro); }
     for (let i = 0; i < 4; i++) { const x = 30 + i * 82; b.ell(x + 21, 40, 21, 16, C.violeta); b.r(x, 40, 42, 70, C.violeta); tapiz(b, x + 6, 44, 30, 54, i % 2 ? [C.anil, C.violeta] : [C.rojoO, C.rojo]); }
     b.r(0, 120, W, 16, C.madera); b.hl(0, W, 120, C.oro);
@@ -377,7 +377,7 @@
   F.liza = (L, o) => {
     const r = rng(o.seed); exterior(L, o, 82);
     const b = L.medio;
-    b.r(0, 40, W, 74, C.cal); b.dith(0, 40, W, 74, C.T, C.calS, (x, y) => (y - 40) / 90);
+    b.r(0, 40, W, 74, C.cal); b.bandas(0, 40, W, 74, [C.cal, C.calS], (x, y) => (y - 40) / 90, 3);
     for (let x = 0; x < W; x += 16) { b.r(x, 32, 9, 8, C.cal); } // almenas
     b.r(160, 4, 80, 110, C.cal); b.r(160, 4, 4, 110, C.calS); for (let x = 160; x < 240; x += 14) b.r(x, -4, 8, 10, C.cal);
     for (let i = 0; i < 3; i++) b.r(178 + i * 20, 28, 6, 12, C.pano);

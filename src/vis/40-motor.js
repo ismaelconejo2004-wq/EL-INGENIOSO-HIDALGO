@@ -49,11 +49,11 @@
 
   /* ---------- capas de fondo cacheadas ---------- */
   function capas(e) {
-    const key = e.f + '|' + e.variante + '|' + e.props.join(',') + '|' + e.h;
+    const key = e.f + '|' + e.variante + '|' + e.props.join(',') + '|' + e.h + '|' + e.pal;
     return cache('L|' + key, () => {
       const L = V.pintarFondo(e.f, { hora: e.h, seed: hash(e.f + e.variante) , variante: e.variante, props: e.props });
       const out = { luces: L.luces, anim: L.anim, interior: L.interior, papel: L.papel };
-      for (const k of ['cielo', 'lejos', 'medio', 'suelo', 'frente']) out[k] = L[k].canvas(e.h);
+      for (const k of ['cielo', 'lejos', 'medio', 'suelo', 'frente']) out[k] = L[k].canvas(e.pal);
       return out;
     });
   }
@@ -61,24 +61,23 @@
 
   /* ---------- reparto y marcas ---------- */
   function montarReparto(e, id) {
-    const A = [], sinSancho = (typeof state !== 'undefined' && state.alone) || (typeof NOSAN !== 'undefined' && NOSAN.includes(id)) || NOSAN_EXTRA.includes(id);
-    const L = capas(e), dentro = L.interior || e.f === 'patio' || e.f === 'liza' && e.an === 'fly';
+    const an = e.an, A = [], sinSancho = (typeof state !== 'undefined' && state.alone) || (typeof NOSAN !== 'undefined' && NOSAN.includes(id)) || NOSAN_EXTRA.includes(id);
+    const L = capas(e), dentro = L.interior || e.interior || e.f === 'patio' || (e.f === 'liza' && an === 'fly');
     const bacia = typeof state !== 'undefined' && state.inventory && state.inventory.yelmo > 0;
-    const an = e.an;
     if (e.l === 'alonso') {
-      if (an === 'sleep') A.push({ id: 'alonso', rol: 'izq', m: 0.62, pose: 'tendido', fija: 1, y: GY - 34 });
+      if (an === 'sleep') A.push({ id: 'alonso', rol: 'izq', m: e.f === 'alcoba' ? (V.W0 / 2 + 50) / V.W0 : 0.5, pose: 'tendido', fija: 1, y: e.f === 'alcoba' ? 119 : GY, cama: e.f === 'alcoba' });
       else A.push({ id: 'alonso', rol: 'izq', m: 0.40, pose: an === 'read' ? 'leer' : 'reposo' });
     } else {
       const montado = !dentro && !['bow', 'sleep', 'faint'].includes(an) && !['booktrap', 'barco', 'jaula'].includes(id);
       if (id === 'jaula') { A.push({ id: 'dq', rol: 'dq', m: 0.47, pose: 'reposo', enjaulado: 1, extra: bacia ? 'bacia' : '' }); A.push({ id: 'rocinante', rol: 'montura', m: 0.24, pose: 'reposo' }); }
       else if (an === 'fly') A.push({ id: 'dq', rol: 'dq', m: 0.40, pose: 'montado', vuelo: 1, extra: bacia ? 'bacia' : '', sobre: e.f === 'rio' ? 'barca' : 'clavileno' });
-      else if (an === 'sleep' || an === 'faint') { A.push({ id: 'dq', rol: 'dq', m: 0.38, pose: 'tendido', extra: bacia ? 'bacia' : '' }); if (!dentro) A.push({ id: 'rocinante', rol: 'montura', m: 0.20, pose: 'reposo' }); }
+      else if (an === 'sleep' || an === 'faint') { A.push({ id: 'dq', rol: 'dq', m: an === 'sleep' ? 0.30 : 0.38, pose: 'tendido', extra: bacia ? 'bacia' : '' }); if (!dentro) A.push({ id: 'rocinante', rol: 'montura', m: an === 'sleep' ? 0.76 : 0.56, pose: 'reposo', fondo: 1, y: GY - 4, flip: an === 'sleep' ? 1 : 0 }); }
       else if (montado) A.push({ id: 'dq', rol: 'dq', m: 0.37, pose: 'montado', mont: 'rocinante', extra: bacia ? 'bacia' : '' });
-      else { A.push({ id: 'dq', rol: 'dq', m: 0.36, pose: an === 'bow' ? 'arrodillado' : 'reposo', extra: bacia ? 'bacia' : '' }); if (!dentro && an === 'bow') A.push({ id: 'rocinante', rol: 'montura', m: 0.18, pose: 'reposo' }); }
+      else { A.push({ id: 'dq', rol: 'dq', m: 0.36, pose: an === 'bow' ? 'arrodillado' : 'reposo', extra: bacia ? 'bacia' : '' }); if (!dentro && an === 'bow') A.push({ id: 'rocinante', rol: 'montura', m: 0.52, pose: 'reposo', fondo: 1, y: GY - 4 }); }
       if (!sinSancho) {
         if (an === 'fly') A.push({ id: 'sancho', rol: 'sancho', m: 0.40, pose: 'montado', vuelo: 1, detras: 1, sobre: e.f === 'rio' ? 'barca' : 'clavileno' });
         else if (an === 'toss' && id === 'manteo') A.push({ id: 'sancho', rol: 'sancho', m: 0.70, pose: 'golpe', manteo: 1 });
-        else if (an === 'sleep' && e.l !== 'alonso') A.push({ id: 'sancho', rol: 'sancho', m: 0.16, pose: 'tendido' });
+        else if (an === 'sleep' && e.l !== 'alonso') A.push({ id: 'sancho', rol: 'sancho', m: 0.12, pose: 'tendido' });
         else if (an === 'walk' && !dentro) A.push({ id: 'sancho', rol: 'sancho', m: 0.15, pose: 'montado', mont: 'rucio' });
         else { A.push({ id: 'sancho', rol: 'sancho', m: dentro ? 0.20 : 0.19, pose: an === 'eat' ? 'hablar' : 'reposo', come: an === 'eat' }); if (!dentro) A.push({ id: 'rucio', rol: 'montura', m: 0.07, pose: 'reposo', fondo: 1, y: GY - 3 }); }
       }
@@ -165,7 +164,7 @@
   function dibujar(now) {
     if (!S || !ctx) return;
     const t = (now - S.t) / 1000, quieto = V.menosMov(), tt = quieto ? 0 : t;
-    const e = S.e, L = capas(e), hora = e.h;
+    const e = S.e, L = capas(e), hora = e.pal, horaA = e.palA;
     // cámara: en escenas de camino el paisaje se desplaza
     const marcha = e.an === 'walk' && !quieto ? tt * 14 : 0;
     const tn = tension();
@@ -181,14 +180,14 @@
     // actores (de atrás a delante)
     actualizarActores(tt, quieto);
     const orden = S.actores.slice().sort((a, b) => (a.fondo ? -1 : 0) - (b.fondo ? -1 : 0) || a.y - b.y);
-    for (const a of orden) pintarActor(a, tt, hora);
+    for (const a of orden) pintarActor(a, tt, horaA);
     animFondo(L, tt, hora, 'delante', marcha);
     particulas(tt, quieto, hora, e, L);
     capa(L.frente, marcha * 1.6);
     // luz
     luces(L, tt, hora, e);
     if (e.tarde) { ctx.globalCompositeOperation = 'soft-light'; ctx.fillStyle = 'rgba(255,170,90,.35)'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
-    if (L.papel && hora === 'noche') { ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = 'rgba(120,110,170,.45)'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
+    if (L.papel && e.h === 'noche') { ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = 'rgba(120,110,170,.45)'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
     postTension(tn, tt, quieto);
     if (S.dados) dados(now);
     transicion(t, quieto);
@@ -254,7 +253,7 @@
       const mf = mPose === 'caminar' ? Math.floor(t * (a.carga ? 12 : FPS_ANIM)) & 3 : (an === 'plantado' && (t % 3) > 2.2 ? 1 : Math.floor(t * 0.8) & 1);
       const mc = V.actorCanvas(mid, mPose, mf, hora, false);
       const bob = mPose === 'caminar' ? (mf & 1) : 0;
-      if (a.detras) x -= 8;
+      if (a.detras) x -= 13;
       if (!(a.detras && mid === 'clavileno')) ctx.drawImage(mc, x - mc._ax, y + dy - mc._ay);
       const sp = V.SILLA[mid], hx = x - mc._ax + sp[0], hy = y + dy - mc._ay + sp[1] - bob;
       const rc = V.actorCanvas(a.id, 'montado', 0, hora, false, a.extra);
@@ -266,7 +265,7 @@
     }
     const c = V.actorCanvas(a.id, pose === 'tendido' ? 'reposo' : pose, f, hora, !!a.flip, a.extra);
     if (a.pose === 'tendido') {
-      ctx.save(); ctx.translate(x, y + dy - 3); ctx.rotate(-Math.PI / 2); ctx.drawImage(c, -c._ay + 2, -c._ax); ctx.restore();
+      ctx.save(); ctx.translate(x, y + dy); ctx.rotate(-Math.PI / 2); ctx.drawImage(c, -c._ax + 4, -Math.round(c._ay / 2)); ctx.restore();
       if (!V.menosMov() && Math.floor(t) % 3 === 0 && (t % 1) < 0.03) S.part.push({ k: 'z', x: x + 6, y: y - 12, vx: 4, vy: -8, v: 2.2, t: 0 });
       return;
     }
@@ -281,7 +280,7 @@
     if (a.id !== 'dq' || V.menosMov()) return;
     const k = t % 4.2; if (k > 0.5) return;
     const top = hy - Math.round(sp.alto * 0.3) - 10, x = hx - 3 + Math.round(k * 16);
-    ctx.fillStyle = HEX[S.e.h][31]; ctx.fillRect(x, top - 1, 1, 1); if (k > 0.1 && k < 0.35) { ctx.fillRect(x - 1, top - 1, 3, 1); ctx.fillRect(x, top - 2, 1, 3); }
+    ctx.fillStyle = HEX[S.e.pal][31]; ctx.fillRect(x, top - 1, 1, 1); if (k > 0.1 && k < 0.35) { ctx.fillRect(x - 1, top - 1, 3, 1); ctx.fillRect(x, top - 2, 1, 3); }
   }
   function barcaConJinetes(a, x, y, t, hora) {
     if (a.id !== 'dq') return; // la barca se pinta una vez, con los dos
@@ -323,13 +322,14 @@
         if (S.e.an === 'fly') continue; const yy = a.y + Math.round(Math.sin(t * 2) * 1);
         ctx.fillStyle = P[19]; ctx.fillRect(x - 24, yy, 48, 4); ctx.fillStyle = P[18]; ctx.fillRect(x - 20, yy + 4, 40, 3); ctx.fillStyle = P[0]; ctx.fillRect(x - 24, yy - 1, 48, 1);
       } else if (a.t === 'clavileno') {
+        if (S.actores.some(o => o.sobre === 'clavileno')) continue;
         const dq = S.actores.find(o => o.rol === 'dq');
         const c = V.actorCanvas('clavileno', 'reposo', 0, hora, false);
         const yy = a.y - (dq && dq.vuelo ? 18 + Math.round(Math.sin(t * 1.6) * 4) : 0);
         ctx.drawImage(c, (dq ? dq.x : x) - c._ax, yy - c._ay);
       } else if (a.t === 'letras' && !V.menosMov()) {
         ctx.fillStyle = P[29];
-        const r = rng(7); for (let i = 0; i < 14; i++) { const bx = r() * W, by = r() * 110, sp = 3 + r() * 6; const yy = ((by - t * sp) % 120 + 120) % 120; const xx = bx + Math.sin(t + i) * 6; const g = V.cache('gl|' + i + '|' + S.e.h, () => { const b = new B(6, 8); V.texto(b, 'ABCDEFGHILMNOPRSTUV'[i % 19], 0, 0, C.pano); return b.canvas(S.e.h); }); ctx.globalAlpha = 0.65; ctx.drawImage(g, Math.round(xx), Math.round(yy)); ctx.globalAlpha = 1; }
+        const r = rng(7); for (let i = 0; i < 14; i++) { const bx = r() * W, by = r() * 110, sp = 3 + r() * 6; const yy = ((by - t * sp) % 120 + 120) % 120; const xx = bx + Math.sin(t + i) * 6; const g = V.cache('gl|' + i + '|' + S.e.pal, () => { const b = new B(6, 8); V.texto(b, 'ABCDEFGHILMNOPRSTUV'[i % 19], 0, 0, C.pano); return b.canvas(S.e.pal); }); ctx.globalAlpha = 0.65; ctx.drawImage(g, Math.round(xx), Math.round(yy)); ctx.globalAlpha = 1; }
       }
     }
     if (fase === 'delante') propsDelante(t, hora);
@@ -463,7 +463,7 @@
   /* ---------- transiciones ---------- */
   function transicion(t, quieto) {
     if (!S.trans || quieto) { S.trans = null; return; }
-    const P = HEX[S.e.h];
+    const P = HEX[S.e.pal];
     if (S.trans === 'iris') {
       const dq = S.actores.find(a => a.rol === 'dq' || a.rol === 'izq') || { x: W / 2 };
       const cx = Math.round(dq.tx || W / 2), cy = GY - 30;
@@ -501,7 +501,7 @@
     });
   }
   function dados(now) {
-    const d = S.dados, t = (now - d.t) / 1000, quieto = V.menosMov(), hora = S.e.h, T = (typeof CFG !== 'undefined' && CFG.fast) ? 0.25 : 0.95;
+    const d = S.dados, t = (now - d.t) / 1000, quieto = V.menosMov(), hora = S.e.palA, T = (typeof CFG !== 'undefined' && CFG.fast) ? 0.25 : 0.95;
     const caer = (i, vals) => {
       const x0 = W * 0.78 + i * 12, x1 = W * 0.5 + (i ? 10 : -10), k = quieto ? 1 : Math.min(1, t / T);
       const x = x0 + (x1 - x0) * k, rebote = Math.abs(Math.sin(k * Math.PI * 2.5)) * (1 - k) * 46;
@@ -530,7 +530,7 @@
   /* ---------- números flotantes sobre la escena (+5, −3) ---------- */
   V.flotar = function (txt, bueno) {
     if (!S || !ctx) return;
-    const hora = S.e.h, c = cache('fl|' + txt + '|' + bueno + '|' + hora, () => { const b = new B(V.anchoTexto(txt) + 2, 9); V.texto(b, txt, 0, 0, bueno ? C.oro : C.rojo, C.negro); return b.canvas(hora); });
+    const hora = S.e.palA, c = cache('fl|' + txt + '|' + bueno + '|' + hora, () => { const b = new B(V.anchoTexto(txt) + 2, 9); V.texto(b, txt, 0, 0, bueno ? C.oro : C.rojo, C.negro); return b.canvas(hora); });
     const dq = S.actores.find(a => a.rol === 'dq' || a.rol === 'izq') || { x: W / 2 };
     S.part.push({ k: 'num', cv: c, x: dq.x + (S.part.length % 3) * 10 - 10, y: GY - 80, vx: 0, vy: -10, v: 1.6, t: 0 });
     pedir();

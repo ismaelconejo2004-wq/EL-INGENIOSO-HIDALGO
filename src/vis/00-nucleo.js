@@ -21,6 +21,17 @@ var VIS = window.VIS = window.VIS || {};
       return (0xff000000 | ((n & 255) << 16) | (n & 0xff00) | (n >> 16)) >>> 0;
     }));
   }
+  // paletas derivadas: «lumbre» (noche a la luz del fuego) y «luna» (figuras legibles de noche)
+  function mezcla(nom, a, b, k, ajuste) {
+    HEX[nom] = HEX[a].map((x, i) => {
+      const A = parseInt(x.slice(1), 16), Bc = parseInt(HEX[b][i].slice(1), 16);
+      const ch = sh => Math.round(((A >> sh) & 255) * (1 - k) + ((Bc >> sh) & 255) * k * (ajuste || 1));
+      return '#' + [16, 8, 0].map(sh => Math.min(255, ch(sh)).toString(16).padStart(2, '0')).join('');
+    });
+    U32[nom] = new Uint32Array(HEX[nom].map(x => { const n = parseInt(x.slice(1), 16); return (0xff000000 | ((n & 255) << 16) | (n & 0xff00) | (n >> 16)) >>> 0; }));
+  }
+  mezcla('lumbre', 'noche', 'ocaso', 0.55, 0.92);
+  mezcla('luna', 'noche', 'mediodia', 0.32);
   // Índices con nombre (para leer mejor el código de dibujo)
   const C = {
     negro: 0, violeta: 1, cieloA: 2, cieloM: 3, cieloH: 4, astro: 5, nube: 6, sierra: 7, colina: 8,

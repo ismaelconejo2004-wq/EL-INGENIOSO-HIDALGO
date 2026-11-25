@@ -133,12 +133,22 @@ cirujano|plaza|mediodia|||barbero|talk|`;
   });
   // Región → variante del camino real
   const REG = { bar: 'costa', zar: 'ribera', ate: 'ribera', ari: 'ribera', sig: 'ribera', mad: 'olivar', tol: 'olivar', alc: 'olivar', sie: 'olivar' };
+  const INTERIOR = ['biblioteca', 'alcoba', 'cocina', 'ventainterior', 'casanoble', 'salon', 'calabozo', 'cueva'];
+  const FUEGO = ['majada', 'biblioteca', 'cocina', 'ventainterior', 'casanoble', 'salon'];
+  function paletas(e) {
+    const noche = e.h === 'noche';
+    if (e.f === 'entrepaginas') return { pal: 'mediodia', palA: 'mediodia' };
+    if (noche && INTERIOR.includes(e.f)) return { pal: 'lumbre', palA: 'lumbre' };
+    if (noche) return { pal: 'noche', palA: (FUEGO.includes(e.f) || e.clima.includes('antorchas') || e.props.includes('catafalco')) ? 'lumbre' : 'luna' };
+    return { pal: e.h, palA: e.h };
+  }
+  V.INTERIOR = INTERIOR;
   V.ESC = E;
   V.escena = function (id) {
     let e = E[id];
     if (!e) e = { f: 'camino', h: 'mediodia', clima: [], props: [], r: [], an: '', l: 'dq' };
     const st = (typeof stOf === 'function') ? stOf(id) : { an: 'watch' };
     const reg = (typeof loc === 'function') ? loc(id) : 'arg';
-    return Object.assign({}, e, { an: e.an || st.an || 'watch', cap: st.cap || '', variante: REG[reg] || 'mancha', reg });
+    return Object.assign({}, e, paletas(e), { an: e.an || st.an || 'watch', cap: st.cap || '', variante: REG[reg] || 'mancha', reg, interior: INTERIOR.includes(e.f) });
   };
 })(VIS);
