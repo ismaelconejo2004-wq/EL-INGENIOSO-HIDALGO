@@ -1,0 +1,65 @@
+{
+  "bytes": 518999,
+  "gzip": 170494,
+  "cargaGzip": {
+    "fcp": 292,
+    "dcl": 1335,
+    "load": 1337,
+    "script": 331
+  },
+  "cargaSinGzip": {
+    "fcp": 392,
+    "dcl": 3041,
+    "load": 3045,
+    "script": 290
+  },
+  "fps": {
+    "escritorio": {
+      "mills": {
+        "fps": 60,
+        "msFotograma": 0.08
+      },
+      "cabreros": {
+        "fps": 60,
+        "msFotograma": 0.07
+      },
+      "ev_tormenta": {
+        "fps": 60,
+        "msFotograma": 0.59
+      },
+      "galeotes": {
+        "fps": 60,
+        "msFotograma": 0.06
+      },
+      "altisidora": {
+        "fps": 60,
+        "msFotograma": 0.07
+      },
+      "bucleConPestanaOculta": "detenido"
+    },
+    "movil_cpu4x": {
+      "mills": {
+        "fps": 60,
+        "msFotograma": 0.56
+      },
+      "cabreros": {
+        "fps": 60,
+        "msFotograma": 0.32
+      },
+      "ev_tormenta": {
+        "fps": 60,
+        "msFotograma": 0.32
+      },
+      "galeotes": {
+        "fps": 60,
+        "msFotograma": 0.4
+      },
+      "altisidora": {
+        "fps": 60,
+        "msFotograma": 0.3
+      },
+      "bucleConPestanaOculta": "detenido"
+    }
+  },
+  "movimientoReducido": "sin bucle; un fotograma por cambio"
+}

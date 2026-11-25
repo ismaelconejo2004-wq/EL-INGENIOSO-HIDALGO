@@ -281,6 +281,17 @@ Rendimiento objetivo: un primer fotograma del escenario en menos de 50 ms tras `
 5. **Temas:** el escenario pixel art se excluye del filtro de los temas `noche`, `bosque` y `contraste`. En `noche` se usa la paleta nocturna más oscura; en `contraste`, una viñeta más débil y contornos de 1 px más claros alrededor de los actores. El texto y los paneles siguen el tema como hoy.
 6. **Correcciones de reparto y fondo** del §1.3 (P1–P6). Cambian *qué figura* sale en el escenario, no el texto, las opciones ni los números. Interpreto que están dentro de «solo cómo se ve», pero lo marco para que lo confirmes.
 
+### 6.1 Cómo se aplicaron (fases 1–3)
+
+1. **Posición del escenario: con un cambio.** El escenario y las voces forman un único «marco»: el lienzo arriba y debajo, pegadas, las cajas de diálogo con retrato. **No va encima del título**, sino entre la narración y las opciones. Así se respeta el orden de lectura del texto original (narración → voz → decisión), y la caja de voz no tapa los pies de los personajes, que es lo que ocurría al superponerla.
+2. **Texto letra a letra activado**: unos 62 caracteres por segundo, con pausas en la puntuación. Se salta con un clic o pulsación sobre el texto o el escenario, con Espacio o con Intro, y también al elegir una opción. Se desactiva con «Texto letra a letra: No» en Ajustes (clave nueva y opcional `CFG.tw`), con el modo rápido o con movimiento reducido. El texto completo está siempre en el DOM.
+3. **Los 48 sprites se redibujaron** en el sistema por capas y se retiraron los PNG.
+4. **Sin Google Fonts.** Los nombres de fuente del CSS original (`IM Fell English`, `Literata`, `DM Mono`) se convirtieron en alias `@font-face` con `local()` hacia tipos instalados en el sistema (Iowan, Palatino, Georgia, Menlo…). No cambia ninguna regla de estilo antigua ni se descarga nada.
+5. **Temas**: el filtro de los temas noche, bosque y contraste ya no se aplica a `.app` entera, sino a sus paneles. El lienzo solo recibe un ajuste suave de brillo o contraste.
+6. **Reparto y fondos corregidos** según P1–P6 (tabla `src/vis/30-escenas.js`). No se tocaron textos, opciones, efectos ni rutas.
+
+Además, la hora del día no basta para la noche. Hay dos paletas derivadas: **«lumbre»**, para interiores nocturnos y figuras junto al fuego, y **«luna»**, para que las figuras se lean a cielo abierto.
+
 ## 7. Plan de fases y commits
 
 | Fase | Commit | Verificación |

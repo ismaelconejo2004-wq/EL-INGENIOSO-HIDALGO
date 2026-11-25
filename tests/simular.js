@@ -9,6 +9,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
 const { fork } = require('child_process');
 const os = require('os');
 const N = Number(process.argv[2]) || 3000;
+const MAX_PASOS = 400;
 const HIJO = process.argv[3] === '--hijo';
 if (!HIJO) {
   // Proceso principal: reparte las partidas entre varios procesos y suma.
@@ -44,7 +45,6 @@ function resumen(R, ms) {
   if (errores.length) { console.log(`\n${errores.length} error(es):`); errores.slice(0, 40).forEach(e => console.log(' - ' + e)); process.exit(1); }
   console.log('OK');
 }
-const MAX_PASOS = 400;
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
 const errores = [];
