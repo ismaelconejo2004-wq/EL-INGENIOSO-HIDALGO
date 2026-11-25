@@ -1,12 +1,10 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html>
 <html lang="es">
 <head>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap">
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>El ingenioso hidalgo — una aventura interior</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=DM+Mono:wght@400;500&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&display=swap');
+[hidden]:not([hidden=until-found i]){display:none!important}
 :root{--paper:#eee4cc;--ink:#24211c;--muted:#8a806b;--red:#9b392b;--gold:#bd8b42;--line:#cfc1a4;--dark:#1d201c;--green:#59654c}
 *{box-sizing:border-box}body{margin:0;background:#d8c9a8;color:var(--ink);font-family:Literata,Georgia,serif;min-height:100vh;background-image:radial-gradient(ellipse at 50% 0%,#eee6d5 0,transparent 70%)}
 .app{max-width:1380px;margin:0 auto;min-height:100vh;display:grid;grid-template-columns:250px minmax(400px,1fr) 260px;box-shadow:0 0 60px #46381c30;background:var(--paper)}
@@ -857,6 +855,1945 @@ BR['ev_fever#1']=BR['ev_fever#1'].map(t=>t.replace('una energía prestada','una 
 BAL();
 function restart(){state={sanity:62,honor:48,hunger:31,loyalty:50,turn:0,evs:[],scene:'start',notes:[],health:80,inventory:heirInv(),seed:takeSeed(),daily:DAILYNEXT||undefined,gm:GM};DAILYNEXT='';if(GM==='pesadilla'){state.hunger=44;state.coins=12;state.health=70;state.inventory={}}render()}
 document.addEventListener('keydown',e=>{if(MENUON()){if(document.getElementById('intro').classList.contains('on')){if(e.key==='Escape')introSkip();else if(['Enter',' ','ArrowRight'].includes(e.key)){e.preventDefault();introNext()}}else if(e.key==='Escape')closeBook();return}if(e.key==='Escape'){closeBook();closeMkt()}if((e.key==='m'||e.key==='M')&&!/INPUT|TEXTAREA/.test((e.target||{}).tagName||'')&&!document.querySelector('#modal.show,#mktModal.show')){BK.open?closeBook():openBook();return}if(document.querySelector('#bookModal.show,#mktModal.show'))return;let n=Number(e.key);if(n>=1&&n<=4){let buttons=document.querySelectorAll('.choice');if(buttons[n-1])buttons[n-1].click()}if(e.key==='Enter'&&document.getElementById('modal').classList.contains('show'))closeRoll()});try{let sv=JSON.parse(localStorage.getItem('hidalgo'));if(sv&&sv.evs&&sv.scene!=='end'&&scenes[sv.scene])state=sv}catch(e){}applyCfg();render();dbInit();showMenu();
-</script></body></html>
+</script><!--VIS:INI--><style id="vis-css">
+/* ===== VIS · escenario en lienzo y cajas de diálogo ===== */
+.marco{position:relative;margin:28px 0 10px;border:3px double #7a4b26;outline:1px solid #c9a35a;outline-offset:2px;background:#1b1424;box-shadow:0 10px 28px #2a1a0e55}
+.stage.vis{margin:0;height:auto;border:0;background:#0a0a12;overflow:hidden;display:block;position:relative}
+.stage.vis::before,.stage.vis::after{display:none}
+.vis-cv{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
+.stage.vis figcaption{position:absolute;left:8px;top:8px;right:auto;bottom:auto;max-width:70%;padding:3px 8px;font:11px/1.35 'DM Mono',ui-monospace,monospace;letter-spacing:.04em;color:#f3e6c4;background:#1b1424c4;border:1px solid #c9a35a66}
+.dlg{display:flex;flex-direction:column;gap:0;background:#2a1c14}
+.dlg .voice{margin:0;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr;column-gap:14px;align-items:start;padding:12px 16px 14px;border:0;border-top:2px solid #7a4b26;background:linear-gradient(#f3e6c4,#e8d7ad);color:#2a1c14;font-style:italic;font-size:var(--fs,18px);line-height:1.55;min-height:104px;transition:opacity .25s}
+.dlg .voice .speaker{grid-column:2;font:600 11px 'DM Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;font-style:normal;color:#8b2e1f;margin:0 0 4px}
+.dlg .voice .retrato{grid-row:1/span 2;width:80px;height:80px;image-rendering:pixelated;image-rendering:crisp-edges;border:3px solid #5a3418;outline:1px solid #c9a35a;background:#d9c49a;box-shadow:inset 0 0 0 2px #f3e6c4}
+.dlg .voice>:not(.retrato):not(.speaker){grid-column:2}
+.dlg .voice.v-narrador{grid-template-columns:1fr}
+.dlg .voice.v-narrador .speaker,.dlg .voice.v-narrador>*{grid-column:1}
+/* marcos alegóricos: la Razón (plata fría) y el Caballero (oro y fuego) */
+.dlg .voice.v-razon{background:linear-gradient(#e6ebf0,#cfd8e2);color:#1e2a44;border-top-color:#7c8a9c}
+.dlg .voice.v-razon .speaker{color:#34508a}
+.dlg .voice.v-razon .retrato{border-color:#7c8a9c;outline-color:#e6ebf0;background:#a9bccf}
+.dlg .voice.v-caballero{background:linear-gradient(#3a1810,#5a2414);color:#fbe3b0;border-top-color:#d8a640}
+.dlg .voice.v-caballero .speaker{color:#f0b040}
+.dlg .voice.v-caballero .retrato{border-color:#d8a640;outline-color:#ff8a2e;background:#2a1008}
+.dlg .voice.v-impostor{background:repeating-linear-gradient(0deg,#efe6d0 0 3px,#e4d8bc 3px 4px);color:#111;border-top:2px dashed #222}
+.dlg .voice.v-impostor .retrato{border-color:#111;background:#e4d8bc}
+.dlg .voice.v-cuerpo,.dlg .voice.v-estomago{background:linear-gradient(#e6ddd2,#d4c6b6);color:#3a1a14;border-top-color:#8a7a6a}
+.dlg .voice.v-cuerpo .retrato,.dlg .voice.v-estomago .retrato{border-color:#8a7a6a;background:#c8b9a6}
+.dlg .voice.sub{opacity:1}
+.dlg .voice.tw-espera{opacity:.45}
+.tw-h{color:transparent}
+.tw-v{color:inherit}
+html.vis-on .narration{position:relative}
+/* tirada: el escenario queda a la vista detrás de la carta */
+html.vis-on #modal{background:#0a0a1259;align-items:flex-end;padding:0 12px 16px}
+html.vis-on #modal .card{box-shadow:0 12px 40px #000a;max-width:520px;width:100%;padding:14px 22px 14px;display:grid;grid-template-columns:auto 1fr;column-gap:18px;align-items:center;text-align:left}
+html.vis-on #modal .card>*{grid-column:2;margin:2px 0}
+html.vis-on #modal .card .dice-row{grid-column:1;grid-row:1/span 5;margin:0;transform:scale(.72);transform-origin:center}
+html.vis-on #modal .card h2{font-size:22px;line-height:1.15}
+html.vis-on #modal .card .roll{font-size:18px}
+html.vis-on #modal .card button{justify-self:start}
+.marco{scroll-margin-top:8px}
+/* temas con filtro: el lienzo pixel art no se invierte */
+html.vis-on body[data-theme=noche] .app,html.vis-on body[data-theme=bosque] .app,html.vis-on body[data-theme=contraste] .app{filter:none}
+html.vis-on body[data-theme=noche] .app>aside,html.vis-on body[data-theme=noche] .mast,html.vis-on body[data-theme=noche] #scene>:not(.marco),html.vis-on body[data-theme=noche] .dlg{filter:invert(.9) hue-rotate(180deg)}
+html.vis-on body[data-theme=noche] .vis-cv{filter:brightness(.85)}
+html.vis-on body[data-theme=bosque] .app>aside,html.vis-on body[data-theme=bosque] .mast,html.vis-on body[data-theme=bosque] #scene>:not(.marco),html.vis-on body[data-theme=bosque] .dlg{filter:hue-rotate(75deg) saturate(.7)}
+html.vis-on body[data-theme=contraste] .app>aside,html.vis-on body[data-theme=contraste] .mast,html.vis-on body[data-theme=contraste] #scene>:not(.marco),html.vis-on body[data-theme=contraste] .dlg{filter:contrast(1.35) saturate(.5)}
+html.vis-on body[data-theme=contraste] .vis-cv{filter:contrast(1.15)}
+@media(max-width:700px){.marco{margin:20px -12px 8px}.dlg .voice{grid-template-columns:auto 1fr;padding:10px 12px 12px;min-height:0;column-gap:10px}.dlg .voice .retrato{width:56px;height:56px;border-width:2px}.stage.vis figcaption{font-size:10px;max-width:86%}}
+@media(prefers-reduced-motion:reduce){.dlg .voice{transition:none}}
+</style><script id="vis-js">
+/* ===== VIS · núcleo: paletas, búfer indexado, utilidades ===== */
+/* Todo el arte se pinta con índices de paleta (0-31) sobre búferes Uint8.
+   Cada momento del día es una tabla de 32 colores; cambiar la hora es
+   cambiar la tabla. 255 = transparente. */
+var VIS = window.VIS = window.VIS || {};
+(function (V) {
+  'use strict';
+  const HORAS = ['mediodia', 'amanecer', 'ocaso', 'noche'];
+  // Ver docs/ARTE.md §3.3
+  const PAL = {
+    mediodia: '1b1424 3a2740 4f7fb5 7fa8cf c9dbe0 fff4cf f3efe2 8f97b0 a89a72 e8c97f c99a52 8a5e34 553620 b8b070 6b7a3e 3a4a2a f4ecd8 c8b9a6 7a4e2c 4a2c1a b3361f 6e1c16 e8783a d8a640 34508a 7c808c d0d4dc e8b48c a8704c 2a2228 f2e6c8 fffbe8',
+    amanecer: '1d1630 3b2a4e 6a6fa8 c48fa0 f2c48c fff0b8 f6d6c0 9a88a8 a8836c f0c890 c98a5e 87573e 533228 b89c78 6a6a4a 3a3a36 f6dcc4 c4a2a0 7a4a34 482a22 b8402e 6e2022 f0844a e0aa58 44508a 8a7e8e f0d6c8 f0b896 a86a52 2c2430 f6dcc4 fff4d8',
+    ocaso: '22122a 4a2238 3b3a78 b8506a f2914a ffd27a e98a6c 7a4f74 8c5a50 f0a860 c0703e 7c3e2c 4a2420 b07a50 5f4a36 362a2a f2b890 b07a78 6e3a24 3c1c16 c83a1e 701810 ff8a2e f0b040 3a3a70 7a5e6a ffc8a0 f0a07a 9c5040 2a1c24 f2c8a0 fff0c0',
+    noche: '0a0a18 141a33 0e1636 1c2a52 34466e e8e4c8 3a4466 1f2742 26304a 4a5470 36405a 262c44 181c30 2e3a48 1e2a34 121a24 5a6488 3a4466 2a2434 16141e 5a2238 2e1424 ff9a40 c08a3a 1a2448 343c58 8a9ac0 7a7088 44405a 0e0e18 8890a8 fff6d8'
+  };
+  const HEX = {}, U32 = {};
+  for (const h of HORAS) {
+    HEX[h] = PAL[h].split(' ').map(x => '#' + x);
+    U32[h] = new Uint32Array(HEX[h].map(x => {
+      const n = parseInt(x.slice(1), 16);
+      return (0xff000000 | ((n & 255) << 16) | (n & 0xff00) | (n >> 16)) >>> 0;
+    }));
+  }
+  // Índices con nombre (para leer mejor el código de dibujo)
+  const C = {
+    negro: 0, violeta: 1, cieloA: 2, cieloM: 3, cieloH: 4, astro: 5, nube: 6, sierra: 7, colina: 8,
+    tierraL: 9, ocre: 10, tierraS: 11, tierraP: 12, hierba: 13, olivo: 14, encina: 15, cal: 16, calS: 17,
+    madera: 18, maderaO: 19, rojo: 20, rojoO: 21, brasa: 22, oro: 23, anil: 24, hierro: 25, hierroL: 26,
+    piel: 27, pielS: 28, pano: 29, lino: 30, destello: 31, T: 255
+  };
+  // Pares (luz, sombra) para paños de personajes: solo índices que no son cielo
+  const TONO = {
+    rojo: [20, 21], azul: [24, 1], ocre: [10, 11], pardo: [18, 19], negro: [29, 0], blanco: [30, 17],
+    verde: [14, 15], oro: [23, 11], hierro: [26, 25], gris: [25, 1], paja: [9, 10], tierra: [11, 12],
+    cal: [16, 17], piel: [27, 28], violeta: [1, 0], encina: [15, 0], brasa: [22, 20]
+  };
 
+  /* --- búfer indexado --- */
+  function B(w, h) { this.w = w; this.h = h; this.d = new Uint8Array(w * h).fill(255); }
+  B.prototype = {
+    p(x, y, c) { x = Math.round(x); y = Math.round(y); if (c !== 255 && x >= 0 && y >= 0 && x < this.w && y < this.h) this.d[y * this.w + x] = c; },
+    g(x, y) { return (x >= 0 && y >= 0 && x < this.w && y < this.h) ? this.d[y * this.w + x] : 255; },
+    r(x, y, w, h, c) {
+      x = Math.round(x); y = Math.round(y); w = Math.round(w); h = Math.round(h);
+      const x0 = Math.max(0, x), y0 = Math.max(0, y), x1 = Math.min(this.w, x + w), y1 = Math.min(this.h, y + h);
+      for (let j = y0; j < y1; j++) this.d.fill(c, j * this.w + x0, j * this.w + Math.max(x0, x1));
+    },
+    hl(x0, x1, y, c) { if (x1 < x0) [x0, x1] = [x1, x0]; this.r(x0, y, x1 - x0 + 1, 1, c); },
+    line(x0, y0, x1, y1, c, t) {
+      x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1);
+      const dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+      let e = dx + dy;
+      for (;;) {
+        if (t > 1) this.r(x0 - (t >> 1), y0, t, 1, c); else this.p(x0, y0, c);
+        if (x0 === x1 && y0 === y1) break;
+        const e2 = 2 * e; if (e2 >= dy) { e += dy; x0 += sx; } if (e2 <= dx) { e += dx; y0 += sy; }
+      }
+    },
+    // polígono relleno (par-impar), pts = [x0,y0,x1,y1,...]
+    poly(pts, c) {
+      let ymin = 1e9, ymax = -1e9; const n = pts.length / 2;
+      for (let i = 1; i < pts.length; i += 2) { ymin = Math.min(ymin, pts[i]); ymax = Math.max(ymax, pts[i]); }
+      ymin = Math.max(0, Math.floor(ymin)); ymax = Math.min(this.h - 1, Math.ceil(ymax));
+      const xs = [];
+      for (let y = ymin; y <= ymax; y++) {
+        xs.length = 0; const yc = y + 0.5;
+        for (let i = 0, j = n - 1; i < n; j = i++) {
+          const yi = pts[i * 2 + 1], yj = pts[j * 2 + 1];
+          if ((yi > yc) !== (yj > yc)) xs.push(pts[i * 2] + (yc - yi) / (yj - yi) * (pts[j * 2] - pts[i * 2]));
+        }
+        xs.sort((a, b) => a - b);
+        for (let k = 0; k + 1 < xs.length; k += 2) { const a = Math.round(xs[k]), b = Math.round(xs[k + 1]) - 1; if (b >= a) this.hl(a, b, y, c); }
+      }
+    },
+    ell(cx, cy, rx, ry, c) {
+      for (let y = -ry; y <= ry; y++) { const w = Math.round(rx * Math.sqrt(Math.max(0, 1 - (y * y) / (ry * ry + 0.0001)))); this.hl(cx - w, cx + w, cy + y, c); }
+    },
+    circ(cx, cy, r, c) { this.ell(cx, cy, r, r, c); },
+    // trama ordenada: mezcla c1→c2 según f(x,y) en [0,1]
+    dith(x, y, w, h, c1, c2, f) {
+      for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) {
+        const X = x + i, Y = y + j; if (X < 0 || Y < 0 || X >= this.w || Y >= this.h) continue;
+        const v = f(X, Y), c = v > BAYER[(Y & 3) * 4 + (X & 3)] ? c2 : c1; if (c !== 255) this.d[Y * this.w + X] = c;
+      }
+    },
+    // degradado en bandas: transiciones tramadas estrechas (aspecto pictórico)
+    bandas(x, y, w, h, cols, f, ancho) {
+      const n = cols.length - 1, k = ancho || 3;
+      for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) {
+        const X = x + i, Y = y + j; if (X < 0 || Y < 0 || X >= this.w || Y >= this.h) continue;
+        let v = Math.max(0, Math.min(0.9999, f(X, Y))) * n; const a = Math.floor(v); let fr = v - a;
+        fr = Math.max(0, Math.min(1, (fr - 0.5) * k + 0.5));
+        const c = fr > BAYER[(Y & 3) * 4 + (X & 3)] ? cols[Math.min(n, a + 1)] : cols[a];
+        if (c !== 255) this.d[Y * this.w + X] = c;
+      }
+    },
+    // copia otro búfer (255 transparente); fl = espejo horizontal
+    blit(s, dx, dy, fl) {
+      dx = Math.round(dx); dy = Math.round(dy);
+      for (let j = 0; j < s.h; j++) { const Y = dy + j; if (Y < 0 || Y >= this.h) continue;
+        for (let i = 0; i < s.w; i++) { const c = s.d[j * s.w + (fl ? s.w - 1 - i : i)]; if (c === 255) continue; const X = dx + i; if (X >= 0 && X < this.w) this.d[Y * this.w + X] = c; } }
+    },
+    // contorno de color alrededor de lo opaco
+    outline(c) {
+      const o = new Uint8Array(this.d);
+      for (let y = 0; y < this.h; y++) for (let x = 0; x < this.w; x++) {
+        if (o[y * this.w + x] !== 255) continue;
+        if ((x > 0 && o[y * this.w + x - 1] !== 255) || (x < this.w - 1 && o[y * this.w + x + 1] !== 255) ||
+            (y > 0 && o[(y - 1) * this.w + x] !== 255) || (y < this.h - 1 && o[(y + 1) * this.w + x] !== 255)) this.d[y * this.w + x] = c;
+      }
+      return this;
+    },
+    // cambia un índice por otro (para variantes de paño)
+    swap(m) { for (let i = 0; i < this.d.length; i++) { const v = m[this.d[i]]; if (v !== undefined) this.d[i] = v; } return this; },
+    canvas(hora) {
+      const cv = document.createElement('canvas'); cv.width = this.w; cv.height = this.h;
+      const cx = cv.getContext('2d'); if (!cx) return cv;
+      const im = cx.createImageData(this.w, this.h), u = new Uint32Array(im.data.buffer), p = U32[hora] || U32.mediodia;
+      for (let i = 0; i < this.d.length; i++) { const c = this.d[i]; u[i] = c === 255 ? 0 : p[c]; }
+      cx.putImageData(im, 0, 0); return cv;
+    }
+  };
+  const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(v => (v + 0.5) / 16);
+
+  // generador con semilla (determinista: el mismo fondo siempre igual)
+  function rng(s) { s = (s >>> 0) || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
+  // ruido 1D suave y periódico (periodo P) para perfiles de colinas
+  function perfil(seed, P, oct) {
+    const r = rng(seed), fases = [];
+    for (let i = 0; i < oct; i++) fases.push([r() * 6.283, 1 + i * 2 + Math.floor(r() * 2), 1 / (i + 1.4)]);
+    return x => { let v = 0, n = 0; for (const [f, k, a] of fases) { v += Math.sin(x / P * 6.283 * k + f) * a; n += a; } return v / n; };
+  }
+
+  /* --- caché de lienzos: clave -> canvas --- */
+  const CACHE = new Map();
+  function cache(k, mk) {
+    let v = CACHE.get(k); if (v) { CACHE.delete(k); CACHE.set(k, v); return v; }
+    v = mk(); CACHE.set(k, v);
+    if (CACHE.size > 400) CACHE.delete(CACHE.keys().next().value);
+    return v;
+  }
+
+  /* --- fuente de mapa de bits 5x7 (propia) --- */
+  const FNT = {}, GL = {
+    A: '0e11111f111111', B: '1e11111e11111e', C: '0e11101010110e', D: '1e11111111111e', E: '1f10101e10101f', F: '1f10101e101010',
+    G: '0e1110171111 0f', H: '1111111f111111', I: '0e04040404040e', L: '1010101010101f', M: '111b1515111111', N: '11191513111111',
+    O: '0e11111111110e', P: '1e11111e101010', R: '1e11111e141211', S: '0f10100e01011e', T: '1f040404040404', U: '1111111111110e',
+    V: '11111111110a04', X: '11110a040a1111', Y: '11110a04040404', Z: '1f01020408101f', 'É': '021f101e10101f', 'Ó': '020e11111111 0e',
+    '0': '0e11131519110e', '1': '040c040404040e', '2': '0e11010204081f', '3': '1f02040201110e', '4': '02060a121f0202', '5': '1f101e0101110e',
+    '6': '0608101e11110e', '7': '1f010204080808', '8': '0e11110e11110e', '9': '0e11110f01020c', '+': '0004041f040400', '-': '0000001f000000',
+    '−': '0000001f000000', '·': '0000000c0c0000', ' ': '00000000000000', '!': '04040404040004', '?': '0e110102040004', '/': '01010204081010', '=': '00001f001f0000'
+  };
+  for (const k in GL) { const s = GL[k].replace(/ /g, ''); FNT[k] = []; for (let i = 0; i < 7; i++) FNT[k].push(parseInt(s.substr(i * 2, 2), 16)); }
+  // escribe texto en un búfer; devuelve ancho
+  function texto(b, s, x, y, c, sombra) {
+    s = String(s).toUpperCase(); let cx = x;
+    for (const ch of s) {
+      const g = FNT[ch] || FNT['?'];
+      for (let j = 0; j < 7; j++) for (let i = 0; i < 5; i++) if (g[j] & (16 >> i)) { if (sombra !== undefined) b.p(cx + i + 1, y + j + 1, sombra); b.p(cx + i, y + j, c); }
+      cx += 6;
+    }
+    return cx - x;
+  }
+  function anchoTexto(s) { return String(s).length * 6 - 1; }
+
+  V.HORAS = HORAS; V.HEX = HEX; V.C = C; V.TONO = TONO; V.B = B; V.rng = rng; V.perfil = perfil; V.cache = cache;
+  V.texto = texto; V.anchoTexto = anchoTexto; V.CACHE = CACHE;
+  V.menosMov = () => (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || (typeof CFG !== 'undefined' && !CFG.anim);
+})(VIS);
+/* ===== VIS · fondos: 25 escenarios base pintados por código ===== */
+(function (V) {
+  'use strict';
+  const { B, C, rng, perfil } = V;
+  const W = 400, H = 180, GY = 158; // GY: línea de los pies
+  V.W0 = W; V.H0 = H; V.GY = GY;
+
+  /* ---------- piezas comunes ---------- */
+  function cielo(b, o, yH, nubes) {
+    const r = rng(o.seed + 7);
+    b.bandas(0, 0, W, yH + 6, [C.cieloA, C.cieloM, C.cieloH], (x, y) => Math.pow(y / (yH + 4), 0.85), 4);
+    if (o.hora === 'noche') {
+      for (let i = 0; i < 90; i++) { const x = r() * W | 0, y = r() * yH * 0.85 | 0; b.p(x, y, r() < 0.2 ? C.astro : C.nube); }
+      for (let i = 0; i < 6; i++) { const x = r() * W | 0, y = r() * yH * 0.6 | 0; b.p(x, y, C.astro); b.p(x - 1, y, C.nube); b.p(x + 1, y, C.nube); b.p(x, y - 1, C.nube); b.p(x, y + 1, C.nube); }
+    }
+    // sol o luna
+    const A = { mediodia: [300, 26, 9], amanecer: [70, yH - 14, 12], ocaso: [330, yH - 12, 13], noche: [86, 30, 8] }[o.hora];
+    if (A && !o.sinAstro) {
+      if (o.hora !== 'noche' && o.hora !== 'mediodia') { b.dith(A[0] - 40, A[1] - 26, 80, 52, C.T, C.cieloH, (x, y) => 0.55 - Math.hypot(x - A[0], (y - A[1]) * 1.5) / 60); }
+      b.circ(A[0], A[1], A[2], C.astro);
+      if (o.hora === 'noche') b.circ(A[0] + 4, A[1] - 2, A[2] - 1, C.cieloA);
+    }
+    if (nubes !== false) {
+      for (let i = 0; i < (o.hora === 'mediodia' ? 5 : 4); i++) {
+        const cx = r() * W | 0, cy = 14 + r() * yH * 0.45 | 0, w = 24 + r() * 46 | 0;
+        nube(b, cx, cy, w, o.hora === 'noche' ? C.sierra : C.nube, o.hora === 'noche' ? C.cieloM : C.cieloH);
+        nube(b, cx - W, cy, w, o.hora === 'noche' ? C.sierra : C.nube, o.hora === 'noche' ? C.cieloM : C.cieloH);
+      }
+    }
+  }
+  function nube(b, x, y, w, c, s) {
+    b.ell(x, y, w / 2, 3, s); b.ell(x - w / 6, y - 2, w / 4, 3, c); b.ell(x + w / 8, y - 3, w / 5, 3, c); b.hl(x - w / 2 + 3, x + w / 2 - 3, y + 2, s);
+  }
+  // silueta de montes o colinas (periódica en W)
+  function montes(b, y, amp, seed, c, cl, oct) {
+    const f = perfil(seed, W, oct || 4);
+    for (let x = 0; x < W; x++) { const t = Math.round(y - (f(x) * 0.5 + 0.5) * amp); b.r(x, t, 1, H - t, c); if (cl !== undefined) b.p(x, t, cl); }
+  }
+  function suelo(b, y, o, cf) {
+    cf = cf || [C.tierraL, C.ocre, C.tierraS];
+    const r = rng(o.seed + 3);
+    b.r(0, y, W, H - y, cf[0]);
+    b.bandas(0, y, W, H - y, [cf[0], cf[1], cf[2]], (x, yy) => (yy - y) / (H - y) * 0.95, 3);
+    for (let i = 0; i < 140; i++) { const x = r() * W | 0, yy = y + 2 + r() * (H - y - 2) | 0; b.p(x, yy, r() < 0.5 ? cf[2] : C.hierba); }
+    for (let i = 0; i < 18; i++) { const x = r() * W | 0, yy = y + 6 + r() * (H - y - 8) | 0; b.p(x, yy, C.colina); b.p(x + 1, yy, C.tierraS); }
+  }
+  function camino(b, y, o) {
+    // franja de camino que cruza de lado a lado bajo los pies
+    b.r(0, GY - 7, W, 15, C.tierraL);
+    b.dith(0, GY - 9, W, 3, C.T, C.tierraL, (x) => 0.5 + Math.sin(x * 0.3) * 0.4);
+    const r = rng(o.seed + 11);
+    for (let i = 0; i < 60; i++) b.p(r() * W | 0, GY - 6 + r() * 13 | 0, r() < 0.5 ? C.ocre : C.cal);
+    for (let x = 0; x < W; x += 7 + (r() * 9 | 0)) b.hl(x, x + 2, GY + 2 + (r() * 4 | 0), C.ocre);
+  }
+  function mata(b, x, y, c1, c2) { b.ell(x, y, 4, 2, c2); b.ell(x - 1, y - 1, 3, 2, c1); b.p(x + 2, y - 2, C.hierba); }
+  function encina(b, x, y, s, c) {
+    c = c || [C.olivo, C.encina];
+    b.r(x - 1, y - 9 * s, 2 + (s > 1 ? 1 : 0), 9 * s, C.maderaO);
+    b.ell(x, y - 13 * s, 10 * s, 6 * s, c[1]);
+    b.ell(x - 2 * s, y - 15 * s, 7 * s, 4 * s, c[0]);
+    b.ell(x + 4 * s, y - 14 * s, 4 * s, 3 * s, c[0]);
+    b.hl(x - 9 * s, x + 9 * s, y - 8 * s, c[1]);
+  }
+  function olivo(b, x, y, s) {
+    b.line(x, y, x - 1, y - 6 * s, C.maderaO, 2); b.line(x - 1, y - 5 * s, x + 3, y - 8 * s, C.maderaO);
+    b.ell(x, y - 10 * s, 8 * s, 4 * s, C.olivo); b.ell(x + 2, y - 12 * s, 5 * s, 3 * s, C.hierba); b.ell(x - 4, y - 9 * s, 3 * s, 2 * s, C.encina);
+  }
+  function chopo(b, x, y, s) { b.r(x, y - 6 * s, 1, 6 * s, C.maderaO); b.ell(x, y - 18 * s, 4 * s, 13 * s, C.encina); b.ell(x - 1, y - 20 * s, 2 * s, 10 * s, C.olivo); }
+  function pino(b, x, y, s) {
+    b.line(x, y, x + 2, y - 22 * s, C.maderaO, 2); b.ell(x + 2, y - 24 * s, 14 * s, 4 * s, C.encina); b.ell(x, y - 26 * s, 9 * s, 3 * s, C.olivo);
+  }
+  function casa(b, x, y, w, h, o) {
+    o = o || {};
+    b.r(x, y - h, w, h, C.cal); b.r(x, y - h, 2, h, C.calS); b.r(x + w - 3, y - h, 3, h, C.calS);
+    b.poly([x - 3, y - h, x + w + 3, y - h, x + w - 2, y - h - 7, x + 2, y - h - 7], C.rojoO);
+    b.hl(x - 3, x + w + 2, y - h, C.tierraS);
+    for (let i = x; i < x + w; i += 3) b.p(i, y - h - 4, C.rojo);
+    if (o.puerta !== false) { b.r(x + w * 0.35 | 0, y - 9, 5, 9, C.maderaO); b.p(x + w * 0.35 + 3 | 0, y - 5, C.oro); }
+    if (h > 12) { b.r(x + w * 0.7 | 0, y - h + 5, 3, 3, o.luz ? C.brasa : C.pano); }
+    if (o.chimenea) b.r(x + w - 7, y - h - 11, 3, 5, C.calS);
+  }
+  function molinoCuerpo(b, x, y, s) {
+    const h = 26 * s, w = 9 * s;
+    b.poly([x - w / 2, y, x + w / 2, y, x + w / 2 - 2 * s, y - h, x - w / 2 + 2 * s, y - h], C.cal);
+    b.poly([x - w / 2, y, x - w / 2 + 3 * s, y, x - w / 2 + 3 * s + 2 * s, y - h, x - w / 2 + 2 * s, y - h], C.calS);
+    b.poly([x - w / 2 + 1, y - h, x + w / 2 - 1, y - h, x, y - h - 7 * s], C.tierraP);
+    b.r(x - 1, y - 7 * s, 3, 7 * s, C.maderaO); b.p(x + 1, y - h * 0.6, C.pano);
+    return [x + w / 2 - 1, y - h + 2]; // eje de las aspas
+  }
+  function iglesia(b, x, y) {
+    b.r(x, y - 26, 30, 26, C.cal); b.r(x, y - 26, 3, 26, C.calS); b.poly([x - 2, y - 26, x + 32, y - 26, x + 15, y - 34], C.rojoO);
+    b.r(x + 22, y - 48, 10, 48, C.cal); b.r(x + 30, y - 48, 2, 48, C.calS); b.poly([x + 21, y - 48, x + 33, y - 48, x + 27, y - 58], C.rojoO);
+    b.r(x + 25, y - 44, 4, 6, C.pano); b.p(x + 27, y - 41, C.oro); b.r(x + 10, y - 13, 7, 13, C.maderaO); b.p(x + 27, y - 60, C.hierro); b.r(x + 26, y - 62, 3, 1, C.hierro);
+  }
+  function viga(b, y, c) { b.r(0, y, W, 4, c || C.maderaO); b.hl(0, W, y, C.madera); for (let x = 12; x < W; x += 44) b.r(x, y + 4, 3, 3, C.maderaO); }
+  function suelobaldosa(b, y, c1, c2) {
+    b.r(0, y, W, H - y, c1);
+    for (let j = y; j < H; j += 6) { b.hl(0, W, j, c2); for (let i = ((j / 6) & 1) * 6; i < W; i += 12) b.r(i, j, 1, 6, c2); }
+  }
+  function muro(b, y0, y1, c1, c2, seed) {
+    const r = rng(seed); b.r(0, y0, W, y1 - y0, c1);
+    for (let i = 0; i < 260; i++) b.p(r() * W | 0, y0 + r() * (y1 - y0) | 0, c2);
+    for (let i = 0; i < 18; i++) { const x = r() * W | 0, y = y0 + r() * (y1 - y0 - 6) | 0; b.ell(x, y, 3 + r() * 5 | 0, 1 + r() * 2 | 0, c2); }
+  }
+  function ventana(b, x, y, w, h, o) {
+    b.r(x - 2, y - 2, w + 4, h + 4, C.maderaO);
+    if (o.noche) b.dith(x, y, w, h, C.cieloA, C.cieloM, (xx, yy) => (yy - y) / h);
+    else b.dith(x, y, w, h, C.cieloH, C.astro, (xx, yy) => 0.3 + (yy - y) / h * 0.4);
+    b.r(x + (w >> 1), y, 1, h, C.maderaO); b.r(x, y + (h >> 1), w, 1, C.maderaO);
+  }
+  function estante(b, x, y, w, rr) {
+    b.r(x, y, w, 2, C.madera); b.hl(x, x + w, y + 2, C.maderaO);
+    for (let i = x + 1; i < x + w - 2;) { const t = 2 + (rr() * 2 | 0), h = 7 + (rr() * 4 | 0), c = [C.rojoO, C.ocre, C.anil, C.pano, C.tierraS, C.oro][rr() * 6 | 0];
+      if (rr() < 0.12) { b.line(i, y, i + 5, y - 6, c, 2); i += 6; continue; } b.r(i, y - h, t, h, c); b.p(i, y - h + 2, C.oro); i += t + (rr() < 0.2 ? 2 : 0); }
+  }
+  function antorcha(b, x, y) { b.r(x, y, 2, 7, C.maderaO); b.r(x - 1, y - 1, 4, 2, C.hierro); }
+  function tapiz(b, x, y, w, h, c) {
+    b.r(x, y, w, h, c[0]); b.r(x + 2, y + 2, w - 4, h - 4, c[1]); b.r(x + 4, y + 4, w - 8, h - 8, c[0]);
+    for (let i = x + 6; i < x + w - 6; i += 5) b.p(i, y + h / 2 | 0, C.oro);
+    b.hl(x - 2, x + w + 1, y - 1, C.oro); for (let i = x; i < x + w; i += 2) b.p(i, y + h, c[1]);
+  }
+
+  /* ---------- props animados (se pintan cada fotograma, directamente en el contexto) ---------- */
+  // Cada fondo puede declarar: luces [{x,y,r,f}] (resplandor), anim [{t:'aspas'|'fuego'|...,x,y,s}]
+
+  /* ---------- 25 escenarios ---------- */
+  const F = {};
+  const L5 = () => ({ cielo: new B(W, H), lejos: new B(W, H), medio: new B(W, H), suelo: new B(W, H), frente: new B(W, H), luces: [], anim: [], interior: false });
+
+  function exterior(L, o, yH, lejos) {
+    cielo(L.cielo, o, yH);
+    if (lejos !== false) montes(L.lejos, yH + 2, 18, o.seed + 1, C.sierra, C.nube, 3);
+  }
+
+  // 1 biblioteca
+  F.biblioteca = (L, o) => {
+    const b = L.medio, r = rng(o.seed); L.interior = true;
+    muro(b, 0, 132, C.calS, C.cal, o.seed); b.bandas(0, 0, W, 132, [C.T, C.T, C.tierraS], (x, y) => Math.min(0.99, Math.abs(x - 257) / 420 + y / 900), 2);
+    viga(b, 0); viga(b, 22);
+    for (let s = 0; s < 4; s++) { b.r(20, 40 + s * 22, 150, 22, C.maderaO); estante(b, 22, 60 + s * 22, 146, r); }
+    b.r(18, 36, 3, 110, C.madera); b.r(170, 36, 3, 110, C.madera);
+    ventana(b, 250, 38, 36, 48, { noche: o.hora === 'noche' });
+    b.r(186, 128, 210, 4, C.maderaO);
+    suelobaldosa(L.suelo, 132, C.tierraS, C.tierraP);
+    // mesa con libros y vela
+    const m = L.frente; m.r(196, 132, 74, 4, C.madera); m.r(200, 136, 3, 22, C.maderaO); m.r(262, 136, 3, 22, C.maderaO);
+    for (let i = 0; i < 5; i++) m.r(204 + i * 2, 126 - i * 3, 18 - i * 2, 3, [C.rojoO, C.ocre, C.anil, C.pano, C.tierraS][i]);
+    m.r(236, 128, 14, 4, C.lino); m.p(243, 128, C.pano);
+    m.r(256, 122, 2, 10, C.lino); L.anim.push({ t: 'llama', x: 257, y: 121, s: 1 }); L.luces.push({ x: 257, y: 118, r: 70, f: 1 });
+    // silla de cuero
+    m.r(282, 112, 4, 46, C.maderaO); m.r(282, 136, 26, 3, C.rojoO); m.r(304, 139, 3, 19, C.maderaO);
+  };
+  // 2 alcoba
+  F.alcoba = (L, o) => {
+    const b = L.medio; L.interior = true;
+    muro(b, 0, 134, C.cal, C.calS, o.seed); viga(b, 0);
+    b.dith(0, 0, W, 134, C.T, C.calS, (x, y) => 0.2 + y / 300);
+    ventana(b, 64, 40, 30, 40, { noche: o.hora === 'noche' });
+    // crucifijo y arcón
+    b.r(200, 44, 2, 16, C.maderaO); b.r(196, 48, 10, 2, C.maderaO);
+    b.r(30, 112, 40, 22, C.madera); b.r(30, 112, 40, 3, C.maderaO); b.p(50, 122, C.oro);
+    suelobaldosa(L.suelo, 134, C.ocre, C.tierraS);
+    // cama de cordeles al fondo derecha
+    const m = L.medio; m.r(236, 120, 130, 8, C.lino); m.r(236, 128, 130, 4, C.maderaO); m.r(236, 100, 5, 34, C.maderaO); m.r(362, 108, 5, 26, C.maderaO);
+    m.r(244, 114, 22, 7, C.cal);
+    if (o.hora === 'noche') { L.anim.push({ t: 'llama', x: 150, y: 110 }); m.r(146, 112, 8, 2, C.hierro); m.r(149, 112, 2, 6, C.lino); L.luces.push({ x: 150, y: 106, r: 80, f: 1 }); }
+  };
+  // 3 patio
+  F.patio = (L, o) => {
+    exterior(L, o, 84, false);
+    const b = L.medio;
+    b.r(0, 60, W, 82, C.cal); b.dith(0, 60, W, 82, C.T, C.calS, (x, y) => (y - 60) / 120 + 0.1);
+    b.poly([0, 60, W, 60, W, 52, 0, 52], C.rojoO); for (let x = 0; x < W; x += 3) b.p(x, 55, C.rojo);
+    b.r(40, 90, 30, 52, C.maderaO); b.r(43, 93, 24, 49, C.madera); b.p(63, 118, C.oro); // portón
+    ventana(b, 150, 80, 16, 18, {}); ventana(b, 300, 78, 16, 20, {});
+    b.r(220, 70, 3, 40, C.maderaO); b.r(208, 70, 28, 3, C.maderaO); // percha de armadura
+    b.ell(222, 84, 6, 7, C.hierro); b.ell(221, 83, 4, 5, C.hierroL); b.r(216, 95, 12, 14, C.hierro);
+    suelo(L.suelo, 140, o, [C.tierraL, C.ocre, C.tierraS]);
+    // pozo
+    const f = L.frente; f.r(338, 132, 28, 24, C.calS); f.r(338, 132, 28, 4, C.cal); f.r(340, 100, 2, 32, C.maderaO); f.r(362, 100, 2, 32, C.maderaO); f.r(338, 98, 28, 3, C.maderaO); f.line(352, 101, 352, 120, C.pano);
+    f.r(10, 146, 40, 12, C.calS); f.r(10, 146, 40, 2, C.cal); // poyo
+  };
+  // 4 cocina
+  F.cocina = (L, o) => {
+    const b = L.medio; L.interior = true;
+    muro(b, 0, 136, C.calS, C.tierraS, o.seed); viga(b, 0); viga(b, 30);
+    b.dith(0, 0, W, 136, C.T, C.violeta, (x, y) => 0.25 + Math.abs(x - 90) / 500);
+    // lar con fuego
+    b.r(40, 70, 90, 66, C.tierraS); b.r(48, 98, 74, 38, C.negro); b.poly([36, 70, 134, 70, 116, 40, 54, 40], C.calS); b.r(70, 0, 30, 40, C.calS);
+    b.r(76, 116, 18, 12, C.pano); b.ell(85, 112, 10, 6, C.pano); b.hl(77, 93, 108, C.hierro);
+    L.anim.push({ t: 'fuego', x: 85, y: 134, s: 1.2 }); L.luces.push({ x: 85, y: 120, r: 120, f: 1 });
+    for (let i = 0; i < 6; i++) { b.r(170 + i * 8, 40, 1, 14 + (i % 2) * 4, C.lino); b.ell(170 + i * 8, 56 + (i % 2) * 4, 2, 3, C.cal); }
+    b.r(240, 60, 60, 2, C.madera); [C.ocre, C.cal, C.tierraS, C.rojoO].forEach((c, i) => b.ell(250 + i * 13, 56, 5, 4, c));
+    ventana(b, 330, 50, 22, 26, { noche: o.hora === 'noche' });
+    suelobaldosa(L.suelo, 136, C.tierraS, C.tierraP);
+    const f = L.frente; f.r(220, 128, 96, 4, C.madera); f.r(224, 132, 3, 26, C.maderaO); f.r(308, 132, 3, 26, C.maderaO); f.ell(250, 125, 7, 3, C.cal); f.ell(282, 124, 5, 4, C.ocre);
+  };
+  // 5 camino real (4 sub-paisajes según región)
+  F.camino = (L, o) => {
+    const v = o.variante || 'mancha', r = rng(o.seed);
+    exterior(L, o, 108);
+    if (v === 'costa') { L.medio.r(0, 108, W, 10, C.anil); L.medio.dith(0, 108, W, 10, C.anil, C.cieloM, (x, y) => 0.5 - (y - 108) / 20); }
+    montes(L.medio, 122, 12, o.seed + 2, C.colina, C.tierraL, 4);
+    if (v === 'olivar' || v === 'costa') for (let x = 10; x < W; x += 26 + (r() * 10 | 0)) olivo(L.medio, x, 122 + (r() * 4 | 0), 0.7);
+    else if (v === 'ribera') { for (let x = 6; x < W; x += 16 + (r() * 14 | 0)) chopo(L.medio, x, 121, 1); }
+    else { for (let i = 0; i < 3; i++) encina(L.medio, r() * W | 0, 124, 0.7); casa(L.medio, 260, 120, 18, 8, {}); casa(L.medio, 282, 121, 12, 7, {}); }
+    suelo(L.suelo, 124, o); camino(L.suelo, 124, o);
+    for (let i = 0; i < 9; i++) mata(L.suelo, r() * W | 0, 132 + r() * 12 | 0, C.hierba, C.olivo);
+    if (o.props && o.props.includes('cruz')) { const f = L.medio; f.r(330, 112, 2, 26, C.calS); f.r(326, 118, 10, 2, C.calS); f.r(326, 136, 10, 3, C.calS); }
+    if (o.props && o.props.includes('puente')) { const f = L.medio; f.r(40, 124, 120, 8, C.calS); for (let i = 0; i < 3; i++) f.ell(60 + i * 40, 132, 12, 6, C.violeta); f.r(130, 106, 16, 18, C.cal); f.poly([128, 106, 148, 106, 138, 98], C.rojoO); }
+    // primer plano: retamas oscuras en los bordes
+    const fr = L.frente; fr.ell(-4, 176, 26, 10, C.encina); fr.ell(14, 172, 10, 6, C.olivo); fr.ell(W + 2, 178, 30, 10, C.encina);
+  };
+  // 6 molinos
+  F.molinos = (L, o) => {
+    exterior(L, o, 112);
+    montes(L.medio, 128, 30, o.seed + 5, C.colina, C.tierraL, 2);
+    const ejes = [[90, 104, 1.1], [205, 96, 1.4], [318, 106, 1.15]];
+    for (const [x, y, s] of ejes) { const e = molinoCuerpo(L.medio, x, y + 12, s); L.anim.push({ t: 'aspas', x: e[0], y: e[1], s: s }); }
+    suelo(L.suelo, 130, o); camino(L.suelo, 130, o);
+    const fr = L.frente; fr.ell(W - 10, 176, 34, 12, C.encina); fr.ell(-6, 178, 22, 8, C.encina);
+  };
+  // 7 llanura de Montiel
+  F.llanura = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 116);
+    montes(L.medio, 126, 6, o.seed + 9, C.colina, C.tierraL, 3);
+    encina(L.medio, 300, 128, 1.3);
+    suelo(L.suelo, 126, o, [C.hierba, C.tierraL, C.ocre]);
+    for (let y = 128; y < H; y += 4) for (let x = (y * 7) % 11; x < W; x += 11) L.suelo.p(x, y, C.ocre); // rastrojo
+    for (let i = 0; i < 8; i++) mata(L.suelo, r() * W | 0, 134 + r() * 14 | 0, C.olivo, C.encina);
+    if (o.props && o.props.includes('charco')) { L.suelo.ell(250, 166, 26, 4, C.olivo); L.suelo.ell(250, 165, 20, 2, C.cieloH); }
+    if (o.props && o.props.includes('pedregal')) for (let i = 0; i < 26; i++) { const x = 40 + r() * 320 | 0, y = 150 + r() * 22 | 0; L.suelo.ell(x, y, 3, 2, C.calS); L.suelo.p(x - 1, y - 1, C.cal); }
+    if (o.props && o.props.includes('melonar')) for (let i = 0; i < 20; i++) { const x = 220 + (i % 7) * 24, y = 136 + (i / 7 | 0) * 10; L.suelo.ell(x, y, 4, 3, C.olivo); L.suelo.ell(x + 2, y + 1, 2, 2, C.hierba); }
+    L.frente.ell(-2, 178, 24, 8, C.encina);
+  };
+  // 8 vado
+  F.vado = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 104);
+    montes(L.medio, 120, 10, o.seed + 4, C.colina, C.hierba, 3);
+    for (let x = 0; x < W; x += 18 + (r() * 20 | 0)) chopo(L.medio, x, 122, 1.1);
+    suelo(L.suelo, 122, o, [C.hierba, C.olivo, C.encina]);
+    L.suelo.r(0, 168, W, 12, C.anil); L.suelo.dith(0, 166, W, 6, C.T, C.anil, (x, y) => (y - 166) / 4 + Math.sin(x * 0.2) * 0.2);
+    L.anim.push({ t: 'agua', y: 170, h: 10 });
+    for (let i = 0; i < 10; i++) mata(L.suelo, r() * W | 0, 128 + r() * 12 | 0, C.hierba, C.olivo);
+  };
+  // 9 venta (exterior)
+  F.venta = (L, o) => {
+    exterior(L, o, 108);
+    montes(L.medio, 124, 8, o.seed + 6, C.colina, C.tierraL, 3);
+    const b = L.medio;
+    b.r(150, 70, 230, 64, C.cal); b.dith(150, 70, 230, 64, C.T, C.calS, (x, y) => (x - 150) / 500 + (y - 70) / 200);
+    b.poly([144, 70, 386, 70, 370, 56, 160, 56], C.rojoO); for (let x = 160; x < 370; x += 3) b.p(x, 62, C.rojo);
+    b.r(230, 92, 34, 42, C.maderaO); b.r(233, 95, 28, 39, C.madera); b.r(246, 95, 1, 39, C.maderaO);
+    b.r(300, 84, 10, 10, o.hora === 'noche' || o.hora === 'ocaso' ? C.brasa : C.pano); b.r(180, 86, 10, 10, o.hora === 'noche' ? C.brasa : C.pano);
+    if (o.hora === 'noche' || o.hora === 'ocaso') { L.luces.push({ x: 305, y: 89, r: 40, f: 0 }); L.luces.push({ x: 185, y: 91, r: 34, f: 0 }); }
+    b.r(366, 40, 8, 16, C.calS); b.r(276, 76, 18, 4, C.madera); b.r(282, 80, 2, 10, C.maderaO); // rama de venta
+    b.r(70, 100, 80, 34, C.tierraL); b.dith(70, 100, 80, 34, C.T, C.ocre, (x, y) => (y - 100) / 40); b.hl(70, 150, 100, C.cal); // tapia
+    suelo(L.suelo, 134, o); camino(L.suelo, 134, o);
+    const f = L.frente; f.r(30, 136, 36, 10, C.calS); f.r(32, 138, 32, 3, C.anil); // abrevadero
+    if (o.props && o.props.includes('manta')) { L.anim.push({ t: 'manta', x: 270, y: 146 }); }
+  };
+  // 10 venta (interior)
+  F.ventainterior = (L, o) => {
+    const b = L.medio, r = rng(o.seed); L.interior = true;
+    muro(b, 0, 136, C.tierraS, C.tierraP, o.seed); b.dith(0, 0, W, 136, C.T, C.violeta, (x, y) => 0.35 + y / 500);
+    viga(b, 0); viga(b, 26); b.r(0, 30, 3, 106, C.maderaO);
+    for (let i = 0; i < 4; i++) { const x = 30 + i * 28; b.ell(x, 112, 10, 14, C.tierraP); b.ell(x - 2, 108, 7, 10, C.maderaO); b.r(x - 2, 96, 4, 3, C.madera); } // cueros de vino
+    for (let i = 0; i < 5; i++) { b.r(170 + i * 12, 56, 1, 10, C.pano); b.ell(170 + i * 12, 68, 3, 3, C.ocre); }
+    b.r(240, 46, 3, 10, C.hierro); L.anim.push({ t: 'llama', x: 241, y: 45 }); L.luces.push({ x: 241, y: 48, r: 110, f: 1 });
+    b.r(300, 50, 70, 86, C.maderaO); b.r(304, 54, 62, 82, C.negro); // puerta al patio
+    if (o.hora !== 'noche') b.dith(304, 54, 62, 82, C.tierraL, C.cieloH, (x, y) => 1 - (y - 54) / 120);
+    suelobaldosa(L.suelo, 136, C.tierraS, C.tierraP);
+    const f = L.frente; f.r(150, 132, 120, 4, C.madera); f.r(154, 136, 3, 22, C.maderaO); f.r(262, 136, 3, 22, C.maderaO);
+    f.ell(176, 129, 5, 3, C.cal); f.r(200, 124, 5, 8, C.tierraS); f.ell(230, 129, 6, 3, C.ocre);
+    if (o.props && o.props.includes('retablo')) { f.r(190, 84, 70, 48, C.rojoO); f.r(196, 90, 58, 34, C.negro); f.r(190, 84, 70, 4, C.oro); f.poly([186, 84, 264, 84, 225, 72], C.oro); }
+    if (o.props && o.props.includes('escribano')) { f.r(212, 120, 18, 4, C.lino); f.r(232, 116, 2, 8, C.pano); }
+  };
+  // 11 majada (fogata de noche)
+  F.majada = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 110);
+    montes(L.medio, 126, 14, o.seed + 8, C.colina, C.tierraL, 3);
+    encina(L.medio, 60, 132, 1.6); encina(L.medio, 352, 130, 1.4); encina(L.medio, 260, 126, 0.8);
+    suelo(L.suelo, 128, o, [C.hierba, C.olivo, C.tierraS]);
+    const f = L.suelo; for (let i = 0; i < 9; i++) { const a = i / 9 * 6.28; f.ell(200 + Math.cos(a) * 14, 160 + Math.sin(a) * 4, 3, 2, C.calS); }
+    f.line(190, 160, 210, 156, C.maderaO, 2); f.line(192, 156, 208, 161, C.maderaO, 2);
+    L.anim.push({ t: 'fuego', x: 200, y: 158, s: 1.4 }); L.luces.push({ x: 200, y: 146, r: 150, f: 1 });
+    f.ell(130, 162, 7, 4, C.tierraS); f.ell(262, 164, 8, 4, C.maderaO); // zurrones
+  };
+  // 12 encinar
+  F.encinar = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 96);
+    for (let x = -10; x < W; x += 30 + (r() * 16 | 0)) encina(L.lejos, x, 118, 1.2, [C.colina, C.sierra]);
+    for (let x = 0; x < W; x += 46 + (r() * 30 | 0)) encina(L.medio, x, 128 + (r() * 6 | 0), 1.7);
+    suelo(L.suelo, 126, o, [C.hierba, C.olivo, C.encina]);
+    for (let i = 0; i < 16; i++) mata(L.suelo, r() * W | 0, 130 + r() * 18 | 0, C.olivo, C.encina);
+    const fr = L.frente; fr.r(4, 0, 9, 180, C.maderaO); fr.ell(8, 6, 40, 22, C.encina); fr.ell(W - 6, 4, 46, 26, C.encina); fr.r(W - 14, 0, 7, 180, C.maderaO);
+  };
+  // 13 pinar
+  F.pinar = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 100);
+    montes(L.lejos, 112, 26, o.seed + 12, C.sierra, C.nube, 3);
+    montes(L.medio, 126, 16, o.seed + 13, C.colina, C.tierraL, 3);
+    for (let x = 0; x < W; x += 34 + (r() * 24 | 0)) pino(L.medio, x, 128, 1.1 + r() * 0.4);
+    for (let i = 0; i < 4; i++) { const x = r() * W | 0; L.medio.ell(x, 128, 12, 8, C.calS); L.medio.ell(x - 3, 125, 8, 5, C.cal); } // peñas
+    suelo(L.suelo, 128, o, [C.tierraL, C.ocre, C.tierraS]);
+    for (let i = 0; i < 60; i++) L.suelo.p(r() * W | 0, 130 + r() * 50 | 0, C.maderaO);
+    const fr = L.frente; fr.line(W - 18, 180, W - 10, 0, C.maderaO, 6); fr.ell(W - 10, 0, 40, 10, C.encina);
+  };
+  // 14 sierra
+  F.sierra = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 92, false);
+    montes(L.lejos, 96, 40, o.seed + 14, C.sierra, C.nube, 5);
+    montes(L.medio, 118, 44, o.seed + 15, C.colina, C.tierraL, 5);
+    for (let i = 0; i < 10; i++) { const x = r() * W | 0, y = 104 + r() * 18 | 0; L.medio.ell(x, y, 10 + r() * 10 | 0, 6, C.calS); L.medio.ell(x - 3, y - 2, 6, 3, C.cal); }
+    for (let i = 0; i < 12; i++) mata(L.medio, r() * W | 0, 112 + r() * 16 | 0, C.olivo, C.encina);
+    suelo(L.suelo, 132, o, [C.ocre, C.tierraS, C.tierraP]);
+    const fr = L.frente; fr.poly([0, 180, 0, 120, 20, 104, 40, 126, 52, 180], C.tierraP); fr.poly([W, 180, W, 110, W - 30, 132, W - 46, 180], C.tierraP); fr.hl(4, 30, 108, C.tierraS);
+    if (o.props && o.props.includes('ermita')) { casa(L.medio, 300, 112, 26, 16, { luz: o.hora === 'noche' }); L.medio.r(312, 82, 2, 12, C.calS); L.medio.r(309, 85, 8, 2, C.calS); }
+  };
+  // 15 plaza de aldea
+  F.plaza = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 100);
+    const b = L.medio;
+    casa(b, 4, 132, 48, 30, { chimenea: 1, luz: o.hora === 'noche' }); casa(b, 56, 132, 34, 24, {}); iglesia(b, 150, 132);
+    casa(b, 210, 132, 40, 28, { luz: o.hora !== 'mediodia' }); casa(b, 256, 132, 30, 22, {}); casa(b, 292, 132, 56, 32, { chimenea: 1 }); casa(b, 352, 132, 46, 26, {});
+    encina(b, 118, 134, 1.5, [C.olivo, C.encina]); // olmo
+    suelo(L.suelo, 132, o, [C.tierraL, C.ocre, C.tierraS]);
+    if (o.props && o.props.includes('bodas')) { for (let x = 30; x < 380; x += 6) L.medio.p(x, 98 + Math.round(Math.sin(x / 20) * 4), [C.rojo, C.oro, C.anil][x / 6 % 3 | 0]); L.medio.r(250, 116, 60, 4, C.madera); }
+    L.frente.r(0, 140, 10, 40, C.calS); L.frente.r(W - 12, 128, 12, 52, C.cal); L.frente.r(W - 12, 128, 3, 52, C.calS);
+  };
+  // 16 ciudad
+  F.ciudad = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 90);
+    const b = L.lejos; for (let x = 0; x < W; x += 20 + (r() * 16 | 0)) { const h = 20 + r() * 26 | 0; b.r(x, 100 - h, 16, h, C.sierra); if (r() < 0.3) { b.r(x + 5, 100 - h - 16, 6, 16, C.sierra); b.poly([x + 4, 100 - h - 16, x + 12, 100 - h - 16, x + 8, 100 - h - 24], C.sierra); } }
+    const m = L.medio;
+    for (let x = 0; x < W; x += 60) {
+      m.r(x, 52, 58, 84, (x / 60) % 2 ? C.cal : C.tierraL); m.r(x + 56, 52, 2, 84, C.calS);
+      m.poly([x - 2, 52, x + 60, 52, x + 56, 46, x + 2, 46], C.rojoO);
+      for (let i = 0; i < 3; i++) { m.r(x + 8 + i * 16, 64, 8, 10, o.hora === 'noche' && i === 1 ? C.brasa : C.pano); m.r(x + 6 + i * 16, 74, 12, 2, C.hierro); }
+      // soportal
+      m.r(x, 106, 58, 3, C.calS); for (let i = 0; i < 3; i++) { m.ell(x + 10 + i * 19, 118, 7, 10, C.violeta); m.r(x + 3 + i * 19, 116, 14, 20, C.violeta); }
+      for (let i = 0; i <= 3; i++) m.r(x + i * 19 - 1, 106, 3, 30, C.cal);
+    }
+    if (o.hora === 'noche') L.luces.push({ x: 140, y: 69, r: 30, f: 0 });
+    suelobaldosa(L.suelo, 136, C.calS, C.tierraS);
+    if (o.props && o.props.includes('carteles')) { m.r(90, 84, 12, 14, C.lino); m.r(212, 86, 12, 12, C.lino); m.hl(92, 100, 88, C.pano); m.hl(214, 222, 90, C.pano); }
+  };
+  // 17 casa noble (sala)
+  F.casanoble = (L, o) => {
+    const b = L.medio; L.interior = true;
+    muro(b, 0, 136, C.calS, C.tierraL, o.seed); b.r(0, 96, W, 40, C.madera); b.hl(0, W, 96, C.oro); for (let x = 0; x < W; x += 24) b.r(x, 100, 1, 36, C.maderaO);
+    viga(b, 0);
+    tapiz(b, 30, 24, 80, 60, [C.rojoO, C.rojo]); tapiz(b, 290, 24, 80, 60, [C.anil, C.violeta]);
+    b.r(160, 40, 80, 56, C.calS); b.r(166, 70, 68, 26, C.negro); b.poly([156, 40, 244, 40, 236, 30, 164, 30], C.calS); // chimenea
+    L.anim.push({ t: 'fuego', x: 200, y: 94, s: 1.1 }); L.luces.push({ x: 200, y: 84, r: 120, f: 1 });
+    suelobaldosa(L.suelo, 136, C.rojoO, C.rojo);
+    if (o.props && o.props.includes('banquete')) { const f = L.frente; f.r(120, 130, 170, 5, C.lino); f.r(124, 135, 3, 23, C.maderaO); f.r(282, 135, 3, 23, C.maderaO);
+      for (let i = 0; i < 6; i++) { f.ell(136 + i * 26, 127, 5, 3, [C.oro, C.ocre, C.cal][i % 3]); f.r(146 + i * 26, 120, 2, 8, C.oro); } }
+    if (o.props && o.props.includes('cabeza')) { const f = L.frente; f.r(230, 128, 30, 30, C.maderaO); f.r(228, 126, 34, 3, C.madera); f.ell(245, 114, 8, 10, C.oro); f.ell(243, 112, 5, 6, C.destello); }
+    antorcha(b, 130, 50); antorcha(b, 268, 50); L.anim.push({ t: 'llama', x: 131, y: 49 }, { t: 'llama', x: 269, y: 49 });
+  };
+  // 18 salón del palacio de los duques
+  F.salon = (L, o) => {
+    const b = L.medio; L.interior = true;
+    b.r(0, 0, W, 136, C.cal); b.dith(0, 0, W, 136, C.T, C.calS, (x, y) => 0.25 + y / 400);
+    for (let i = 0; i < 5; i++) { const x = 10 + i * 82; b.r(x, 20, 12, 116, C.calS); b.r(x + 2, 20, 3, 116, C.cal); b.r(x - 2, 18, 16, 4, C.oro); }
+    for (let i = 0; i < 4; i++) { const x = 30 + i * 82; b.ell(x + 21, 40, 21, 16, C.violeta); b.r(x, 40, 42, 70, C.violeta); tapiz(b, x + 6, 44, 30, 54, i % 2 ? [C.anil, C.violeta] : [C.rojoO, C.rojo]); }
+    b.r(0, 120, W, 16, C.madera); b.hl(0, W, 120, C.oro);
+    // estrado
+    b.r(140, 108, 120, 12, C.rojoO); b.hl(140, 260, 108, C.oro); b.r(176, 70, 14, 38, C.rojo); b.r(210, 70, 14, 38, C.rojo); b.r(174, 66, 18, 4, C.oro); b.r(208, 66, 18, 4, C.oro);
+    suelobaldosa(L.suelo, 136, C.calS, C.tierraS);
+    for (let x = 60; x < W; x += 140) { antorcha(b, x, 60); L.anim.push({ t: 'llama', x: x + 1, y: 59 }); L.luces.push({ x: x + 1, y: 60, r: 70, f: 1 }); }
+    if (o.props && o.props.includes('catafalco')) { const f = L.frente; f.r(250, 120, 80, 14, C.pano); f.r(254, 112, 72, 8, C.negro); f.r(286, 104, 14, 8, C.lino); for (let i = 0; i < 4; i++) { f.r(252 + i * 24, 96, 2, 16, C.lino); L.anim.push({ t: 'llama', x: 253 + i * 24, y: 95 }); } }
+    if (o.props && o.props.includes('trono')) { const f = L.frente; f.r(300, 112, 26, 30, C.rojoO); f.r(298, 106, 30, 6, C.oro); }
+  };
+  // 19 liza (patio del palacio con palenque)
+  F.liza = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 82);
+    const b = L.medio;
+    b.r(0, 40, W, 74, C.cal); b.dith(0, 40, W, 74, C.T, C.calS, (x, y) => (y - 40) / 90);
+    for (let x = 0; x < W; x += 16) { b.r(x, 32, 9, 8, C.cal); } // almenas
+    b.r(160, 4, 80, 110, C.cal); b.r(160, 4, 4, 110, C.calS); for (let x = 160; x < 240; x += 14) b.r(x, -4, 8, 10, C.cal);
+    for (let i = 0; i < 3; i++) b.r(178 + i * 20, 28, 6, 12, C.pano);
+    L.anim.push({ t: 'bandera', x: 200, y: 4 });
+    // tablados con público
+    for (let i = 0; i < 2; i++) { const x = i ? 270 : 20; b.r(x, 96, 110, 18, C.madera); b.poly([x - 4, 80, x + 114, 80, x + 110, 74, x, 74], i ? C.anil : C.rojo);
+      for (let k = 0; k < 14; k++) { const px = x + 4 + k * 8; b.r(px, 88, 4, 8, [C.rojo, C.anil, C.ocre, C.pano, C.verde || C.olivo][k % 5]); b.r(px, 84, 4, 4, C.piel); } }
+    suelo(L.suelo, 114, o, [C.tierraL, C.ocre, C.tierraS]);
+    for (let x = 0; x < W; x += 20) { L.suelo.r(x, 132, 2, 12, C.madera); } L.suelo.r(0, 134, W, 2, C.madera); // valla
+    if (o.props && o.props.includes('clavileno')) L.anim.push({ t: 'clavileno', x: 200, y: 150 });
+  };
+  // 20 calabozo / Casa del Nuncio
+  F.calabozo = (L, o) => {
+    const b = L.medio; L.interior = true;
+    muro(b, 0, 138, C.tierraS, C.tierraP, o.seed);
+    for (let y = 0; y < 138; y += 9) for (let x = (y / 9 & 1) * 12; x < W; x += 24) { b.hl(x, x + 22, y, C.tierraP); b.r(x, y, 1, 9, C.tierraP); }
+    b.dith(0, 0, W, 138, C.T, C.violeta, (x, y) => 0.45 + Math.abs(x - 200) / 600);
+    b.r(180, 20, 40, 30, C.negro); b.dith(182, 22, 36, 26, C.cieloH, C.astro, () => 0.3); for (let i = 0; i < 4; i++) b.r(186 + i * 9, 20, 2, 30, C.hierro);
+    L.luces.push({ x: 200, y: 40, r: 90, f: 0, rayo: 1 });
+    b.r(40, 80, 3, 3, C.hierro); b.line(41, 83, 52, 120, C.hierro); b.line(52, 120, 46, 134, C.hierro); // cadena
+    suelo(L.suelo, 138, o, [C.tierraS, C.tierraP, C.negro]);
+    for (let i = 0; i < 40; i++) { const r = rng(i + 9); L.suelo.line(300 + r() * 80, 150 + r() * 20, 300 + r() * 80 + 6, 150 + r() * 20, C.oro); } // paja
+    if (o.props && o.props.includes('caldero')) { const f = L.frente; f.ell(320, 150, 16, 10, C.pano); f.hl(304, 336, 141, C.hierro); }
+    const fr = L.frente; for (let i = 0; i < 6; i++) fr.r(i * 9, 0, 3, 180, C.hierro); fr.r(0, 20, 52, 3, C.hierro); fr.r(0, 150, 52, 3, C.hierro);
+  };
+  // 21 río Ebro
+  F.rio = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 98);
+    montes(L.medio, 112, 10, o.seed + 16, C.colina, C.hierba, 3);
+    for (let x = 0; x < W; x += 14 + (r() * 22 | 0)) chopo(L.medio, x, 114, 1.2);
+    // aceña
+    casa(L.medio, 300, 114, 40, 22, {}); L.medio.ell(296, 112, 10, 10, C.madera); L.medio.ell(296, 112, 7, 7, C.maderaO);
+    L.suelo.r(0, 116, W, 30, C.anil); L.suelo.dith(0, 116, W, 30, C.anil, C.cieloM, (x, y) => 0.6 - (y - 116) / 40 + Math.sin(x * 0.15 + y) * 0.15);
+    L.anim.push({ t: 'agua', y: 118, h: 26 });
+    suelo(L.suelo, 146, o, [C.hierba, C.olivo, C.encina]);
+    if (o.props && o.props.includes('barca')) L.anim.push({ t: 'barca', x: 210, y: 132 });
+    L.frente.ell(-6, 176, 30, 10, C.encina); L.frente.ell(W + 4, 178, 24, 10, C.encina);
+  };
+  // 22 batanes
+  F.batanes = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 100);
+    for (let x = -20; x < W; x += 40) encina(L.lejos, x, 116, 1.6, [C.sierra, C.colina]);
+    const b = L.medio; b.r(250, 84, 110, 46, C.calS); b.poly([244, 84, 366, 84, 350, 70, 260, 70], C.tierraP); b.r(268, 100, 24, 30, C.negro);
+    L.anim.push({ t: 'mazos', x: 280, y: 104 });
+    L.suelo.r(0, 130, W, 18, C.anil); L.anim.push({ t: 'agua', y: 132, h: 14 });
+    suelo(L.suelo, 148, o, [C.hierba, C.olivo, C.encina]);
+    const fr = L.frente; fr.ell(10, 10, 60, 30, C.encina); fr.ell(W - 10, 4, 50, 24, C.encina);
+  };
+  // 23 cueva de Montesinos
+  F.cueva = (L, o) => {
+    const b = L.medio; L.interior = true;
+    b.r(0, 0, W, H, C.tierraP);
+    b.dith(0, 0, W, H, C.tierraP, C.negro, (x, y) => Math.abs(x - 200) / 240 + Math.abs(y - 80) / 300);
+    b.ell(200, 60, 110, 70, C.violeta); b.ell(200, 60, 90, 56, C.negro);
+    // cripta de cristal soñada
+    b.poly([150, 140, 250, 140, 236, 70, 200, 40, 164, 70], C.cieloM); b.poly([160, 140, 240, 140, 228, 76, 200, 52, 172, 76], C.cieloH);
+    for (let i = 0; i < 5; i++) b.line(172 + i * 14, 140, 180 + i * 10, 70, C.nube);
+    L.luces.push({ x: 200, y: 96, r: 120, f: 0, frio: 1 });
+    suelo(L.suelo, 140, o, [C.tierraS, C.tierraP, C.negro]);
+    const fr = L.frente; fr.poly([0, 0, 90, 0, 60, 60, 30, 180, 0, 180], C.negro); fr.poly([W, 0, W - 90, 0, W - 50, 70, W - 30, 180, W, 180], C.negro);
+    fr.line(200, 0, 204, 40, C.ocre); // soga
+  };
+  // 24 playa de Barcelona
+  F.playa = (L, o) => {
+    const r = rng(o.seed); exterior(L, o, 96, false);
+    const b = L.lejos; b.r(0, 96, W, 30, C.anil); b.dith(0, 96, W, 30, C.cieloM, C.anil, (x, y) => (y - 96) / 16);
+    // murallas y ciudad a la izquierda
+    const m = L.medio; m.r(0, 78, 130, 40, C.calS); for (let x = 0; x < 130; x += 10) m.r(x, 72, 6, 6, C.calS);
+    m.r(40, 52, 18, 30, C.calS); m.r(90, 46, 14, 36, C.calS); m.poly([88, 46, 106, 46, 97, 34], C.rojoO);
+    if (o.props && o.props.includes('galeras')) for (let i = 0; i < 3; i++) galera(m, 190 + i * 70, 112 - i * 4, i === 0 ? 1 : 0.8);
+    else galera(m, 300, 108, 0.6);
+    L.anim.push({ t: 'olas', y: 120 });
+    suelo(L.suelo, 126, o, [C.tierraL, C.cal, C.ocre]);
+    L.suelo.dith(0, 124, W, 6, C.cal, C.tierraL, (x, y) => (y - 124) / 6);
+    for (let i = 0; i < 20; i++) L.suelo.p(r() * W | 0, 134 + r() * 40 | 0, C.calS);
+  };
+  function galera(b, x, y, s) {
+    b.poly([x - 34 * s, y, x + 34 * s, y, x + 26 * s, y + 7 * s, x - 28 * s, y + 7 * s], C.maderaO); b.hl(x - 34 * s, x + 34 * s, y, C.rojo);
+    for (let i = -24; i < 24; i += 4) b.line(x + i * s, y + 6 * s, x + (i - 3) * s, y + 12 * s, C.madera);
+    b.line(x, y, x, y - 34 * s, C.maderaO); b.poly([x - 20 * s, y - 30 * s, x + 18 * s, y - 8 * s, x, y - 32 * s], C.lino);
+    b.r(x - 1, y - 38 * s, 6 * s, 3, C.rojo);
+  }
+  // 25 entre páginas (sueño, fiebre, locura)
+  F.entrepaginas = (L, o) => {
+    const r = rng(o.seed); L.interior = true; L.papel = true;
+    const b = L.cielo; b.r(0, 0, W, H, C.lino); b.dith(0, 0, W, H, C.lino, C.calS, (x, y) => Math.abs(x - 200) / 260 + y / 600);
+    for (let y = 18; y < 120; y += 8) for (let x = 20; x < W - 20;) { const w = 4 + r() * 18 | 0; if (r() < 0.85) b.hl(x, x + w, y, C.calS); x += w + 3; } // renglones
+    b.r(198, 0, 4, H, C.calS); b.r(199, 0, 1, H, C.tierraS); // lomo del libro
+    // la Mancha en grabado: línea de horizonte, molinos y colinas a plumilla
+    const m = L.medio, f = perfil(o.seed + 3, W, 3);
+    for (let x = 0; x < W; x++) { const t = 120 - Math.round((f(x) * 0.5 + 0.5) * 16); m.p(x, t, C.pano); if (x % 3 === 0) for (let y = t + 3; y < 136; y += 4) m.p(x + (y & 1), y, C.tierraS); }
+    for (const [x, s] of [[70, 0.9], [150, 1.2], [300, 1]]) { const h = 24 * s; m.line(x - 4 * s, 124, x - 2 * s, 124 - h, C.pano); m.line(x + 4 * s, 124, x + 2 * s, 124 - h, C.pano); m.line(x - 3 * s, 124 - h, x, 124 - h - 6 * s, C.pano); m.line(x + 3 * s, 124 - h, x, 124 - h - 6 * s, C.pano); L.anim.push({ t: 'aspasTinta', x: x + 2 * s, y: 124 - h + 2, s: s }); }
+    suelo(L.suelo, 136, o, [C.lino, C.calS, C.tierraS]);
+    L.anim.push({ t: 'letras' });
+  };
+
+  V.FONDOS = F;
+  V.pintarFondo = function (id, o) {
+    const L = L5(); (F[id] || F.camino)(L, o); return L;
+  };
+})(VIS);
+/* ===== VIS · actores: personajes por capas y animales, con animación ===== */
+(function (V) {
+  'use strict';
+  const { B, C, TONO, cache } = V;
+  const FW = 44, FH = 72, AX = 22, AY = 71; // búfer de figura y ancla (pies)
+
+  /* ---------- catálogo ----------
+     cuerpo: flaco|medio|grueso|mujer|habito ; alto en px ; tonos de TONO ;
+     tocado, barba, pelo, acc (accesorio), capa, extra */
+  const P = {
+    dq: { n: 'Don Quijote', cuerpo: 'flaco', alto: 52, pelo: 'gris', barba: 'perilla', tocado: 'celada', jubon: 'hierro', calzas: 'pardo', capa: null, acc: 'lanza', extra: 'armadura' },
+    alonso: { n: 'Alonso Quijano', cuerpo: 'flaco', alto: 50, pelo: 'gris', barba: 'perilla', tocado: 'gorro', jubon: 'pardo', calzas: 'negro', acc: null, extra: 'ropon' },
+    sancho: { n: 'Sancho Panza', cuerpo: 'grueso', alto: 38, pelo: 'negro', barba: 'corta', tocado: 'paja', jubon: 'ocre', calzas: 'pardo', acc: null, extra: 'barriga' },
+    // los doce tipos
+    arriero: { cuerpo: 'medio', alto: 44, pelo: 'negro', barba: 'corta', tocado: 'panuelo', jubon: 'pardo', calzas: 'tierra', acc: 'vara' },
+    ventero: { cuerpo: 'grueso', alto: 42, pelo: 'negro', barba: 'bigote', tocado: 'gorra', jubon: 'blanco', calzas: 'pardo', extra: 'mandil barriga' },
+    cabrero: { cuerpo: 'medio', alto: 44, pelo: 'pardo', barba: 'corta', tocado: 'gorra', jubon: 'tierra', calzas: 'pardo', acc: 'cayado', extra: 'zamarra' },
+    dama: { cuerpo: 'mujer', alto: 42, pelo: 'negro', tocado: 'toca', jubon: 'rojo', saya: 'rojo', extra: 'gola' },
+    cura: { cuerpo: 'habito', alto: 44, pelo: 'gris', tocado: 'teja', jubon: 'negro', acc: 'libro' },
+    bandolero: { cuerpo: 'medio', alto: 45, pelo: 'negro', barba: 'larga', tocado: 'chambergo', jubon: 'verde', calzas: 'pardo', capa: 'pardo', acc: 'arcabuz' },
+    duque: { cuerpo: 'medio', alto: 46, pelo: 'pardo', barba: 'perilla', tocado: 'chambergo', jubon: 'negro', calzas: 'negro', capa: 'negro', extra: 'gola espada', pluma: 'blanco' },
+    duquesa: { cuerpo: 'mujer', alto: 43, pelo: 'oro', tocado: 'tocado', jubon: 'verde', saya: 'verde', extra: 'gola joyas' },
+    moza: { cuerpo: 'mujer', alto: 41, pelo: 'pardo', tocado: 'panuelo', jubon: 'blanco', saya: 'ocre', extra: 'mandil' },
+    clerigo: { cuerpo: 'habito', alto: 45, pelo: 'gris', tocado: 'capucha', jubon: 'pardo', acc: 'cruz' },
+    estudiante: { cuerpo: 'medio', alto: 44, pelo: 'pardo', tocado: 'bonete', jubon: 'negro', calzas: 'negro', capa: 'negro', acc: 'libro' },
+    soldado: { cuerpo: 'medio', alto: 46, pelo: 'negro', barba: 'bigote', tocado: 'morrion', jubon: 'rojo', calzas: 'ocre', acc: 'pica', extra: 'peto' }
+  };
+  // variantes (heredan de un tipo y cambian tonos o piezas)
+  const VAR = {
+    alonso_noche: ['alonso', { tocado: 'gorro', jubon: 'blanco' }],
+    impostor: ['dq', { n: 'El impostor', jubon: 'negro', calzas: 'negro', pelo: 'negro', tinta: 1 }],
+    ama: ['moza', { n: 'El ama', jubon: 'negro', saya: 'negro', tocado: 'toca', pelo: 'gris' }],
+    teresa: ['moza', { n: 'Teresa Panza', saya: 'rojo', jubon: 'ocre' }],
+    maritornes: ['moza', { n: 'Maritornes', saya: 'pardo', jubon: 'blanco', pelo: 'negro', tocado: null, extra: 'mandil grueso' }],
+    marcela: ['moza', { n: 'Marcela', saya: 'verde', jubon: 'blanco', tocado: null, pelo: 'oro', acc: 'cayado' }],
+    dorotea: ['moza', { n: 'Dorotea', saya: 'azul', jubon: 'blanco', tocado: null, pelo: 'oro' }],
+    zoraida: ['dama', { n: 'Zoraida', jubon: 'azul', saya: 'azul', tocado: 'velo', extra: 'joyas' }],
+    ana: ['dama', { n: 'Ana Félix', jubon: 'oro', saya: 'rojo', tocado: 'velo' }],
+    altisidora: ['dama', { n: 'Altisidora', jubon: 'blanco', saya: 'blanco', tocado: 'corona_flores', pelo: 'oro' }],
+    aldonza: ['moza', { n: 'Aldonza Lorenzo', saya: 'ocre', jubon: 'rojo', pelo: 'negro', tocado: null, acc: 'cantaro' }],
+    barbara: ['moza', { n: 'Bárbara', saya: 'tierra', jubon: 'pardo', pelo: 'negro', extra: 'mandil grueso' }],
+    claudia: ['dama', { n: 'Claudia Jerónima', jubon: 'verde', saya: 'verde', tocado: 'chambergo', acc: 'arcabuz', capa: 'pardo' }],
+    duena: ['duquesa', { n: 'Dueña', jubon: 'negro', saya: 'negro', tocado: 'tocas', pelo: 'gris', barba: 'larga' }],
+    cardenio: ['estudiante', { n: 'Cardenio', jubon: 'pardo', calzas: 'tierra', capa: null, tocado: null, barba: 'larga', extra: 'harapos', acc: null }],
+    sanson: ['estudiante', { n: 'Sansón Carrasco', pelo: 'negro', barba: 'no' }],
+    canonigo: ['cura', { n: 'El canónigo', jubon: 'negro', tocado: 'bonete', acc: 'libro', extra: 'roquete' }],
+    ermitano: ['clerigo', { n: 'Ermitaño', barba: 'blanca', jubon: 'tierra' }],
+    encamisado: ['clerigo', { n: 'Encamisado', jubon: 'blanco', tocado: 'capucha', acc: 'antorcha' }],
+    penitente: ['clerigo', { n: 'Disciplinante', jubon: 'blanco', tocado: 'capirote', acc: 'cruz' }],
+    galeote: ['bandolero', { n: 'Galeote', jubon: 'tierra', capa: null, tocado: null, acc: 'cadena', barba: 'corta' }],
+    roque: ['bandolero', { n: 'Roque Guinart', jubon: 'rojo', capa: 'negro', acc: 'espada', extra: 'pistolas' }],
+    vizcaino: ['soldado', { n: 'El vizcaíno', jubon: 'azul', tocado: 'boina', acc: 'espada', extra: 'almohada' }],
+    tosilos: ['soldado', { n: 'Tosilos', jubon: 'hierro', calzas: 'hierro', tocado: 'yelmo', acc: 'lanza', extra: 'armadura' }],
+    espejos: ['soldado', { n: 'Caballero de los Espejos', jubon: 'hierro', tocado: 'yelmo', acc: 'lanza', extra: 'armadura espejos', pluma: 'verde' }],
+    blanca_luna: ['soldado', { n: 'Caballero de la Blanca Luna', jubon: 'blanco', calzas: 'blanco', tocado: 'yelmo', acc: 'lanza', extra: 'armadura luna', pluma: 'blanco' }],
+    diego: ['duque', { n: 'Don Diego de Miranda', jubon: 'verde', capa: 'verde', calzas: 'pardo' }],
+    moreno: ['duque', { n: 'Don Antonio Moreno', jubon: 'azul', capa: 'negro', pluma: 'azul' }],
+    tarfe: ['duque', { n: 'Álvaro Tarfe', jubon: 'rojo', capa: 'oro', pluma: 'rojo' }],
+    anselmo: ['duque', { n: 'Caballero', jubon: 'pardo', capa: 'ocre', pluma: 'oro' }],
+    archipampano: ['duque', { n: 'El Archipámpano', jubon: 'violeta', capa: 'oro', tocado: 'gorra', extra: 'gola joyas', pluma: null }],
+    bracamonte: ['duque', { n: 'Bracamonte', jubon: 'negro', capa: 'rojo', pelo: 'gris' }],
+    corregidor: ['duque', { n: 'El corregidor', jubon: 'negro', capa: 'negro', acc: 'vara', pelo: 'gris', barba: 'larga', pluma: null }],
+    camacho: ['duque', { n: 'Camacho el rico', jubon: 'oro', capa: 'rojo', pluma: 'oro' }],
+    basilio: ['estudiante', { n: 'Basilio', jubon: 'pardo', capa: null, tocado: null, barba: 'no', acc: null }],
+    escribano: ['estudiante', { n: 'Escribano', tocado: 'gorra', acc: 'pluma_e' }],
+    pregonero: ['soldado', { n: 'Pregonero', jubon: 'azul', tocado: 'gorra', acc: 'papel', extra: '' }],
+    alguacil: ['soldado', { n: 'Alguacil', jubon: 'negro', tocado: 'chambergo', acc: 'vara', extra: 'gola' }],
+    labrador: ['arriero', { n: 'Labrador', jubon: 'ocre', tocado: 'paja', acc: null }],
+    peregrino: ['estudiante', { n: 'Peregrino', jubon: 'pardo', capa: 'pardo', tocado: 'chambergo', acc: 'bordon', extra: 'esclavina' }],
+    carretero: ['arriero', { n: 'Carretero', jubon: 'azul', acc: 'vara' }],
+    barbero: ['arriero', { n: 'El barbero', jubon: 'blanco', tocado: 'bacia', barba: 'bigote', acc: null }],
+    pescador: ['arriero', { n: 'Pescador', jubon: 'azul', calzas: 'blanco', tocado: 'gorra', acc: 'red' }],
+    leonero: ['arriero', { n: 'Leonero', jubon: 'rojo', tocado: 'gorra', acc: 'vara' }],
+    ricote: ['estudiante', { n: 'Ricote', jubon: 'pardo', capa: 'pardo', tocado: 'chambergo', barba: 'larga', acc: 'bordon', extra: 'esclavina' }],
+    comediante: ['estudiante', { n: 'Comediante', jubon: 'rojo', capa: 'oro', tocado: 'corona', acc: null }],
+    muerte: ['clerigo', { n: 'La Muerte', jubon: 'negro', tocado: 'calavera', acc: 'guadana' }],
+    titiritero: ['arriero', { n: 'Maese Pedro', jubon: 'verde', tocado: 'panuelo', extra: 'parche' }],
+    merlin: ['clerigo', { n: 'Merlín', jubon: 'violeta', tocado: 'capucha', barba: 'blanca', acc: 'baston' }],
+    bramidan: ['soldado', { n: 'Bramidán', jubon: 'oro', tocado: 'turbante', barba: 'larga', acc: 'espada', extra: 'grueso' }]
+  };
+  function spec(id) {
+    if (P[id]) return P[id];
+    const v = VAR[id]; if (!v) return P.estudiante;
+    const s = Object.assign({}, spec(v[0]), v[1]); P[id] = s; return s;
+  }
+  V.spec = spec; V.ACTORES = P; V.VARIANTES = VAR;
+  V.esAnimal = id => ['rocinante', 'rucio', 'yegua', 'oveja', 'cerdo', 'leon', 'clavileno'].includes(id);
+
+  /* ---------- figura humana ---------- */
+  const T = k => TONO[k] || TONO.pardo;
+  const PELO = { negro: 29, pardo: 19, gris: 17, oro: 23, blanco: 30 };
+
+  function figura(s, pose, f) {
+    const b = new B(FW, FH), cx = AX, fy = AY;
+    const grueso = s.cuerpo === 'grueso' || (s.extra || '').includes('grueso');
+    const A = s.alto, ll = Math.round(A * (s.cuerpo === 'grueso' ? 0.36 : 0.44)), tl = Math.round(A * 0.3);
+    let hip = fy - ll, sh = hip - tl, top = sh - 8;
+    const ext = ' ' + (s.extra || '') + ' ';
+    const J = T(s.jubon), K = T(s.calzas || s.jubon), Sy = T(s.saya || s.jubon);
+    const lw = grueso ? 4 : s.cuerpo === 'flaco' ? 2 : 3, tw = grueso ? 11 : s.cuerpo === 'flaco' ? 6 : s.cuerpo === 'mujer' ? 7 : 8;
+    // fases de las piernas: [delante, detrás, levanta-delante, levanta-detrás]
+    let L1 = 2, L2 = -2, u1 = 0, u2 = 0, bob = 0;
+    if (pose === 'caminar') { [L1, L2, u1, u2] = [[4, -3, 0, 0], [1, 0, 2, 0], [-3, 4, 0, 0], [0, 1, 0, 2]][f & 3]; bob = (f & 1) ? -1 : 0; }
+    if (pose === 'reposo' || pose === 'hablar') bob = f & 1 ? 0 : 0;
+    hip += bob; sh += bob; top += bob;
+    if (pose === 'reposo' && (f & 1)) { sh += 0; top += 0; } // respiración: se nota en el brazo
+    let lean = 0;
+    if (pose === 'golpe' && f === 0) lean = -2; // recibe: se echa atrás
+    if (pose === 'golpe' && f === 1) lean = 2; // ataca: se echa adelante
+    const montado = pose === 'montado', rodilla = pose === 'arrodillado';
+    if (rodilla) { hip += 8; sh += 8; top += 8; }
+
+    // brazo trasero
+    const hb = mano(pose, f, 'atras', s);
+    b.line(cx - 1 + lean, sh + 1, cx + hb[0] + lean, sh + hb[1], J[1], 2); b.p(cx + hb[0] + lean, sh + hb[1] + 1, C.pielS);
+    // piernas
+    const pie = (dx, up, c, osc) => {
+      if (montado) { b.line(cx, hip, cx + 6, hip + 1, c, lw); b.line(cx + 6, hip + 1, cx + 5, hip + 9, c, lw - (lw > 2 ? 1 : 0)); b.r(cx + 5, hip + 9, 3, 2, osc); return; }
+      if (rodilla) { if (c === K[1]) { b.line(cx, hip, cx - 5, fy - 1, c, lw); b.r(cx - 8, fy - 1, 4, 1, osc); } else { b.line(cx, hip, cx + 5, hip, c, lw); b.line(cx + 5, hip, cx + 5, fy - 1, c, lw); b.r(cx + 5, fy - 1, 4, 1, osc); } return; }
+      b.line(cx, hip, cx + dx, fy - 1 - up, c, lw); b.r(cx + dx - 1, fy - 1 - up, lw + 2, 2, osc);
+    };
+    const larga = s.cuerpo === 'mujer' || s.cuerpo === 'habito';
+    if (!larga) pie(L2, u2, K[1], C.maderaO);
+    // capa (detrás)
+    if (s.capa) { const Cp = T(s.capa); b.poly([cx - tw / 2 + lean, sh, cx + 1 + lean, sh, cx - 2, hip + (larga ? 10 : 6), cx - tw / 2 - 4, hip + (larga ? 10 : 6) + (pose === 'caminar' ? (f & 1) : 0)], Cp[1]); }
+    // cuerpo
+    if (larga) {
+      const hem = fy - 1, sw = (pose === 'caminar') ? ((f & 1) ? 1 : -1) : 0, base = s.cuerpo === 'habito' ? 6 : 9;
+      if (!montado) {
+        b.poly([cx - tw / 2 + lean, sh, cx + tw / 2 + lean, sh, cx + base + sw, hem, cx - base - 1 + sw, hem], Sy[0]);
+        b.poly([cx - tw / 2 + lean, sh, cx - 1 + lean, sh, cx - 2 + sw, hem, cx - base - 1 + sw, hem], Sy[1]);
+        if (s.cuerpo === 'mujer') { b.r(cx - tw / 2 + lean, sh, tw, Math.round(tl * 0.55), J[0]); b.r(cx - tw / 2 + lean, sh, 2, Math.round(tl * 0.55), J[1]); }
+        if (ext.includes(' mandil')) b.poly([cx + lean, hip - 4, cx + tw / 2 + 1 + lean, hip - 4, cx + base - 1 + sw, hem - 3, cx + 1 + sw, hem - 3], C.lino);
+        b.r(cx + 1 + sw, hem, 3, 1, C.maderaO);
+        if (s.cuerpo === 'habito') b.r(cx - tw / 2 + lean, hip - 2, tw, 1, ext.includes('roquete') ? C.lino : C.maderaO);
+      } else { b.r(cx - tw / 2, sh, tw, tl, Sy[0]); b.poly([cx - 3, hip, cx + 9, hip, cx + 10, hip + 10, cx + 1, hip + 10], Sy[0]); }
+    } else {
+      b.r(cx - tw / 2 + lean, sh, tw, tl, J[0]);
+      b.r(cx - tw / 2 + lean, sh, Math.ceil(tw / 3), tl, J[1]);
+      if (ext.includes('barriga') || grueso) b.ell(cx + tw / 2 - 1 + lean, sh + tl * 0.65, 3, tl * 0.32, J[0]);
+      if (ext.includes(' mandil')) b.r(cx + lean, sh + tl - 6, tw / 2 + 2, 9, C.lino);
+      if (ext.includes(' zamarra')) { b.r(cx - tw / 2 + lean, sh, tw, 5, C.lino); for (let i = 0; i < tw; i += 2) b.p(cx - tw / 2 + i + lean, sh + 5, C.calS); }
+      b.r(cx - tw / 2 + lean, hip - 1, tw, 1, ext.includes('armadura') ? C.hierro : C.maderaO); // cinto
+      if (ext.includes('armadura') || ext.includes('peto')) { b.r(cx - tw / 2 + 1 + lean, sh + 1, tw - 2, tl - 3, C.hierro); b.r(cx + lean, sh + 2, 2, tl - 6, C.hierroL); b.r(cx - tw / 2 - 1 + lean, sh, 3, 3, C.hierroL); }
+      if (ext.includes('espejos')) for (let i = 0; i < 3; i++) b.p(cx - 1 + i * 2 + lean, sh + 4 + i * 2, C.destello);
+      if (ext.includes('luna')) { b.circ(cx + lean, sh + tl / 2, 2, C.cal); b.p(cx + 1 + lean, sh + tl / 2 - 1, C.hierroL); }
+      if (ext.includes('harapos')) for (let i = 0; i < tw; i += 2) b.p(cx - tw / 2 + i + lean, hip + (i % 4 ? 1 : 2), J[1]);
+      if (ext.includes('ropon')) b.poly([cx - tw / 2 + lean, hip - 1, cx + tw / 2 + lean, hip - 1, cx + tw / 2 + 2, hip + 10, cx - tw / 2 - 2, hip + 10], J[0]);
+      if (ext.includes('esclavina')) { b.poly([cx - tw / 2 - 1 + lean, sh, cx + tw / 2 + 1 + lean, sh, cx + tw / 2 + 2 + lean, sh + 6, cx - tw / 2 - 2 + lean, sh + 6], C.tierraS); b.p(cx + 1 + lean, sh + 3, C.oro); }
+      pie(L1, u1, K[0], C.maderaO);
+    }
+    if (ext.includes('gola')) b.r(cx - 3 + lean, sh - 1, 7, 2, C.lino);
+    if (ext.includes('joyas')) { b.p(cx + lean, sh + 2, C.oro); b.p(cx + 2 + lean, sh + 3, C.destello); }
+    if (ext.includes('espada') && s.acc !== 'espada') b.line(cx - 3, hip, cx - 9, hip + 9, C.hierro);
+    if (ext.includes('pistolas')) { b.r(cx - 3 + lean, hip - 3, 3, 2, C.pano); b.r(cx + 2 + lean, hip - 3, 3, 2, C.pano); }
+    // cabeza
+    const hx = cx - 3 + lean + (rodilla ? 0 : 0), pelo = PELO[s.pelo] || 19, piel = s.tinta ? [30, 17] : [C.piel, C.pielS];
+    b.r(hx, top, 7, 8, piel[0]); b.r(hx, top, 2, 8, piel[1]);
+    b.p(hx + 7, top + 4, piel[0]); // nariz
+    b.p(hx + 5, top + 3, C.pano); // ojo
+    if (pose === 'hablar' && (f & 1)) b.p(hx + 6, top + 6, C.rojoO); // boca abierta
+    if (pose === 'golpe' && f === 0) { b.p(hx + 5, top + 2, C.pano); b.p(hx + 6, top + 6, C.pano); }
+    b.r(hx, top, 3, 4, pelo); b.r(hx, top - 1, 6, 2, pelo);
+    if (s.cuerpo === 'mujer' && !['toca', 'tocas', 'velo'].includes(s.tocado)) { b.r(hx - 2, top, 3, 11, pelo); b.r(hx - 1, top - 1, 6, 2, pelo); }
+    const br = s.barba;
+    if (br === 'corta') { b.r(hx + 3, top + 6, 4, 2, pelo); b.p(hx + 2, top + 5, pelo); }
+    else if (br === 'larga') { b.r(hx + 2, top + 6, 5, 3, pelo); b.r(hx + 3, top + 9, 3, 3, pelo); }
+    else if (br === 'blanca') { b.r(hx + 2, top + 6, 5, 3, C.lino); b.r(hx + 2, top + 9, 4, 5, C.lino); b.p(hx + 3, top + 14, C.calS); }
+    else if (br === 'perilla') { b.hl(hx + 4, hx + 6, top + 5, pelo); b.r(hx + 5, top + 7, 2, 3, pelo); }
+    else if (br === 'bigote') b.hl(hx + 4, hx + 7, top + 5, pelo);
+    tocado(b, s, hx, top, f);
+    // brazo delantero y accesorio
+    const hf = mano(pose, f, 'delante', s);
+    const hxF = cx + hf[0] + lean, hyF = sh + hf[1];
+    if (pose !== 'leer') { b.line(cx + 1 + lean, sh + 1, hxF, hyF, J[0], 2); b.p(hxF, hyF + 1, piel[0]); }
+    accesorio(b, s, pose, f, hxF, hyF, cx, fy, sh, lean);
+    if (pose === 'leer') { b.r(cx + 3, sh + 6, 6, 4, C.lino); b.p(cx + 6, sh + 6, C.calS); b.line(cx + 1, sh + 1, cx + 3, sh + 8, J[0], 2); b.p(cx + 4, sh + 9, piel[0]); }
+    if (s.tinta) b.swap({ 27: 30, 28: 17 });
+    return b.outline(C.negro);
+  }
+  function mano(pose, f, lado, s) {
+    if (lado === 'atras') {
+      if (pose === 'caminar') return [[-3, 10], [-1, 11], [2, 10], [0, 11]][f & 3];
+      if (pose === 'golpe') return f === 0 ? [-5, -3] : [-4, 9];
+      return [-2, 11 + (pose === 'reposo' && (f & 1) ? 1 : 0)];
+    }
+    if (pose === 'hablar') return f & 1 ? [7, 2] : [6, 5];
+    if (pose === 'golpe') return f === 0 ? [-3, -5] : [10, 2];
+    if (pose === 'caminar') return [[2, 10], [0, 11], [-3, 10], [-1, 11]][f & 3];
+    if (pose === 'arrodillado') return [5, 6];
+    if (pose === 'montado') return [5, 7];
+    if (pose === 'celebrar') return [4, -6];
+    return [2, 11 + ((pose === 'reposo') && (f & 1) ? 1 : 0)];
+  }
+  function tocado(b, s, x, y, f) {
+    const t = s.tocado;
+    if (!t || t === 'no') return;
+    if (t === 'celada') { b.r(x - 1, y - 3, 9, 6, C.hierro); b.r(x + 3, y - 3, 4, 2, C.hierroL); b.r(x + 5, y + 1, 3, 2, C.hierro); b.r(x + 6, y - 1, 2, 1, C.pano); b.line(x + 1, y - 3, x - 2, y - 8, C.rojo); b.p(x - 3, y - 9, C.lino); b.r(x - 1, y + 3, 2, 5, C.hierro); }
+    else if (t === 'bacia') { b.r(x - 2, y - 2, 11, 2, C.oro); b.r(x, y - 5, 7, 3, C.oro); b.p(x + 2, y - 4, C.destello); b.p(x + 8, y - 1, C.tierraS); }
+    else if (t === 'yelmo') { b.r(x - 1, y - 3, 9, 11, C.hierro); b.r(x + 4, y + 2, 4, 1, C.pano); b.r(x + 3, y - 3, 3, 2, C.hierroL); if (s.pluma) { const pl = T(s.pluma)[0]; b.line(x + 1, y - 4, x - 3, y - 9, pl, 2); } }
+    else if (t === 'paja') { b.r(x - 3, y - 1, 14, 2, C.tierraL); b.r(x, y - 4, 8, 3, C.tierraL); b.hl(x, x + 7, y - 2, C.ocre); }
+    else if (t === 'chambergo') { b.r(x - 3, y - 1, 13, 2, C.pano); b.r(x, y - 5, 8, 4, C.pano); if (s.pluma) b.line(x + 1, y - 5, x - 4, y - 8, T(s.pluma)[0], 2); }
+    else if (t === 'gorra' || t === 'bonete' || t === 'boina') { b.r(x - 1, y - 3, 8, 3, t === 'boina' ? C.anil : C.pano); if (t === 'bonete') b.r(x + 1, y - 5, 4, 2, C.pano); }
+    else if (t === 'gorro') { b.r(x - 1, y - 3, 8, 3, C.lino); b.line(x, y - 3, x - 3, y + 3, C.lino); }
+    else if (t === 'panuelo') { b.r(x - 1, y - 2, 8, 3, s.cuerpo === 'mujer' ? C.rojo : C.lino); b.p(x - 2, y + 1, s.cuerpo === 'mujer' ? C.rojo : C.lino); }
+    else if (t === 'toca' || t === 'tocas') { b.r(x - 2, y - 2, 9, 3, C.lino); b.r(x - 2, y, 3, t === 'tocas' ? 14 : 10, C.lino); b.r(x + 6, y + 6, 1, 3, C.lino); }
+    else if (t === 'velo') { b.r(x - 2, y - 2, 9, 3, C.lino); b.r(x - 3, y, 4, 13, C.calS); }
+    else if (t === 'tocado') { b.r(x - 1, y - 3, 8, 3, C.oro); b.p(x + 3, y - 4, C.destello); b.r(x - 2, y, 3, 8, PELO[s.pelo] || 19); }
+    else if (t === 'corona_flores') { for (let i = 0; i < 4; i++) b.p(x + i * 2, y - 2, [C.rojo, C.lino, C.oro, C.rojo][i]); }
+    else if (t === 'teja') { b.r(x - 4, y - 2, 15, 2, C.pano); b.r(x, y - 4, 7, 2, C.pano); }
+    else if (t === 'capucha') { b.r(x - 2, y - 2, 9, 4, T(s.jubon)[1]); b.r(x - 2, y, 3, 8, T(s.jubon)[1]); }
+    else if (t === 'capirote') { b.poly([x - 1, y + 2, x + 8, y + 2, x + 3, y - 12], C.lino); b.r(x - 1, y, 9, 9, C.lino); b.p(x + 5, y + 3, C.pano); }
+    else if (t === 'calavera') { b.r(x - 1, y - 2, 9, 11, C.pano); b.r(x + 2, y, 5, 7, C.cal); b.p(x + 4, y + 2, C.negro); b.p(x + 6, y + 2, C.negro); b.hl(x + 3, x + 6, y + 5, C.calS); }
+    else if (t === 'morrion') { b.r(x - 2, y - 2, 11, 2, C.hierro); b.ell(x + 3, y - 4, 4, 3, C.hierro); b.p(x + 3, y - 8, C.hierroL); }
+    else if (t === 'corona') { b.r(x, y - 3, 7, 3, C.oro); b.p(x, y - 4, C.oro); b.p(x + 3, y - 4, C.oro); b.p(x + 6, y - 4, C.oro); }
+    else if (t === 'turbante') { b.ell(x + 3, y - 2, 6, 3, C.lino); b.p(x + 3, y - 4, C.rojo); }
+  }
+  function accesorio(b, s, pose, f, hx, hy, cx, fy, sh, lean) {
+    const a = s.acc; if (!a) return;
+    if (a === 'lanza') {
+      if (pose === 'golpe' && f === 1) { b.line(hx - 14, hy + 3, hx + 20, hy - 1, C.madera); b.r(hx + 20, hy - 2, 3, 2, C.hierroL); }
+      else { b.line(hx, hy + 6, hx + 2, hy - 44, C.madera); b.r(hx + 1, hy - 48, 2, 4, C.hierroL); if (s.extra && s.extra.includes('armadura') && s.n === 'Don Quijote') b.r(hx + 3, hy - 40, 3, 2, C.rojo); }
+    } else if (a === 'pica') b.line(hx, hy + 8, hx + 1, hy - 40, C.maderaO), b.r(hx, hy - 44, 3, 4, C.hierroL);
+    else if (a === 'vara' || a === 'baston' || a === 'bordon') { b.line(hx, hy - (a === 'bordon' ? 12 : 6), hx, fy - 1, a === 'vara' ? C.maderaO : C.madera); if (a === 'bordon') b.p(hx + 1, hy - 10, C.oro); }
+    else if (a === 'cayado') { b.line(hx, hy - 8, hx, fy - 1, C.madera); b.p(hx + 1, hy - 9, C.madera); b.p(hx + 2, hy - 8, C.madera); }
+    else if (a === 'espada') { if (pose === 'golpe' && f === 1) b.line(hx, hy, hx + 12, hy - 6, C.hierroL); else b.line(hx, hy, hx + 2, hy - 12, C.hierroL); b.hl(hx - 1, hx + 1, hy, C.oro); }
+    else if (a === 'arcabuz') b.line(hx - 6, hy + 2, hx + 10, hy - 4, C.maderaO), b.line(hx + 4, hy - 2, hx + 12, hy - 5, C.hierro);
+    else if (a === 'libro') b.r(hx, hy - 1, 3, 4, C.rojoO);
+    else if (a === 'cruz') { b.line(hx, hy + 4, hx, hy - 16, C.maderaO); b.hl(hx - 3, hx + 3, hy - 12, C.maderaO); }
+    else if (a === 'antorcha') { b.line(hx, hy + 2, hx + 1, hy - 8, C.maderaO); b.r(hx, hy - 11, 3, 3, C.brasa); b.p(hx + 1, hy - 12, C.oro); }
+    else if (a === 'cadena') { for (let i = 0; i < 6; i++) b.p(hx - 2 + i * 2, hy + 2 + (i & 1), C.hierro); }
+    else if (a === 'guadana') { b.line(hx, fy - 1, hx + 2, hy - 18, C.maderaO); b.poly([hx + 2, hy - 18, hx + 12, hy - 14, hx + 3, hy - 16], C.hierroL); }
+    else if (a === 'cantaro') { b.ell(hx + 1, hy - 4, 3, 4, C.tierraS); b.r(hx, hy - 9, 3, 2, C.tierraS); }
+    else if (a === 'papel') b.r(hx, hy - 6, 5, 7, C.lino);
+    else if (a === 'pluma_e') b.line(hx, hy, hx + 3, hy - 5, C.lino);
+    else if (a === 'red') { for (let i = 0; i < 4; i++) b.line(hx, hy, hx + 2 + i, fy - 4, C.calS); }
+  }
+
+  /* ---------- cuadrúpedos ---------- */
+  function caballo(tipo, pose, f) {
+    const b = new B(64, 50), gy = 49;
+    const asno = tipo === 'rucio', yegua = tipo === 'yegua', madera = tipo === 'clavileno';
+    const c = madera ? [C.madera, C.maderaO] : asno ? [C.hierro, C.violeta] : yegua ? [C.madera, C.maderaO] : [C.ocre, C.tierraS];
+    const s = asno ? 0.8 : 1, bx = 30, by = gy - Math.round(22 * s);
+    let fase = pose === 'caminar' ? [[4, -3, -3, 4], [1, 0, 0, 1], [-3, 4, 4, -3], [0, 1, 1, 0]][f & 3] : [0, 0, 0, 0];
+    const up = pose === 'caminar' ? [[0, 0], [2, 0], [0, 0], [0, 2]][f & 3] : [0, 0];
+    const pata = (x, d, u, col) => { b.line(x, by + 3, x + d, gy - 1 - u, col, madera ? 2 : 2); b.r(x + d - 1, gy - 1 - u, 3, 1, madera ? C.maderaO : C.pano); };
+    pata(bx - 11 * s, fase[1], up[1], c[1]); pata(bx + 10 * s, fase[3], up[0], c[1]);
+    b.ell(bx, by, Math.round(15 * s), Math.round(6 * s), c[0]);
+    b.hl(bx - 13 * s, bx + 13 * s, by + 5 * s, c[1]);
+    if (!asno && !yegua && !madera) for (let i = 0; i < 4; i++) b.r(bx - 4 + i * 3, by, 1, 4, c[1]); // costillas de Rocinante
+    pata(bx - 9 * s, fase[0], up[1], c[0]); pata(bx + 12 * s, fase[2], up[0], c[0]);
+    // cuello y cabeza
+    const bajo = tipo === 'rocinante' ? 4 : 0, rp = (pose === 'reposo' && (f & 1)) ? 1 : 0;
+    const nx = bx + 13 * s, ny = by - 3 * s;
+    b.poly([nx - 3, ny + 4, nx + 3, ny + 2, nx + 10 * s, ny - 8 * s + bajo + rp, nx + 5 * s, ny - 10 * s + bajo + rp], c[0]);
+    const hx = nx + 7 * s, hy = ny - 11 * s + bajo + rp;
+    b.poly([hx, hy, hx + 5, hy - 1, hx + 11 * s, hy + 6 * s, hx + 9 * s, hy + 8 * s, hx + 2, hy + 5], c[0]);
+    b.p(hx + 4, hy + 1, C.pano);
+    if (asno) { b.line(hx + 1, hy, hx - 2, hy - 7, c[0], 2); b.line(hx + 3, hy, hx + 2, hy - 7, c[1], 2); }
+    else { b.p(hx + 1, hy - 2, c[0]); b.p(hx + 2, hy - 3, c[0]); }
+    if (!madera) for (let i = 0; i < 6; i++) b.p(nx + i * s, ny - 2 - i * 1.6 * s + bajo * (i / 6), asno ? C.pano : C.maderaO); // crin
+    // cola
+    if (madera) { b.r(bx - 18, by - 2, 4, 2, C.maderaO); b.r(nx + 2, ny - 4, 2, 2, C.oro); }
+    else { const cs = pose === 'caminar' ? (f & 1) : 0; b.line(bx - 14 * s, by - 2, bx - 18 * s - cs, by + 10 * s, asno ? C.violeta : C.maderaO, 2); if (asno) b.r(bx - 19 * s, by + 9 * s, 3, 3, C.pano); }
+    // arreos
+    if (tipo === 'rocinante') { b.r(bx - 4, by - 7, 9, 4, C.rojo); b.r(bx - 4, by - 3, 9, 3, C.rojoO); b.line(bx + 1, by - 3, bx + 2, by + 8, C.maderaO); }
+    if (asno) { b.r(bx - 9, by - 5, 6, 9, C.rojo); b.r(bx + 2, by - 5, 6, 9, C.ocre); b.hl(bx - 9, bx + 7, by - 6, C.maderaO); }
+    if (madera) { b.r(bx - 4, by - 7, 9, 3, C.rojo); b.p(hx + 5, hy - 2, C.hierro); b.r(hx + 4, hy - 3, 2, 2, C.hierro); }
+    return b.outline(C.negro);
+  }
+  const SILLA = { rocinante: [30, 21], rucio: [30, 25], clavileno: [30, 21] }; // punto de la cadera del jinete
+  function menor(tipo, pose, f) {
+    const b = new B(40, 26), gy = 25, w = (pose === 'caminar') ? (f & 1) : 0;
+    if (tipo === 'oveja') { for (const x of [12, 16, 22, 26]) b.r(x + (x < 20 ? w : -w), gy - 5, 1, 5, C.pano); b.ell(19, gy - 8, 8, 4, C.lino); b.ell(18, gy - 10, 6, 2, C.cal); b.r(26, gy - 11, 4, 5, C.pano); b.p(29, gy - 9, C.lino); }
+    else if (tipo === 'cerdo') { for (const x of [12, 15, 22, 25]) b.r(x + (x < 20 ? w : -w), gy - 4, 2, 4, C.pielS); b.ell(19, gy - 8, 9, 5, C.piel); b.hl(12, 26, gy - 4, C.pielS); b.r(27, gy - 9, 3, 3, C.piel); b.p(30, gy - 8, C.pielS); b.p(26, gy - 10, C.pano); b.p(10, gy - 10, C.pielS); b.p(9, gy - 11, C.pielS); }
+    else if (tipo === 'leon') { for (const x of [8, 12, 24, 28]) b.r(x + (x < 20 ? w : -w), gy - 7, 2, 7, C.ocre); b.ell(18, gy - 11, 12, 5, C.ocre); b.hl(8, 28, gy - 7, C.tierraS); b.ell(30, gy - 14, 6, 7, C.tierraS); b.ell(32, gy - 13, 3, 4, C.ocre); b.p(33, gy - 15, C.pano); b.line(6, gy - 13, 2, gy - 6, C.ocre); b.p(2, gy - 5, C.tierraS); if (pose === 'hablar' && (f & 1)) b.p(35, gy - 11, C.rojoO); }
+    return b.outline(C.negro);
+  }
+
+  /* ---------- API: lienzo cacheado de un actor en una pose, fotograma y hora ---------- */
+  V.actorCanvas = function (id, pose, f, hora, flip, extra) {
+    const k = 'a|' + id + '|' + pose + '|' + f + '|' + hora + '|' + (flip ? 1 : 0) + '|' + (extra || '');
+    return V.cache(k, () => {
+      let b;
+      if (id === 'rocinante' || id === 'rucio' || id === 'yegua' || id === 'clavileno') b = caballo(id, pose, f);
+      else if (id === 'oveja' || id === 'cerdo' || id === 'leon') b = menor(id, pose, f);
+      else {
+        let s = spec(id);
+        if (extra === 'bacia' && id === 'dq') s = Object.assign({}, s, { tocado: 'bacia' });
+        b = figura(s, pose, f);
+      }
+      if (flip) { const o = new B(b.w, b.h); o.blit(b, 0, 0, true); b = o; }
+      const cv = b.canvas(hora); cv._ax = flip ? b.w - (b.w === FW ? AX : b.w / 2) : (b.w === FW ? AX : b.w / 2); cv._ay = b.h - 1; return cv;
+    });
+  };
+  V.SILLA = SILLA; V.FIG = { FW, FH, AX, AY };
+  V.altura = id => V.esAnimal(id) ? (id === 'oveja' || id === 'cerdo' ? 12 : id === 'leon' ? 20 : 34) : spec(id).alto;
+})(VIS);
+/* ===== VIS · escenas: qué fondo, hora, clima, props y reparto lleva cada una =====
+   Formato: id|fondo|hora|clima|props|derecha|actuación|izquierda
+   - hora: mediodia|amanecer|ocaso|noche|tarde (tarde = mediodía templado hacia ocaso)
+   - clima: polvo, lluvia, lluvia_l, niebla, antorchas, luciernagas (separados por coma)
+   - derecha: actores a la derecha, x*N repite
+   - actuación vacía = la de ST (código original)
+   - izquierda vacía = don Quijote (y Sancho, salvo que no proceda) */
+(function (V) {
+  'use strict';
+  const T = `start|biblioteca|noche|||||alonso
+yard|patio|amanecer|||rocinante_suelto|bow|
+book|biblioteca|noche|||||alonso
+sancho|cocina|tarde||||talk|
+helmet|patio|amanecer|||rocinante_suelto|bow|
+vision|entrepaginas|noche|||||alonso
+road|camino|ocaso|polvo|||walk|
+mills|molinos|mediodia|polvo|||fight|
+adventure|camino|ocaso||cruz|cabrero|talk|
+cabreros|majada|noche|luciernagas||cabrero*2|talk|
+marcela|encinar|mediodia|||marcela+cabrero|watch|
+sheep|llanura|mediodia|polvo||oveja*4|fight|
+inn|venta|tarde|||ventero+maritornes|talk|
+mambrino|camino|mediodia|lluvia_l||barbero|fight|
+galeotes|camino|mediodia|polvo||galeote*3+soldado|talk|
+sierra|sierra|tarde|||cardenio|watch|
+toboso|plaza|noche|||aldonza+moza|talk|
+duques|salon|tarde|||duque+duquesa|talk|
+barataria|salon|mediodia||trono|labrador*2|talk|
+booktrap|liza|noche||clavileno|duque+duquesa|fly|
+avellaneda|ventainterior|tarde|||estudiante*2|talk|
+impostor|camino|tarde|||impostor|talk|
+tarfe|ventainterior|tarde||escribano|tarfe+escribano|talk|
+barcelona|playa|mediodia|||moreno|talk|
+home|plaza|ocaso|||ama+cura|talk|
+end|alcoba|amanecer|||ama+cura|sleep|alonso
+embajada|sierra|mediodia||||bow|
+espejos|encinar|noche|||espejos|fight|
+leones|camino|mediodia|polvo|carrojaula|leonero|watch|
+camacho|plaza|mediodia||bodas|camacho+basilio+moza|watch|
+barco|rio|mediodia||barca||fly|
+desencanto|encinar|noche|niebla||merlin+duque|talk|
+cabeza|casanoble|noche||cabeza|moreno|watch|
+duelo|playa|amanecer|||blanca_luna|fight|
+amor|plaza|ocaso|||aldonza|talk|
+ateca|plaza|tarde|||clerigo|talk|
+zaragoza|ciudad|mediodia||carteles|anselmo+soldado|watch|
+siguenza|ciudad|mediodia||carteles|corregidor+alguacil|talk|
+madrid|casanoble|tarde|||archipampano|talk|
+toledo|calabozo|tarde||caldero|clerigo+tarfe|talk|
+a_arg|plaza|tarde|||tarfe+cura|talk|
+a_venta|venta|tarde|||ventero+moza|talk|
+a_melonar|llanura|mediodia||melonar|carretero|talk|
+a_azotado|calabozo|tarde|||galeote+alguacil|watch|
+a_carlos|casanoble|noche||banquete|anselmo+bramidan|talk|
+a_bracamonte|camino|tarde|||bracamonte|talk|
+a_ermitano|sierra|tarde||ermita|ermitano|talk|
+a_pinar|pinar|tarde|||barbara|talk|
+a_estudiantes|camino|mediodia|||estudiante+comediante|talk|
+a_alcala|ciudad|mediodia|||estudiante*2|talk|
+a_archi|ciudad|tarde|||archipampano+alguacil|talk|
+a_bramidan|casanoble|noche||banquete|bramidan|talk|
+a_sancho|casanoble|noche||banquete|archipampano|eat|
+a_sanchono|camino|tarde||||walk|
+a_epilogo|calabozo|amanecer|||cura|talk|
+ev_refran|camino|mediodia||||talk|
+ev_tormenta|llanura|tarde|lluvia|||walk|
+ev_viajero|camino|mediodia|polvo||arriero|talk|
+ev_noche|majada|noche|luciernagas|||sleep|
+ev_rocin|vado|mediodia||||plantado|
+ev_faint|llanura|mediodia||||faint|
+ev_fever|entrepaginas|noche||||faint|
+vizcaino|camino|mediodia|polvo|coche|vizcaino+dama|fight|
+batanes|batanes|noche||||watch|
+dorotea|encinar|mediodia|||dorotea+cardenio|talk|
+montesinos|cueva|tarde||||bow|
+retablo|ventainterior|tarde||retablo|titiritero|watch|
+lecho|alcoba|tarde|||ama+cura|sleep|alonso
+salida|camino|amanecer||||walk|
+ev_adios|camino|ocaso||||walk|
+yangueses|vado|mediodia|||arriero*2+yegua|fight|
+manteo|venta|noche||manta|maritornes+arriero|toss|
+encamisados|camino|noche|antorchas||encamisado*3|fight|
+cardenio|sierra|tarde|||cardenio|talk|
+curioso|ventainterior|noche|||cura+anselmo|talk|
+cautivo|ventainterior|noche|||zoraida|talk|
+jaula|camino|tarde||carrojaula|canonigo+cura|talk|
+disciplinantes|camino|tarde|||penitente*2+clerigo|fight|
+sanson|plaza|mediodia|||sanson+teresa|talk|
+muerte|camino|tarde||carreta|muerte+comediante|talk|
+gaban|camino|mediodia|||diego|talk|
+lorenzo|casanoble|tarde|||diego+estudiante|talk|
+trifaldi|salon|tarde|||duena+duque|talk|
+rodriguez|alcoba|noche|||duena+altisidora|talk|
+ricote|camino|tarde|||ricote+peregrino|talk|
+tosilos|liza|mediodia|polvo||tosilos|fight|
+claudia|pinar|tarde|||claudia|talk|
+roque|pinar|tarde|||roque+bandolero|talk|
+galeras|playa|mediodia||galeras|ana+ricote+soldado|talk|
+arcadia|llanura|ocaso|||cabrero+oveja*2|talk|
+cerdos|camino|noche|polvo||cerdo*3|fight|
+altisidora|salon|noche||catafalco|altisidora+duque+duquesa|talk|
+ev_ladrones|camino|tarde|||bandolero*2|fight|
+ev_caida|llanura|mediodia||pedregal||faint|
+ev_aguas|llanura|mediodia||charco|oveja*2|watch|
+ev_cabrero_med|llanura|tarde|||cabrero|talk|
+ev_calentura|majada|noche||||sleep|
+ev_c_hambre|llanura|mediodia||||bow|
+ev_c_locura|entrepaginas|noche||||bow|
+ev_c_honor|venta|ocaso|||ventero+arriero|talk|
+ev_c_sancho|camino|ocaso||||talk|
+ev_c_salud|camino|mediodia||||bow|
+ev_deshonra|plaza|ocaso|||estudiante*2|talk|
+ev_muerte|camino|ocaso||||faint|
+ev_locura|entrepaginas|noche||||bow|
+ev_barca|rio|tarde|lluvia_l|barca||watch|
+ev_puente|camino|mediodia||puente|alguacil|talk|
+ev_pregonero|plaza|mediodia|||pregonero|talk|
+ev_bandolero|pinar|tarde|||bandolero|talk|
+ev_pescador|playa|mediodia|||pescador|talk|
+ev_moza|camino|mediodia|||moza|bow|
+ev_niebla|llanura|amanecer|niebla|||walk|
+ev_lluvia|vado|tarde|lluvia|||watch|
+ev_rucio|majada|noche||||talk|
+ev_peregrinos|camino|mediodia|||peregrino*2|talk|
+torneo|plaza|mediodia|polvo||estudiante+cabrero|toss|
+sancho_cuenta|camino|tarde||||talk|
+diego_frio|casanoble|tarde|||diego|talk|
+cirujano|plaza|mediodia|||barbero|talk|`;
+  const E = {};
+  T.split('\n').forEach(l => {
+    const p = l.split('|');
+    E[p[0]] = { f: p[1], h: p[2] === 'tarde' ? 'mediodia' : p[2], tarde: p[2] === 'tarde', clima: p[3] ? p[3].split(',') : [], props: p[4] ? p[4].split(',') : [], r: p[5] ? p[5].split('+') : [], an: p[6] || '', l: p[7] || 'dq' };
+  });
+  // Región → variante del camino real
+  const REG = { bar: 'costa', zar: 'ribera', ate: 'ribera', ari: 'ribera', sig: 'ribera', mad: 'olivar', tol: 'olivar', alc: 'olivar', sie: 'olivar' };
+  V.ESC = E;
+  V.escena = function (id) {
+    let e = E[id];
+    if (!e) e = { f: 'camino', h: 'mediodia', clima: [], props: [], r: [], an: '', l: 'dq' };
+    const st = (typeof stOf === 'function') ? stOf(id) : { an: 'watch' };
+    const reg = (typeof loc === 'function') ? loc(id) : 'arg';
+    return Object.assign({}, e, { an: e.an || st.an || 'watch', cap: st.cap || '', variante: REG[reg] || 'mancha', reg });
+  };
+})(VIS);
+/* ===== VIS · motor: un lienzo, un bucle, capas, actores, luz y transiciones ===== */
+(function (V) {
+  'use strict';
+  const { B, C, HEX, rng, cache } = V;
+  const H = 180, GY = V.GY;
+  let cv = null, ctx = null, W = 320, OX = 40; // ancho interno elástico 320-400 y desplazamiento de fondos
+  let S = null; // escena actual
+  let raf = 0, visible = true, enVista = true, t0 = 0, ultimo = 0;
+  const fpsBuf = [];
+  const snap = { cv: null }; // fotograma anterior para transiciones
+  const NOSAN_EXTRA = ['ev_adios', 'ev_c_sancho_no'];
+
+  V.soportado = function () {
+    if (V._sop !== undefined) return V._sop;
+    if (/jsdom/i.test(navigator.userAgent || '')) return (V._sop = false);
+    try { const c = document.createElement('canvas'); V._sop = !!(c.getContext && c.getContext('2d')); } catch (e) { V._sop = false; }
+    return V._sop;
+  };
+
+  /* ---------- lienzo y escalado entero ---------- */
+  function crear() {
+    cv = document.createElement('canvas'); cv.className = 'vis-cv'; cv.setAttribute('aria-hidden', 'true');
+    ctx = cv.getContext('2d'); ctx.imageSmoothingEnabled = false;
+    cv.addEventListener('click', () => V.dialogo && V.dialogo.saltar());
+    if ('IntersectionObserver' in window) new IntersectionObserver(es => { enVista = es[0].isIntersecting; pedir(); }).observe(cv);
+    document.addEventListener('visibilitychange', () => { visible = !document.hidden; pedir(); });
+    addEventListener('resize', () => { medir(); dibujar(performance.now()); });
+  }
+  function medir() {
+    const p = cv.parentNode; if (!p) return;
+    const cssW = p.clientWidth || 640, dpr = window.devicePixelRatio || 1;
+    const s = Math.max(1, Math.floor(cssW * dpr / 320));
+    const w = Math.max(320, Math.min(400, Math.round(cssW * dpr / s)));
+    if (w !== W || cv.width !== w) { W = w; cv.width = W; cv.height = H; ctx.imageSmoothingEnabled = false; }
+    OX = Math.round((V.W0 - W) / 2);
+    cv.style.aspectRatio = W + ' / ' + H;
+    if (S) colocar(S, true);
+  }
+  V.ancho = () => W;
+
+  /* ---------- hora efectiva y tensión ---------- */
+  function horaDe(e) { return e.h; }
+  function tension() {
+    if (typeof state === 'undefined' || !state) return { cor: 0, sal: 0, ham: 0 };
+    const k = (v, lim) => Math.max(0, Math.min(1, (lim - v) / lim));
+    return { cor: k(state.sanity, 25), sal: k(state.health, 25), ham: k(100 - state.hunger, 20) };
+  }
+  V.tension = tension;
+
+  /* ---------- capas de fondo cacheadas ---------- */
+  function capas(e) {
+    const key = e.f + '|' + e.variante + '|' + e.props.join(',') + '|' + e.h;
+    return cache('L|' + key, () => {
+      const L = V.pintarFondo(e.f, { hora: e.h, seed: hash(e.f + e.variante) , variante: e.variante, props: e.props });
+      const out = { luces: L.luces, anim: L.anim, interior: L.interior, papel: L.papel };
+      for (const k of ['cielo', 'lejos', 'medio', 'suelo', 'frente']) out[k] = L[k].canvas(e.h);
+      return out;
+    });
+  }
+  function hash(s) { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; }
+
+  /* ---------- reparto y marcas ---------- */
+  function montarReparto(e, id) {
+    const A = [], sinSancho = (typeof state !== 'undefined' && state.alone) || (typeof NOSAN !== 'undefined' && NOSAN.includes(id)) || NOSAN_EXTRA.includes(id);
+    const L = capas(e), dentro = L.interior || e.f === 'patio' || e.f === 'liza' && e.an === 'fly';
+    const bacia = typeof state !== 'undefined' && state.inventory && state.inventory.yelmo > 0;
+    const an = e.an;
+    if (e.l === 'alonso') {
+      if (an === 'sleep') A.push({ id: 'alonso', rol: 'izq', m: 0.62, pose: 'tendido', fija: 1, y: GY - 34 });
+      else A.push({ id: 'alonso', rol: 'izq', m: 0.40, pose: an === 'read' ? 'leer' : 'reposo' });
+    } else {
+      const montado = !dentro && !['bow', 'sleep', 'faint'].includes(an) && !['booktrap', 'barco', 'jaula'].includes(id);
+      if (id === 'jaula') { A.push({ id: 'dq', rol: 'dq', m: 0.47, pose: 'reposo', enjaulado: 1, extra: bacia ? 'bacia' : '' }); A.push({ id: 'rocinante', rol: 'montura', m: 0.24, pose: 'reposo' }); }
+      else if (an === 'fly') A.push({ id: 'dq', rol: 'dq', m: 0.40, pose: 'montado', vuelo: 1, extra: bacia ? 'bacia' : '', sobre: e.f === 'rio' ? 'barca' : 'clavileno' });
+      else if (an === 'sleep' || an === 'faint') { A.push({ id: 'dq', rol: 'dq', m: 0.38, pose: 'tendido', extra: bacia ? 'bacia' : '' }); if (!dentro) A.push({ id: 'rocinante', rol: 'montura', m: 0.20, pose: 'reposo' }); }
+      else if (montado) A.push({ id: 'dq', rol: 'dq', m: 0.37, pose: 'montado', mont: 'rocinante', extra: bacia ? 'bacia' : '' });
+      else { A.push({ id: 'dq', rol: 'dq', m: 0.36, pose: an === 'bow' ? 'arrodillado' : 'reposo', extra: bacia ? 'bacia' : '' }); if (!dentro && an === 'bow') A.push({ id: 'rocinante', rol: 'montura', m: 0.18, pose: 'reposo' }); }
+      if (!sinSancho) {
+        if (an === 'fly') A.push({ id: 'sancho', rol: 'sancho', m: 0.40, pose: 'montado', vuelo: 1, detras: 1, sobre: e.f === 'rio' ? 'barca' : 'clavileno' });
+        else if (an === 'toss' && id === 'manteo') A.push({ id: 'sancho', rol: 'sancho', m: 0.70, pose: 'golpe', manteo: 1 });
+        else if (an === 'sleep' && e.l !== 'alonso') A.push({ id: 'sancho', rol: 'sancho', m: 0.16, pose: 'tendido' });
+        else if (an === 'walk' && !dentro) A.push({ id: 'sancho', rol: 'sancho', m: 0.15, pose: 'montado', mont: 'rucio' });
+        else { A.push({ id: 'sancho', rol: 'sancho', m: dentro ? 0.20 : 0.19, pose: an === 'eat' ? 'hablar' : 'reposo', come: an === 'eat' }); if (!dentro) A.push({ id: 'rucio', rol: 'montura', m: 0.07, pose: 'reposo', fondo: 1, y: GY - 3 }); }
+      }
+    }
+    // derecha
+    let der = [];
+    for (const r of e.r) { const m = r.match(/^(\w+)\*(\d)$/); const n = m ? m[1] : r, c = m ? +m[2] : 1; for (let i = 0; i < c; i++) der.push(n); }
+    if (id === 'manteo') der = ['maritornes', 'arriero'];
+    const ini = 0.62, fin = 0.94, paso = der.length > 1 ? Math.min(0.1, (fin - ini) / (der.length - 1)) : 0;
+    der.forEach((n, i) => {
+      if (n === 'rocinante_suelto') { A.push({ id: 'rocinante', rol: 'npc', m: 0.74, pose: 'reposo', flip: 1 }); return; }
+      const o = { id: n, rol: 'npc', m: (der.length === 1 ? 0.72 : ini + paso * i) + (V.esAnimal(n) ? 0 : 0), pose: 'reposo', flip: 1, k: i };
+      if (id === 'manteo') o.m = i ? 0.84 : 0.56;
+      if (n === 'oveja' || n === 'cerdo') o.y = GY + (i % 2) * 4 - 2;
+      A.push(o);
+    });
+    return A;
+  }
+  function colocar(S, sinEntrada) {
+    for (const a of S.actores) {
+      a.tx = Math.round(a.m * W); a.y = a.y || GY;
+      if (sinEntrada || a.fija || a.tendido || V.menosMov() || S.quieto) { a.x = a.tx; a.entrando = 0; }
+    }
+  }
+
+  /* ---------- cambio de escena ---------- */
+  V.cambiar = function (id, o) {
+    o = o || {};
+    if (!cv) crear();
+    const e = V.escena(id);
+    const nuevo = !S || S.id !== id || o.forzar;
+    if (!nuevo) { S.e = e; refrescarReparto(); pedir(); return; }
+    // fotograma anterior para la transición
+    if (S && !V.menosMov() && cv.width) { snap.cv = snap.cv || document.createElement('canvas'); snap.cv.width = cv.width; snap.cv.height = cv.height; snap.cv.getContext('2d').drawImage(cv, 0, 0); }
+    S = { id, e, t: performance.now(), actores: [], part: [], trans: (S && !V.menosMov()) ? (o.pagina ? 'pagina' : 'iris') : null, quieto: false, habla: null };
+    S.actores = montarReparto(e, id);
+    S.actores.forEach(a => { a.entrando = 1; a.x = a.rol === 'npc' ? W + 30 + (a.k || 0) * 14 : -40 - (a.rol === 'sancho' ? 30 : 0); });
+    medir(); colocar(S, false);
+    if (!V.menosMov()) S.actores.forEach(a => { if (a.entrando) { a.dur = 1.1 + Math.abs(a.tx - a.x) / 400; a.x0 = a.x; } });
+    pedir(); dibujar(performance.now());
+  };
+  function refrescarReparto() {
+    // el estado cambió sin cambiar de escena (p. ej. se usó un objeto): conserva posiciones
+    const bacia = state.inventory && state.inventory.yelmo > 0;
+    S.actores.forEach(a => { if (a.id === 'dq') a.extra = bacia ? 'bacia' : ''; });
+  }
+  V.colocarEn = function (fig) {
+    if (!cv) crear();
+    if (cv.parentNode !== fig) fig.insertBefore(cv, fig.firstChild);
+    medir();
+  };
+  V.habla = function (quien) { if (S) { S.habla = quien; pedir(); } };
+
+  /* ---------- bucle ---------- */
+  V.ganchos = []; // tareas que comparten el bucle (p. ej. el texto letra a letra)
+  function puedeDibujar() {
+    if (!S || !visible || !enVista) return false;
+    if (typeof MENUON === 'function' && MENUON()) return false;
+    if (document.querySelector('#bookModal.show,#mktModal.show')) return false;
+    if (V.menosMov()) return !!(S.dados && !S.dados.fin);
+    return true;
+  }
+  function hayQueAnimar() {
+    if (!visible) return false;
+    return V.ganchos.some(g => g.activo()) || puedeDibujar();
+  }
+  function pedir() { if (!raf && hayQueAnimar()) { ultimo = 0; raf = requestAnimationFrame(tick); } }
+  V.pedir = pedir;
+  function tick(now) {
+    raf = 0;
+    if (!hayQueAnimar()) return;
+    for (const g of V.ganchos) if (g.activo()) g.paso(now);
+    if (puedeDibujar()) {
+      if (ultimo) { fpsBuf.push(1000 / Math.max(1, now - ultimo)); if (fpsBuf.length > 120) fpsBuf.shift(); }
+      ultimo = now;
+      dibujar(now);
+    } else ultimo = 0;
+    raf = requestAnimationFrame(tick);
+  }
+  V.fps = () => fpsBuf.length ? fpsBuf.reduce((a, b) => a + b, 0) / fpsBuf.length : 0;
+  V.activo = () => !!raf;
+
+  /* ---------- composición de un fotograma ---------- */
+  function dibujar(now) {
+    if (!S || !ctx) return;
+    const t = (now - S.t) / 1000, quieto = V.menosMov(), tt = quieto ? 0 : t;
+    const e = S.e, L = capas(e), hora = e.h;
+    // cámara: en escenas de camino el paisaje se desplaza
+    const marcha = e.an === 'walk' && !quieto ? tt * 14 : 0;
+    const tn = tension();
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+    ctx.fillStyle = HEX[hora][0]; ctx.fillRect(0, 0, W, H);
+    capa(L.cielo, 0);
+    capa(L.lejos, marcha * 0.15);
+    const ond = (tn.cor > 0.3 && !quieto) ? Math.round(Math.sin(tt * 1.7) * tn.cor * 1.5) : 0;
+    ctx.save(); ctx.translate(0, ond); capa(L.medio, marcha * 0.4); ctx.restore();
+    animFondo(L, tt, hora, 'medio', marcha * 0.4);
+    capa(L.suelo, marcha);
+    animFondo(L, tt, hora, 'suelo', marcha);
+    // actores (de atrás a delante)
+    actualizarActores(tt, quieto);
+    const orden = S.actores.slice().sort((a, b) => (a.fondo ? -1 : 0) - (b.fondo ? -1 : 0) || a.y - b.y);
+    for (const a of orden) pintarActor(a, tt, hora);
+    animFondo(L, tt, hora, 'delante', marcha);
+    particulas(tt, quieto, hora, e, L);
+    capa(L.frente, marcha * 1.6);
+    // luz
+    luces(L, tt, hora, e);
+    if (e.tarde) { ctx.globalCompositeOperation = 'soft-light'; ctx.fillStyle = 'rgba(255,170,90,.35)'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
+    if (L.papel && hora === 'noche') { ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = 'rgba(120,110,170,.45)'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
+    postTension(tn, tt, quieto);
+    if (S.dados) dados(now);
+    transicion(t, quieto);
+  }
+  function capa(c, dx) {
+    if (!dx) { ctx.drawImage(c, -OX, 0); return; }
+    const w = c.width, x = -((Math.round(dx) % w) + w) % w - OX;
+    ctx.drawImage(c, x, 0); ctx.drawImage(c, x + w, 0); if (x + w * 2 < W) ctx.drawImage(c, x + w * 2, 0);
+  }
+
+  /* ---------- actores ---------- */
+  function actualizarActores(t, quieto) {
+    for (const a of S.actores) {
+      if (a.entrando && !quieto) {
+        const k = Math.min(1, t / a.dur); a.x = Math.round(a.x0 + (a.tx - a.x0) * (1 - Math.pow(1 - k, 2)));
+        if (k >= 1) { a.entrando = 0; a.x = a.tx; }
+      } else if (a.entrando) { a.entrando = 0; a.x = a.tx; }
+    }
+  }
+  const FPS_ANIM = 8;
+  function poseDe(a, t) {
+    const f = Math.floor(t * FPS_ANIM);
+    const an = S.e.an, quien = S.habla;
+    if (a.entrando) return a.pose === 'montado' ? ['montado', 0] : ['caminar', f & 3];
+    if (a.pose === 'tendido' || a.pose === 'leer' || a.pose === 'arrodillado') return [a.pose === 'tendido' ? 'reposo' : a.pose, Math.floor(t * 1.2) & 1];
+    if (a.come) return ['hablar', Math.floor(t * 6) & 1];
+    if (a.reac && t < a.reac) return ['golpe', a.reacF || 0];
+    if (an === 'walk' && !a.flip && a.pose !== 'montado') return ['caminar', f & 3];
+    if (a.pose === 'montado') return ['montado', 0];
+    // ¿quién habla?
+    if (quien && ((quien === 'sancho' && a.id === 'sancho') || (quien === 'dq' && a.rol === 'dq') || (quien === 'npc' && a.rol === 'npc' && !a.k && !V.esAnimal(a.id))))
+      return ['hablar', Math.floor(t * 5) & 1];
+    if (an === 'talk' && !quien && a.rol === 'npc' && !a.k && !V.esAnimal(a.id) && (Math.floor(t / 2.4) % 2 === 1)) return ['hablar', Math.floor(t * 5) & 1];
+    return ['reposo', Math.floor(t * 1.2) & 1];
+  }
+  function pintarActor(a, t, hora) {
+    let [pose, f] = poseDe(a, t);
+    let x = a.x, y = a.y || GY, dy = 0, rot = 0;
+    const an = S.e.an;
+    // actuaciones
+    if (an === 'fight' && !a.entrando && !V.menosMov()) {
+      const ciclo = 3.4, k = (t % ciclo) / ciclo, obj = S.actores.find(o => o.rol === 'npc');
+      const meta = obj ? obj.x - 34 : Math.round(W * 0.55);
+      if (a.rol === 'dq') {
+        const d = Math.max(0, meta - a.tx);
+        if (k > 0.45 && k < 0.62) { x = a.tx + d * ((k - 0.45) / 0.17); pose = a.pose === 'montado' ? 'montado' : 'caminar'; f = Math.floor(t * 12) & 3; a.carga = 1; }
+        else if (k >= 0.62 && k < 0.74) { x = a.tx + d; pose = a.pose === 'montado' ? 'montado' : 'golpe'; f = 1; a.golpeando = 1; if (!S.golpeT || t - S.golpeT > 1) { S.golpeT = t; polvo(x + 20, GY, 10); if (obj) { obj.reac = t + 0.5; obj.reacF = 0; } } }
+        else if (k >= 0.74 && k < 0.9) { x = a.tx + d * (1 - (k - 0.74) / 0.16); a.carga = 0; }
+        else a.carga = 0;
+        S.dqx = x;
+      }
+      if (a.rol === 'montura' && a.id === 'rucio') {}
+      if (obj && a === obj && a.reac && t < a.reac) x += 3;
+    }
+    if (a.manteo) { const k = (t % 1.4) / 1.4; dy = -Math.round(Math.sin(k * Math.PI) * 54); rot = k * Math.PI * 2 * (k < 0.5 ? 1 : 1); pose = 'golpe'; f = 0; }
+    if (a.vuelo) { dy = -18 - Math.round(Math.sin(t * 1.6) * 4); if (a.sobre === 'barca') dy = -10 + Math.round(Math.sin(t * 2.1) * 1.5); }
+    if (an === 'plantado' && a.rol === 'dq') { pose = 'montado'; if ((t % 3) > 2.4) dy = -1; }
+    // montura
+    if (a.pose === 'montado' && (a.mont || a.sobre)) {
+      const mid = a.mont || a.sobre;
+      if (mid === 'barca') return barcaConJinetes(a, x, y + dy, t, hora);
+      const mPose = (a.entrando || (an === 'walk' && !a.flip) || a.carga) ? 'caminar' : 'reposo';
+      const mf = mPose === 'caminar' ? Math.floor(t * (a.carga ? 12 : FPS_ANIM)) & 3 : (an === 'plantado' && (t % 3) > 2.2 ? 1 : Math.floor(t * 0.8) & 1);
+      const mc = V.actorCanvas(mid, mPose, mf, hora, false);
+      const bob = mPose === 'caminar' ? (mf & 1) : 0;
+      if (a.detras) x -= 8;
+      if (!(a.detras && mid === 'clavileno')) ctx.drawImage(mc, x - mc._ax, y + dy - mc._ay);
+      const sp = V.SILLA[mid], hx = x - mc._ax + sp[0], hy = y + dy - mc._ay + sp[1] - bob;
+      const rc = V.actorCanvas(a.id, 'montado', 0, hora, false, a.extra);
+      // la cadera del jinete (alto*0.44 sobre los pies) va en la silla
+      const sp2 = V.spec(a.id), cad = Math.round(sp2.alto * (sp2.cuerpo === 'grueso' ? 0.36 : 0.44));
+      ctx.drawImage(rc, hx - rc._ax, hy + cad - rc._ay);
+      brillos(a, hx, hy + cad, t, sp2);
+      return;
+    }
+    const c = V.actorCanvas(a.id, pose === 'tendido' ? 'reposo' : pose, f, hora, !!a.flip, a.extra);
+    if (a.pose === 'tendido') {
+      ctx.save(); ctx.translate(x, y + dy - 3); ctx.rotate(-Math.PI / 2); ctx.drawImage(c, -c._ay + 2, -c._ax); ctx.restore();
+      if (!V.menosMov() && Math.floor(t) % 3 === 0 && (t % 1) < 0.03) S.part.push({ k: 'z', x: x + 6, y: y - 12, vx: 4, vy: -8, v: 2.2, t: 0 });
+      return;
+    }
+    if (rot) { ctx.save(); ctx.translate(x, y + dy - 18); ctx.rotate(rot); ctx.drawImage(c, -c._ax, -c._ay + 18); ctx.restore(); return; }
+    if (a.enjaulado) { ctx.drawImage(c, x - c._ax, y - 10 - c._ay); return; }
+    ctx.drawImage(c, x - c._ax, y + dy - c._ay);
+    if (a.id === 'dq') brillos(a, x, y + dy - Math.round(V.spec('dq').alto * 0.44), t, V.spec('dq'));
+    if (a.entrando && !V.menosMov() && Math.random() < 0.15) polvo(x, y, 1);
+  }
+  function brillos(a, hx, hy, t, sp) {
+    // brillo que recorre el yelmo o la bacía cada pocos segundos
+    if (a.id !== 'dq' || V.menosMov()) return;
+    const k = t % 4.2; if (k > 0.5) return;
+    const top = hy - Math.round(sp.alto * 0.3) - 10, x = hx - 3 + Math.round(k * 16);
+    ctx.fillStyle = HEX[S.e.h][31]; ctx.fillRect(x, top - 1, 1, 1); if (k > 0.1 && k < 0.35) { ctx.fillRect(x - 1, top - 1, 3, 1); ctx.fillRect(x, top - 2, 1, 3); }
+  }
+  function barcaConJinetes(a, x, y, t, hora) {
+    if (a.id !== 'dq') return; // la barca se pinta una vez, con los dos
+    const P = HEX[hora];
+    const sancho = S.actores.find(o => o.id === 'sancho');
+    const rd = V.actorCanvas('dq', 'reposo', 0, hora, false, a.extra), rs = sancho ? V.actorCanvas('sancho', 'reposo', 0, hora, false) : null;
+    if (rs) ctx.drawImage(rs, x - 18 - rs._ax, y - rs._ay + 8);
+    ctx.drawImage(rd, x + 6 - rd._ax, y - rd._ay + 10);
+    ctx.fillStyle = P[19]; ctx.fillRect(x - 34, y - 2, 70, 6); ctx.fillStyle = P[18]; ctx.fillRect(x - 30, y + 4, 62, 4); ctx.fillStyle = P[0]; ctx.fillRect(x - 34, y - 3, 70, 1);
+  }
+
+  /* ---------- props animados ---------- */
+  function animFondo(L, t, hora, fase, dx) {
+    const P = HEX[hora];
+    for (const a of L.anim) {
+      const capaDe = { aspas: 'medio', aspasTinta: 'medio', llama: 'medio', fuego: 'suelo', agua: 'suelo', olas: 'medio', bandera: 'medio', mazos: 'medio', barca: 'suelo', clavileno: 'delante', manta: 'delante', letras: 'delante' }[a.t] || 'medio';
+      if (capaDe !== fase) continue;
+      const x = a.x - OX;
+      if (a.t === 'aspas' || a.t === 'aspasTinta') {
+        const n = 24, i = Math.floor(((t * (a.t === 'aspas' ? 0.35 : 0.6)) % 1) * n) % n;
+        const c = cache('asp|' + a.s + '|' + i + '|' + hora + '|' + a.t, () => aspas(a.s, i / n * Math.PI / 2, a.t === 'aspasTinta').canvas(hora));
+        ctx.drawImage(c, x - (c.width >> 1) - (fase === 'medio' ? Math.round(dx) : 0), a.y - (c.height >> 1));
+      } else if (a.t === 'llama' || a.t === 'fuego') {
+        const s = a.s || 0.5, f = Math.floor(t * 9 + a.x) % 4;
+        const c = cache('fu|' + s + '|' + f + '|' + hora, () => fuego(s, f).canvas(hora));
+        ctx.drawImage(c, x - (c.width >> 1), a.y - c.height + 1);
+      } else if (a.t === 'agua' || a.t === 'olas') {
+        ctx.fillStyle = P[a.t === 'olas' ? 30 : 4];
+        for (let i = 0; i < 26; i++) { const xx = ((i * 53 + t * (8 + i % 3 * 4)) % (W + 20)) - 10, yy = (a.y || 120) + ((i * 7) % (a.h || 8)); ctx.fillRect(Math.round(xx), Math.round(yy), 3 + (i % 3), 1); }
+        if (a.t === 'olas') { ctx.fillStyle = P[30]; const k = (Math.sin(t * 1.3) + 1) / 2; ctx.fillRect(0, Math.round(122 + k * 3), W, 1); }
+      } else if (a.t === 'bandera') {
+        const f = Math.floor(t * 4) & 1; ctx.fillStyle = P[19]; ctx.fillRect(x, a.y - 14, 1, 16); ctx.fillStyle = P[20];
+        for (let i = 0; i < 10; i++) ctx.fillRect(x + 1 + i, a.y - 14 + Math.round(Math.sin(i * 0.8 + t * 6) * (f ? 1 : 0.6)), 1, 5);
+      } else if (a.t === 'mazos') {
+        const k = Math.abs(Math.sin(t * 3.2)); ctx.strokeStyle = P[18]; ctx.fillStyle = P[18];
+        for (let i = 0; i < 2; i++) { const ang = (i ? k : 1 - k) * 0.9, hx = x + i * 10, hy = a.y; ctx.fillRect(Math.round(hx + Math.sin(ang) * 14) - 2, Math.round(hy + Math.cos(ang) * 14) - 2, 5, 5); ctx.fillRect(hx, hy, 1, 1); }
+        if (k > 0.97 && !V.menosMov()) polvo(x + 4, a.y + 24, 2);
+      } else if (a.t === 'barca') {
+        if (S.e.an === 'fly') continue; const yy = a.y + Math.round(Math.sin(t * 2) * 1);
+        ctx.fillStyle = P[19]; ctx.fillRect(x - 24, yy, 48, 4); ctx.fillStyle = P[18]; ctx.fillRect(x - 20, yy + 4, 40, 3); ctx.fillStyle = P[0]; ctx.fillRect(x - 24, yy - 1, 48, 1);
+      } else if (a.t === 'clavileno') {
+        const dq = S.actores.find(o => o.rol === 'dq');
+        const c = V.actorCanvas('clavileno', 'reposo', 0, hora, false);
+        const yy = a.y - (dq && dq.vuelo ? 18 + Math.round(Math.sin(t * 1.6) * 4) : 0);
+        ctx.drawImage(c, (dq ? dq.x : x) - c._ax, yy - c._ay);
+      } else if (a.t === 'letras' && !V.menosMov()) {
+        ctx.fillStyle = P[29];
+        const r = rng(7); for (let i = 0; i < 14; i++) { const bx = r() * W, by = r() * 110, sp = 3 + r() * 6; const yy = ((by - t * sp) % 120 + 120) % 120; const xx = bx + Math.sin(t + i) * 6; const g = V.cache('gl|' + i + '|' + S.e.h, () => { const b = new B(6, 8); V.texto(b, 'ABCDEFGHILMNOPRSTUV'[i % 19], 0, 0, C.pano); return b.canvas(S.e.h); }); ctx.globalAlpha = 0.65; ctx.drawImage(g, Math.round(xx), Math.round(yy)); ctx.globalAlpha = 1; }
+      }
+    }
+    if (fase === 'delante') propsDelante(t, hora);
+  }
+  function propsDelante(t, hora) {
+    const P = HEX[hora], e = S.e;
+    if (e.props.includes('manta')) {
+      const m = S.actores.filter(a => a.rol === 'npc'); if (m.length >= 2) {
+        const y = GY - 18 + Math.round(Math.sin(t * 4.5) * 2); ctx.fillStyle = P[30]; ctx.fillRect(m[0].x + 6, y, m[1].x - m[0].x - 12, 3); ctx.fillStyle = P[17]; ctx.fillRect(m[0].x + 6, y + 3, m[1].x - m[0].x - 12, 1);
+      }
+    }
+    if (e.props.includes('carrojaula')) {
+      const x = Math.round(W * 0.47), y = GY;
+      ctx.fillStyle = P[18]; ctx.fillRect(x - 30, y - 16, 60, 5); ctx.fillStyle = P[19]; ctx.beginPath(); ctx.arc(x - 18, y - 6, 6, 0, 6.3); ctx.arc(x + 18, y - 6, 6, 0, 6.3); ctx.fill();
+      ctx.fillStyle = P[25]; for (let i = 0; i < 9; i++) ctx.fillRect(x - 26 + i * 7, y - 56, 1, 40); ctx.fillRect(x - 27, y - 57, 56, 2);
+      if (S.id === 'leones') { const c = V.actorCanvas('leon', Math.floor(t / 2.6) % 3 === 2 ? 'hablar' : 'reposo', Math.floor(t * 4) & 1, hora, true); ctx.drawImage(c, x - c._ax, y - 16 - c._ay); for (let i = 0; i < 9; i++) ctx.fillRect(x - 26 + i * 7, y - 56, 1, 40); }
+    }
+    if (e.props.includes('carreta') || e.props.includes('coche')) {
+      const x = Math.round(W * 0.86), y = GY - 4, coche = e.props.includes('coche');
+      ctx.fillStyle = P[coche ? 19 : 18]; ctx.fillRect(x - 26, y - (coche ? 30 : 14), 46, coche ? 24 : 8); ctx.fillStyle = P[coche ? 20 : 19]; ctx.fillRect(x - 26, y - (coche ? 32 : 16), 46, 2);
+      if (coche) { ctx.fillStyle = P[4]; ctx.fillRect(x - 18, y - 26, 10, 9); ctx.fillRect(x + 2, y - 26, 10, 9); }
+      ctx.fillStyle = P[19]; ctx.beginPath(); ctx.arc(x - 16, y, 7, 0, 6.3); ctx.arc(x + 12, y, 7, 0, 6.3); ctx.fill(); ctx.fillStyle = P[18]; ctx.fillRect(x - 17, y - 1, 3, 3); ctx.fillRect(x + 11, y - 1, 3, 3);
+    }
+  }
+  function aspas(s, ang, tinta) {
+    const R = Math.round(22 * s), b = new B(R * 2 + 3, R * 2 + 3), c = R + 1;
+    for (let k = 0; k < 4; k++) {
+      const a = ang + k * Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a), px = -sa, py = ca;
+      const P = (d, w) => [c + ca * d + px * w, c + sa * d + py * w];
+      if (tinta) { b.line(c, c, c + ca * R, c + sa * R, C.pano); b.line(...P(R * 0.3, 3), ...P(R, 3), C.pano); continue; }
+      const q = [...P(R * 0.25, 0), ...P(R, 0), ...P(R, 5 * s), ...P(R * 0.25, 5 * s)];
+      b.poly(q, C.lino); b.line(c, c, c + ca * R, c + sa * R, C.maderaO);
+      for (let d = R * 0.35; d < R; d += 4) b.line(...P(d, 0), ...P(d, 5 * s), C.madera);
+      b.line(...P(R * 0.25, 5 * s), ...P(R, 5 * s), C.madera);
+    }
+    b.circ(c, c, 2, C.maderaO);
+    return b;
+  }
+  function fuego(s, f) {
+    const w = Math.round(16 * s), h = Math.round(20 * s), b = new B(w, h), r = rng(f * 7 + 3);
+    for (let i = 0; i < 3; i++) {
+      const cx = w / 2 + (r() - 0.5) * w * 0.4, hh = h * (0.6 + r() * 0.4), ww = w * (0.28 + r() * 0.12);
+      b.poly([cx - ww, h, cx + ww, h, cx + (r() - 0.5) * 3, h - hh], C.brasa);
+    }
+    b.poly([w / 2 - w * 0.2, h, w / 2 + w * 0.2, h, w / 2 + (f & 1 ? 1 : -1), h - h * 0.55], C.oro);
+    b.poly([w / 2 - w * 0.08, h, w / 2 + w * 0.08, h, w / 2, h - h * 0.3], C.destello);
+    return b;
+  }
+
+  /* ---------- partículas y clima ---------- */
+  function polvo(x, y, n) { if (!S || V.menosMov()) return; for (let i = 0; i < n; i++) S.part.push({ k: 'p', x: x + (Math.random() - 0.5) * 8, y: y - Math.random() * 3, vx: (Math.random() - 0.5) * 14, vy: -4 - Math.random() * 8, v: 0.6 + Math.random() * 0.6, t: 0 }); }
+  V.polvo = polvo;
+  let tAnt = 0;
+  function particulas(t, quieto, hora, e, L) {
+    const P = HEX[hora], dt = Math.min(0.05, Math.max(0, t - tAnt)); tAnt = t;
+    const cl = e.clima;
+    if (!quieto) {
+      if (cl.includes('polvo') && Math.random() < 0.3) S.part.push({ k: 'm', x: Math.random() * W, y: 100 + Math.random() * 60, vx: 6 + Math.random() * 6, vy: -1, v: 3, t: 0 });
+      if (e.an === 'walk' && Math.random() < 0.25) { const dq = S.actores.find(a => a.rol === 'dq'); if (dq) polvo(dq.x - 8, GY, 1); }
+      if (cl.includes('luciernagas') && S.part.filter(p => p.k === 'l').length < 14) S.part.push({ k: 'l', x: Math.random() * W, y: 90 + Math.random() * 60, vx: 0, vy: 0, v: 6 + Math.random() * 6, t: 0, f: Math.random() * 6 });
+      if (L.anim.some(a => a.t === 'fuego') && Math.random() < 0.25) { const f = L.anim.find(a => a.t === 'fuego'); S.part.push({ k: 'c', x: f.x - OX + (Math.random() - 0.5) * 6, y: f.y - 10, vx: (Math.random() - 0.5) * 6, vy: -14 - Math.random() * 10, v: 1 + Math.random(), t: 0 }); }
+    }
+    // lluvia: directa, determinista (no ocupa la lista)
+    if (cl.includes('lluvia') || cl.includes('lluvia_l')) {
+      const n = cl.includes('lluvia') ? 90 : 36; ctx.fillStyle = P[4]; ctx.globalAlpha = 0.7;
+      for (let i = 0; i < n; i++) { const sp = 160 + (i % 5) * 20, x0 = (i * 97) % (W + 60), y0 = (i * 61) % H; const y = (y0 + t * sp) % (H + 10) - 10, x = (x0 - (t * sp * 0.25)) % (W + 60); const xx = ((x % (W + 60)) + W + 60) % (W + 60) - 30;
+        ctx.fillRect(Math.round(xx), Math.round(y), 1, 4); if (y > GY + 4 && i % 3 === 0) ctx.fillRect(Math.round(xx) - 1, GY + 8 + (i % 12), 3, 1); }
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = 'rgba(30,40,70,.18)'; ctx.fillRect(0, 0, W, H);
+    }
+    if (cl.includes('niebla')) {
+      for (let k = 0; k < 2; k++) { const c = cache('niebla|' + k + '|' + hora, () => { const b = new B(400, 40); b.dith(0, 0, 400, 40, C.T, k ? C.nube : C.cieloH, (x, y) => (1 - Math.abs(y - 20) / 20) * (0.5 + 0.3 * Math.sin(x / 31 + k * 2))); return b.canvas(hora); });
+        const dx = Math.round(-(t * (4 + k * 5)) % 400); ctx.globalAlpha = 0.55; ctx.drawImage(c, dx, 92 + k * 32); ctx.drawImage(c, dx + 400, 92 + k * 32); ctx.globalAlpha = 1; }
+    }
+    if (cl.includes('antorchas')) {
+      for (const a of S.actores) if (a.id === 'encamisado') { L._lucesExtra = L._lucesExtra || []; }
+    }
+    // actualizar y pintar la lista
+    const out = [];
+    for (const p of S.part) {
+      p.t += dt; if (p.t > p.v) continue;
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      if (p.k === 'p') { p.vy += 18 * dt; ctx.fillStyle = P[p.t < p.v * 0.5 ? 9 : 10]; ctx.globalAlpha = 1 - p.t / p.v; ctx.fillRect(Math.round(p.x), Math.round(p.y), 2, 2); }
+      else if (p.k === 'm') { ctx.fillStyle = P[9]; ctx.globalAlpha = 0.5 * (1 - p.t / p.v); ctx.fillRect(Math.round(p.x), Math.round(p.y + Math.sin(p.t * 3) * 2), 1, 1); }
+      else if (p.k === 'l') { p.x += Math.sin(t * 1.3 + p.f) * 0.3; p.y += Math.cos(t * 0.9 + p.f) * 0.2; ctx.fillStyle = P[23]; ctx.globalAlpha = (Math.sin(t * 3 + p.f) + 1) / 2; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); if (ctx.globalAlpha > 0.7) { ctx.globalAlpha = 0.25; ctx.fillRect(Math.round(p.x) - 1, Math.round(p.y) - 1, 3, 3); } }
+      else if (p.k === 'c') { ctx.fillStyle = P[p.t < 0.4 ? 31 : 22]; ctx.globalAlpha = 1 - p.t / p.v; ctx.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); }
+      else if (p.k === 'z') { ctx.globalAlpha = 1 - p.t / p.v; const g = cache('z|' + hora, () => { const b = new B(6, 8); V.texto(b, 'Z', 0, 0, C.lino, C.negro); return b.canvas(hora); }); ctx.drawImage(g, Math.round(p.x), Math.round(p.y)); }
+      else if (p.k === 'num') { ctx.globalAlpha = 1 - Math.max(0, p.t - p.v * 0.6) / (p.v * 0.4); ctx.drawImage(p.cv, Math.round(p.x - p.cv.width / 2), Math.round(p.y)); }
+      ctx.globalAlpha = 1; out.push(p);
+    }
+    S.part = out.length > 160 ? out.slice(-160) : out;
+  }
+
+  /* ---------- luz ---------- */
+  function luces(L, t, hora, e) {
+    const noche = hora === 'noche' || L.interior;
+    const ls = L.luces.slice();
+    if (e.clima.includes('antorchas')) S.actores.forEach(a => { if (a.id === 'encamisado') ls.push({ x: a.x + OX - 2, y: GY - 50, r: 60, f: 1 }); });
+    if (!ls.length) return;
+    ctx.globalCompositeOperation = 'lighter';
+    for (const l of ls) {
+      const fl = l.f && !V.menosMov() ? (Math.sin(t * 13 + l.x) * 0.5 + Math.sin(t * 7.3) * 0.5) * 0.08 : 0;
+      const x = l.x - OX, r = l.r * (1 + fl);
+      const g = ctx.createRadialGradient(x, l.y, 1, x, l.y, r);
+      const col = l.frio ? '120,160,220' : '255,150,60';
+      g.addColorStop(0, 'rgba(' + col + ',' + ((noche ? 0.42 : 0.18) + fl) + ')'); g.addColorStop(1, 'rgba(' + col + ',0)');
+      ctx.fillStyle = g; ctx.fillRect(x - r, l.y - r, r * 2, r * 2);
+      if (l.rayo) { ctx.fillStyle = 'rgba(255,230,170,.08)'; ctx.beginPath(); ctx.moveTo(x - 18, l.y - 18); ctx.lineTo(x + 18, l.y - 18); ctx.lineTo(x + 70, GY + 10); ctx.lineTo(x - 10, GY + 10); ctx.fill(); }
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  /* ---------- tensión: viñeta, grano, desaturación ---------- */
+  let grano = null, granoT = 0;
+  function postTension(tn, t, quieto) {
+    const vig = (col, a) => { const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, W * 0.7); g.addColorStop(0, 'rgba(' + col + ',0)'); g.addColorStop(1, 'rgba(' + col + ',' + a + ')'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); };
+    vig('20,10,30', 0.35); // viñeta suave siempre: enmarca la escena
+    if (tn.cor > 0) vig('70,30,110', 0.55 * tn.cor);
+    if (tn.sal > 0) vig('110,10,10', (0.4 + (quieto ? 0 : Math.sin(t * Math.PI * 2 / 2.4) * 0.15)) * tn.sal);
+    if (tn.ham > 0) {
+      ctx.globalCompositeOperation = 'saturation'; ctx.fillStyle = 'rgba(128,128,128,' + (0.35 * tn.ham) + ')'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over';
+      if (!grano) { grano = document.createElement('canvas'); grano.width = 128; grano.height = 128; const g = grano.getContext('2d'), im = g.createImageData(128, 128); for (let i = 0; i < im.data.length; i += 4) { const v = Math.random() < 0.5 ? 0 : 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = Math.random() < 0.18 ? 40 : 0; } g.putImageData(im, 0, 0); }
+      if (!quieto) granoT = Math.floor(t * 12);
+      const ox = (granoT * 37) % 128, oy = (granoT * 53) % 128;
+      ctx.globalAlpha = Math.min(1, tn.ham * 1.2);
+      for (let x = -ox; x < W; x += 128) for (let y = -oy; y < H; y += 128) ctx.drawImage(grano, x, y);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  /* ---------- transiciones ---------- */
+  function transicion(t, quieto) {
+    if (!S.trans || quieto) { S.trans = null; return; }
+    const P = HEX[S.e.h];
+    if (S.trans === 'iris') {
+      const dq = S.actores.find(a => a.rol === 'dq' || a.rol === 'izq') || { x: W / 2 };
+      const cx = Math.round(dq.tx || W / 2), cy = GY - 30;
+      const T1 = 0.32, T2 = 0.5;
+      if (t < T1 && snap.cv) { ctx.drawImage(snap.cv, 0, 0); iris(cx, cy, (1 - t / T1) * W * 0.9); }
+      else if (t < T1 + T2) iris(cx, cy, Math.pow((t - T1) / T2, 1.4) * W * 0.9);
+      else S.trans = null;
+    } else if (S.trans === 'pagina') {
+      const T = 0.85; if (t >= T || !snap.cv) { S.trans = null; return; }
+      const k = t / T, edge = Math.round(W * (1 - k * k * (3 - 2 * k)));
+      ctx.drawImage(snap.cv, 0, 0, edge, H, 0, 0, edge, H);
+      // dorso de la página que se pasa
+      const w = Math.round(Math.sin(k * Math.PI) * 36);
+      const g = ctx.createLinearGradient(edge - w, 0, edge, 0); g.addColorStop(0, P[30]); g.addColorStop(1, P[17]);
+      ctx.fillStyle = g; ctx.fillRect(edge - w, 0, w, H);
+      ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(edge, 0, 4, H);
+    }
+  }
+  function iris(cx, cy, r) {
+    ctx.fillStyle = '#0a0a12'; ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.arc(cx, cy, Math.max(0, r), 0, Math.PI * 2, true); ctx.fill('evenodd');
+  }
+
+  /* ---------- dados sobre el escenario ---------- */
+  V.tirarDados = function (a, b, ok, objetivo) {
+    if (!S) return;
+    S.dados = { a, b, ok, obj: objetivo, t: performance.now(), fin: false };
+    pedir(); dibujar(performance.now());
+  };
+  function caraDado(n, hora) {
+    return cache('dado|' + n + '|' + hora, () => {
+      const b = new B(13, 13); b.r(1, 0, 11, 13, C.lino); b.r(0, 1, 13, 11, C.lino); b.r(1, 11, 11, 1, C.calS); b.r(11, 1, 1, 11, C.calS);
+      const pts = { 1: [[6, 6]], 2: [[3, 3], [9, 9]], 3: [[3, 3], [6, 6], [9, 9]], 4: [[3, 3], [9, 3], [3, 9], [9, 9]], 5: [[3, 3], [9, 3], [6, 6], [3, 9], [9, 9]], 6: [[3, 3], [9, 3], [3, 6], [9, 6], [3, 9], [9, 9]] }[n];
+      pts.forEach(([x, y]) => { b.r(x - 1, y - 1, 2, 2, n === 1 ? C.rojo : C.pano); });
+      return b.outline(C.negro).canvas(hora);
+    });
+  }
+  function dados(now) {
+    const d = S.dados, t = (now - d.t) / 1000, quieto = V.menosMov(), hora = S.e.h, T = (typeof CFG !== 'undefined' && CFG.fast) ? 0.25 : 0.95;
+    const caer = (i, vals) => {
+      const x0 = W * 0.78 + i * 12, x1 = W * 0.5 + (i ? 10 : -10), k = quieto ? 1 : Math.min(1, t / T);
+      const x = x0 + (x1 - x0) * k, rebote = Math.abs(Math.sin(k * Math.PI * 2.5)) * (1 - k) * 46;
+      const y = GY - 6 - rebote;
+      const cara = k < 1 ? 1 + Math.floor((t * 14 + i * 3) % 6) : vals;
+      const c = caraDado(cara, hora); ctx.drawImage(c, Math.round(x - 6), Math.round(y - 6));
+    };
+    caer(0, d.a); caer(1, d.b);
+    if (quieto || t >= T) {
+      if (!d.fin) {
+        d.fin = true; d.tf = t;
+        const dq = S.actores.find(a => a.rol === 'dq' || a.rol === 'izq');
+        if (dq) { dq.reac = t + 0.8; dq.reacF = d.ok ? 1 : 0; }
+        if (!quieto) polvo(W * 0.5, GY, 8);
+      }
+      const txt = d.ok ? 'ÉXITO' : 'FALLO', sub = (d.a + d.b) + ' / ' + d.obj;
+      const c = cache('dtx|' + txt + sub + '|' + hora, () => { const b = new B(V.anchoTexto(txt) * 2 + 8, 26); const tb = new B(V.anchoTexto(txt) + 2, 9); V.texto(tb, txt, 0, 0, d.ok ? C.oro : C.rojo, C.negro);
+        for (let y = 0; y < 9; y++) for (let x = 0; x < tb.w; x++) { const v = tb.g(x, y); if (v !== 255) b.r(4 + x * 2, y * 2, 2, 2, v); }
+        V.texto(b, sub, (b.w - V.anchoTexto(sub)) >> 1, 19, C.lino, C.negro); return b.canvas(hora); });
+      const k = quieto ? 1 : Math.min(1, (t - d.tf) / 0.25);
+      ctx.globalAlpha = k; ctx.drawImage(c, Math.round(W / 2 - c.width / 2), Math.round(34 - (1 - k) * 8)); ctx.globalAlpha = 1;
+    }
+  }
+  V.limpiarDados = () => { if (S) S.dados = null; };
+
+  /* ---------- números flotantes sobre la escena (+5, −3) ---------- */
+  V.flotar = function (txt, bueno) {
+    if (!S || !ctx) return;
+    const hora = S.e.h, c = cache('fl|' + txt + '|' + bueno + '|' + hora, () => { const b = new B(V.anchoTexto(txt) + 2, 9); V.texto(b, txt, 0, 0, bueno ? C.oro : C.rojo, C.negro); return b.canvas(hora); });
+    const dq = S.actores.find(a => a.rol === 'dq' || a.rol === 'izq') || { x: W / 2 };
+    S.part.push({ k: 'num', cv: c, x: dq.x + (S.part.length % 3) * 10 - 10, y: GY - 80, vx: 0, vy: -10, v: 1.6, t: 0 });
+    pedir();
+  };
+
+  V.escenaActual = () => S;
+  V.dibujarYa = () => dibujar(performance.now());
+})(VIS);
+/* ===== VIS · diálogo: cajas con retrato, texto letra a letra y enganches con el juego ===== */
+(function (V) {
+  'use strict';
+  const { B, C, cache, TONO } = V;
+
+  /* ---------- retratos (40x40) ---------- */
+  const QUIEN = s => {
+    s = String(s || '').toUpperCase();
+    if (s.startsWith('SANCHO')) return 'sancho';
+    if (s.startsWith('LA RAZ')) return 'razon';
+    if (s.startsWith('EL CABALLERO')) return 'caballero';
+    if (s.startsWith('EL IMPOSTOR')) return 'impostor';
+    if (s.startsWith('CLAUDIA')) return 'claudia';
+    if (s.startsWith('EL EST')) return 'estomago';
+    if (s.startsWith('EL CUERPO')) return 'cuerpo';
+    return 'narrador';
+  };
+  V.QUIEN = QUIEN;
+  const PELO = { negro: 29, pardo: 19, gris: 17, oro: 23, blanco: 30 };
+  function busto(id, f) {
+    const b = new B(40, 40), s = V.spec(id), J = TONO[s.jubon] || TONO.pardo, pelo = PELO[s.pelo] || 19;
+    const piel = s.tinta ? [30, 17] : [C.piel, C.pielS];
+    // hombros
+    b.poly([2, 40, 38, 40, 34, 31, 24, 28, 14, 28, 6, 31], J[0]); b.poly([2, 40, 12, 40, 12, 29, 6, 31], J[1]);
+    if ((s.extra || '').includes('armadura')) { b.poly([4, 40, 36, 40, 33, 31, 7, 31], C.hierro); b.r(18, 31, 4, 9, C.hierroL); }
+    if ((s.extra || '').includes('gola') || s.id === 'dq') b.r(13, 27, 14, 2, C.lino);
+    // cuello y cara (tres cuartos, mirando a la derecha)
+    b.r(17, 23, 7, 6, piel[1]);
+    b.ell(21, 16, 8, 10, piel[0]); b.ell(16, 17, 3, 8, piel[1]);
+    b.p(29, 17, piel[0]); b.p(30, 18, piel[0]); b.p(29, 19, piel[1]); // nariz
+    b.r(24, 14, 2, 1, C.pano); b.r(19, 14, 2, 1, C.pano); // ojos
+    if (f === 2) { b.r(24, 14, 2, 1, piel[1]); b.r(19, 14, 2, 1, piel[1]); } // parpadeo
+    b.hl(18, 21, 12, pelo); b.hl(23, 26, 12, pelo); // cejas
+    b.r(22, 22, 4, 1, C.rojoO); if (f === 1) b.r(22, 22, 4, 2, C.rojoO), b.p(23, 23, C.negro);
+    // pelo
+    b.ell(18, 8, 8, 4, pelo); b.r(12, 8, 4, 12, pelo);
+    if (s.cuerpo === 'mujer' && !['toca', 'tocas', 'velo'].includes(s.tocado)) { b.r(10, 8, 5, 22, pelo); b.ell(20, 7, 9, 4, pelo); }
+    const br = s.barba;
+    if (br === 'corta') { b.poly([14, 20, 29, 20, 27, 27, 17, 28], pelo); b.r(22, 22, 4, 1, C.rojoO); }
+    else if (br === 'larga') { b.poly([14, 20, 29, 20, 26, 33, 18, 33], pelo); b.r(22, 22, 4, 1, C.rojoO); }
+    else if (br === 'blanca') { b.poly([14, 20, 29, 20, 26, 36, 18, 36], C.lino); }
+    else if (br === 'perilla') { b.hl(20, 28, 21, pelo); b.poly([21, 24, 26, 24, 24, 31], pelo); }
+    else if (br === 'bigote') b.hl(20, 28, 21, pelo);
+    // tocado
+    const t = s.tocado;
+    if (t === 'celada') { b.poly([10, 12, 32, 12, 30, 2, 14, 0, 10, 4], C.hierro); b.r(16, 2, 10, 2, C.hierroL); b.r(10, 12, 3, 14, C.hierro); b.line(14, 1, 8, -6, C.rojo, 2); }
+    else if (t === 'bacia') { b.r(9, 5, 25, 3, C.oro); b.ell(21, 4, 8, 4, C.oro); b.r(18, 2, 3, 2, C.destello); }
+    else if (t === 'paja') { b.r(5, 6, 32, 3, C.tierraL); b.ell(20, 4, 9, 4, C.tierraL); b.hl(12, 28, 6, C.ocre); }
+    else if (t === 'chambergo') { b.r(5, 6, 32, 3, C.pano); b.ell(20, 3, 9, 4, C.pano); }
+    else if (t === 'gorro') { b.ell(18, 6, 10, 4, C.lino); b.line(10, 6, 6, 14, C.lino, 2); }
+    else if (t === 'toca' || t === 'tocas' || t === 'velo') { b.ell(19, 7, 11, 5, C.lino); b.r(8, 7, 5, 24, C.lino); }
+    else if (t === 'gorra' || t === 'bonete') b.ell(19, 6, 10, 4, C.pano);
+    else if (t === 'yelmo') { b.ell(21, 13, 11, 14, C.hierro); b.r(18, 14, 14, 2, C.pano); }
+    return b.outline(C.negro);
+  }
+  function alegoria(k, f) {
+    const b = new B(40, 40);
+    if (k === 'razon') {
+      // dama de perfil en grisalla azul, con compás y lámpara
+      b.poly([4, 40, 34, 40, 30, 30, 20, 27, 10, 30], C.cieloM); b.poly([4, 40, 14, 40, 14, 30, 10, 30], C.anil);
+      b.ell(21, 16, 7, 9, C.cieloH); b.ell(17, 17, 3, 7, C.cieloM); b.p(28, 17, C.cieloH); b.p(25, 14, C.anil);
+      b.ell(18, 9, 9, 5, C.anil); b.r(10, 9, 5, 18, C.anil); b.r(14, 6, 12, 2, C.nube); // tocado y diadema
+      b.line(30, 38, 34, 26, C.hierroL); b.line(34, 26, 37, 38, C.hierroL); b.p(34, 25, C.destello); // compás
+      b.r(4, 22, 4, 3, C.oro); b.p(5, 20, f === 1 ? C.destello : C.oro); b.p(6, 19, C.brasa); // lámpara
+      if (f === 1) b.r(22, 22, 3, 1, C.anil); else b.r(22, 22, 3, 1, C.cieloM);
+    } else if (k === 'caballero') {
+      // yelmo cerrado con penacho y fuego tras la visera
+      b.poly([2, 40, 38, 40, 34, 30, 6, 30], C.oro); b.poly([2, 40, 10, 40, 10, 31, 6, 30], C.tierraS);
+      b.ell(20, 17, 11, 13, C.hierro); b.ell(17, 15, 6, 9, C.hierroL); b.ell(25, 18, 5, 10, C.hierro);
+      b.r(10, 15, 22, 3, C.negro); b.r(12, 16, 18, 1, f === 1 ? C.destello : C.brasa); b.p(20, 16, C.oro);
+      for (let i = 0; i < 5; i++) b.p(14 + i * 3, 22, C.negro);
+      b.line(20, 4, 10, -4, C.rojo, 3); b.line(22, 4, 16, -6, C.brasa, 2);
+      b.r(16, 30, 8, 3, C.oro);
+    } else if (k === 'estomago') {
+      b.ell(20, 28, 14, 8, C.pano); b.r(6, 20, 28, 8, C.pano); b.hl(6, 34, 20, C.hierro); b.ell(20, 20, 13, 2, C.negro);
+      b.r(3, 19, 4, 2, C.pano); b.r(33, 19, 4, 2, C.pano); if (f === 1) b.p(20, 12, C.nube);
+    } else if (k === 'cuerpo') {
+      b.ell(15, 17, 8, 8, C.rojo); b.ell(25, 17, 8, 8, C.rojo); b.poly([7, 19, 33, 19, 20, 34], C.rojo); b.ell(14, 14, 3, 3, C.brasa);
+      b.line(8, 26, 32, 12, C.lino, 3); b.line(8, 12, 30, 28, C.lino, 2); if (f === 1) b.r(18, 20, 4, 1, C.rojoO);
+    }
+    return b.outline(C.negro);
+  }
+  function retrato(k, f) {
+    return cache('ret|' + k + '|' + f, () => {
+      let b;
+      if (['razon', 'caballero', 'estomago', 'cuerpo'].includes(k)) b = alegoria(k, f);
+      else b = busto(k === 'impostor' ? 'impostor' : k, f);
+      return b.canvas('mediodia');
+    });
+  }
+  V.retrato = retrato;
+
+  /* ---------- texto letra a letra ---------- */
+  const D = V.dialogo = { cola: [], activo: false, clave: '' };
+  function cps() { return 62; }
+  function preparar(el) {
+    const nodos = [], w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentNode.closest('.speaker') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+    while (w.nextNode()) nodos.push(w.currentNode);
+    const partes = [];
+    for (const n of nodos) {
+      const txt = n.nodeValue; if (!txt) continue;
+      const v = document.createElement('span'), h = document.createElement('span');
+      v.className = 'tw-v'; h.className = 'tw-h'; h.textContent = txt;
+      n.parentNode.replaceChild(h, n); h.parentNode.insertBefore(v, h);
+      partes.push({ v, h, txt, n: 0 });
+    }
+    return partes;
+  }
+  function empezar(objetivos, clave) {
+    terminar(true);
+    D.clave = clave; D.cola = [];
+    for (const o of objetivos) { const p = preparar(o.el); if (p.length) D.cola.push({ el: o.el, partes: p, quien: o.quien, ret: o.ret }); }
+    D.t = performance.now(); D.pausa = 0; D.activo = D.cola.length > 0; D.i = 0;
+    D.cola.forEach(c => c.el.classList.add('tw-espera'));
+    if (D.cola[0]) D.cola[0].el.classList.remove('tw-espera');
+    V.pedir();
+  }
+  function paso(now) {
+    if (!D.activo) return;
+    const c = D.cola[D.i]; if (!c) { terminar(); return; }
+    if (now < D.pausa) return;
+    const lleva = Math.floor((now - D.t) / 1000 * cps());
+    let restante = lleva, hecho = true, ultimo = '';
+    for (const p of c.partes) {
+      if (restante <= 0) { hecho = false; break; }
+      const n = Math.min(p.txt.length, restante);
+      if (n !== p.n) { p.n = n; p.v.textContent = p.txt.slice(0, n); p.h.textContent = p.txt.slice(n); ultimo = p.txt[n - 1]; }
+      restante -= p.txt.length; if (n < p.txt.length) { hecho = false; break; }
+    }
+    if (c.quien) V.habla(c.quien);
+    if (c.ret) { const f = hecho ? (Math.floor(now / 2600) % 7 === 0 ? 2 : 0) : (Math.floor(now / 120) & 1); dibRet(c.ret, f); }
+    if (ultimo && /[.;:!?…]/.test(ultimo)) { D.pausa = now + 220; D.t += 220; } else if (ultimo === ',') { D.pausa = now + 90; D.t += 90; }
+    if (hecho) {
+      D.i++; D.t = now + 250; D.pausa = now + 250; V.habla(null);
+      if (D.cola[D.i]) D.cola[D.i].el.classList.remove('tw-espera'); else terminar();
+    }
+  }
+  function terminar(silencio) {
+    for (const c of D.cola) {
+      c.el.classList.remove('tw-espera');
+      for (const p of c.partes) { p.v.textContent = p.txt; p.h.textContent = ''; }
+      if (c.ret) dibRet(c.ret, 0);
+    }
+    D.activo = false; D.cola = []; if (!silencio) V.habla(null);
+    document.querySelectorAll('#scene .tw-pendiente').forEach(e => e.classList.remove('tw-pendiente'));
+  }
+  D.paso = paso; D.saltar = () => { if (D.activo) terminar(); }; D.activoYa = () => D.activo;
+  function dibRet(r, f) {
+    const cv = r.cv, k = r.k; if (!cv) return; const c = retrato(k, f); const x = cv.getContext('2d'); if (!x) return;
+    if (r.f === f) return; r.f = f; x.imageSmoothingEnabled = false; x.clearRect(0, 0, 40, 40); x.drawImage(c, 0, 0);
+  }
+
+  /* ---------- enganches con el juego ---------- */
+  let prev = null, eraPrev = '', ultimaClave = '';
+  function statsDe() { return { health: state.health, sanity: state.sanity, honor: state.honor, hunger: 100 - state.hunger, loyalty: state.loyalty }; }
+  const NOMBRE = { health: 'SALUD', sanity: 'CORDURA', honor: 'HONOR', hunger: 'SACIEDAD', loyalty: 'SANCHO' };
+
+  V.trasRender = function () {
+    const sc = document.getElementById('scene'); if (!sc) return;
+    const fig = sc.querySelector('figure.stage'); if (!fig) return;
+    const nar = sc.querySelector('.narration');
+    // marco: escenario + cajas de voz
+    const marco = document.createElement('div'); marco.className = 'marco';
+    fig.parentNode.insertBefore(marco, fig); marco.appendChild(fig);
+    const dlg = document.createElement('div'); dlg.className = 'dlg'; marco.appendChild(dlg);
+    const voces = nar ? [...nar.querySelectorAll(':scope > .voice')] : [];
+    const objetivos = [];
+    const bridge = sc.querySelector('.bridge'); if (bridge) objetivos.push({ el: bridge });
+    if (nar) nar.querySelectorAll(':scope > p').forEach(p => objetivos.push({ el: p }));
+    for (const v of voces) {
+      const sp = v.querySelector('.speaker'), k = QUIEN(sp && sp.textContent);
+      v.classList.add('v-' + k); dlg.appendChild(v);
+      let ret = null;
+      if (k !== 'narrador') {
+        const c = document.createElement('canvas'); c.width = 40; c.height = 40; c.className = 'retrato'; c.setAttribute('aria-hidden', 'true');
+        v.insertBefore(c, v.firstChild); ret = { cv: c, k, f: -1 }; dibRet(ret, 0);
+      }
+      const habla = k === 'sancho' ? 'sancho' : (k === 'impostor' || k === 'claudia') ? 'npc' : null;
+      objetivos.push({ el: v, quien: habla, ret });
+    }
+    // escena
+    V.colocarEn(fig);
+    const era = (document.getElementById('era') || {}).textContent || '';
+    const eraBase = era.split(' · Modo')[0];
+    const cambioParte = eraPrev && eraBase !== eraPrev && !state.scene.startsWith('ev_');
+    const clave = state.scene + '#' + state.turn + '#' + (state.seed || '');
+    const nueva = clave !== ultimaClave;
+    V.cambiar(state.scene, { pagina: cambioParte });
+    eraPrev = eraBase;
+    // texto letra a letra solo al llegar a una escena nueva
+    if (nueva && !V.menosMov() && CFG.tw !== 0 && !CFG.fast) empezar(objetivos, clave);
+    else { terminar(true); objetivos.forEach(o => o.ret && dibRet(o.ret, 0)); }
+    ultimaClave = clave;
+    // números flotantes
+    const ahora = statsDe();
+    if (prev && nueva) for (const k in ahora) { const d = ahora[k] - prev[k]; if (d) setTimeout(() => V.flotar(NOMBRE[k] + ' ' + (d > 0 ? '+' : '−') + Math.abs(d), d > 0), 500 + Object.keys(ahora).indexOf(k) * 180); }
+    prev = ahora;
+  };
+
+  V.instalar = function () {
+    if (!V.soportado()) return false;
+    document.documentElement.classList.add('vis-on');
+    if (typeof CFG !== 'undefined' && CFG.tw === undefined) CFG.tw = 1;
+    // el escenario antiguo se sustituye por el lienzo
+    window.stageHTML = function () {
+      const st = stOf(state.scene), cap = (state.scene === 'end' && state.fin === 'amor') ? stOf('amor').cap : st.cap;
+      return `<figure class="stage vis" role="img" aria-label="${esc(cap)}"><figcaption>${esc(cap)}</figcaption></figure>`;
+    };
+    const _r = window.render;
+    window.render = function () { const r = _r.apply(this, arguments); try { V.trasRender(); } catch (e) { console.error('VIS', e); } return r; };
+    const _ch = window.choose;
+    window.choose = function (i) {
+      D.saltar();
+      const r = _ch.apply(this, arguments);
+      if (window.pending && document.getElementById('modal').classList.contains('show')) {
+        const m = document.querySelector('#scene .marco'); if (m && m.scrollIntoView) m.scrollIntoView({ block: 'start', behavior: V.menosMov() ? 'auto' : 'smooth' });
+      }
+      return r;
+    };
+    const _sd = window.setDie;
+    window.setDie = function (id, face, rolling) {
+      _sd.apply(this, arguments);
+      if (id === 'dieTwo' && !rolling && window.pending) {
+        const a = +((document.getElementById('dieOne').className.match(/face-(\d)/) || [])[1] || 1);
+        const m = (document.getElementById('rollText').textContent || '').match(/(\d+) o más/);
+        V.tirarDados(a, face, window.pending.success, m ? +m[1] : '?');
+      }
+    };
+    const _cr = window.closeRoll;
+    window.closeRoll = function () { const r = _cr.apply(this, arguments); V.limpiarDados(); return r; };
+    // ajustes: interruptor del texto letra a letra
+    if (typeof cfgHTML === 'function') {
+      const _cfg = window.cfgHTML;
+      window.cfgHTML = function () {
+        return _cfg.apply(this, arguments) + `<div class='crow'><span>Texto letra a letra</span><span><button class='tg${CFG.tw !== 0 ? ' on' : ''}' onclick="setC('tw',${CFG.tw !== 0 ? 0 : 1})">${CFG.tw !== 0 ? 'Sí' : 'No'}</button></span></div>`;
+      };
+    }
+    // teclado: Espacio o Intro completan el texto
+    addEventListener('keydown', ev => {
+      if (!D.activo || (typeof MENUON === 'function' && MENUON())) return;
+      if (document.querySelector('.modal.show')) return;
+      if ((ev.key === ' ' || ev.key === 'Enter') && !/INPUT|TEXTAREA|BUTTON/.test((ev.target || {}).tagName || '')) { ev.preventDefault(); D.saltar(); }
+    }, true);
+    document.addEventListener('click', ev => { if (D.activo && ev.target.closest && ev.target.closest('#scene .narration, #scene .dlg, #scene .bridge')) D.saltar(); });
+    V.ganchos.push({ activo: () => D.activo, paso });
+    // al volver del menú, retomar el bucle
+    const _mc = window.mContinue; if (_mc) window.mContinue = function () { const r = _mc.apply(this, arguments); V.pedir(); return r; };
+    const _ie = window.introEnd; if (_ie) window.introEnd = function () { const r = _ie.apply(this, arguments); V.pedir(); return r; };
+    const _cb = window.closeBook; if (_cb) window.closeBook = function () { const r = _cb.apply(this, arguments); V.pedir(); return r; };
+    window.render();
+    return true;
+  };
+})(VIS);
+/* ===== VIS · arranque ===== */
+(function () {
+  try { VIS.instalar(); } catch (e) { console.error('VIS: no se pudo instalar el motor visual', e); }
+})();
+</script><!--VIS:FIN-->
 </body></html>

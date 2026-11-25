@@ -1,0 +1,47 @@
+/* ===== VIS · escenario en lienzo y cajas de diálogo ===== */
+.marco{position:relative;margin:28px 0 10px;border:3px double #7a4b26;outline:1px solid #c9a35a;outline-offset:2px;background:#1b1424;box-shadow:0 10px 28px #2a1a0e55}
+.stage.vis{margin:0;height:auto;border:0;background:#0a0a12;overflow:hidden;display:block;position:relative}
+.stage.vis::before,.stage.vis::after{display:none}
+.vis-cv{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
+.stage.vis figcaption{position:absolute;left:8px;top:8px;right:auto;bottom:auto;max-width:70%;padding:3px 8px;font:11px/1.35 'DM Mono',ui-monospace,monospace;letter-spacing:.04em;color:#f3e6c4;background:#1b1424c4;border:1px solid #c9a35a66}
+.dlg{display:flex;flex-direction:column;gap:0;background:#2a1c14}
+.dlg .voice{margin:0;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr;column-gap:14px;align-items:start;padding:12px 16px 14px;border:0;border-top:2px solid #7a4b26;background:linear-gradient(#f3e6c4,#e8d7ad);color:#2a1c14;font-style:italic;font-size:var(--fs,18px);line-height:1.55;min-height:104px;transition:opacity .25s}
+.dlg .voice .speaker{grid-column:2;font:600 11px 'DM Mono',ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;font-style:normal;color:#8b2e1f;margin:0 0 4px}
+.dlg .voice .retrato{grid-row:1/span 2;width:80px;height:80px;image-rendering:pixelated;image-rendering:crisp-edges;border:3px solid #5a3418;outline:1px solid #c9a35a;background:#d9c49a;box-shadow:inset 0 0 0 2px #f3e6c4}
+.dlg .voice>:not(.retrato):not(.speaker){grid-column:2}
+.dlg .voice.v-narrador{grid-template-columns:1fr}
+.dlg .voice.v-narrador .speaker,.dlg .voice.v-narrador>*{grid-column:1}
+/* marcos alegóricos: la Razón (plata fría) y el Caballero (oro y fuego) */
+.dlg .voice.v-razon{background:linear-gradient(#e6ebf0,#cfd8e2);color:#1e2a44;border-top-color:#7c8a9c}
+.dlg .voice.v-razon .speaker{color:#34508a}
+.dlg .voice.v-razon .retrato{border-color:#7c8a9c;outline-color:#e6ebf0;background:#a9bccf}
+.dlg .voice.v-caballero{background:linear-gradient(#3a1810,#5a2414);color:#fbe3b0;border-top-color:#d8a640}
+.dlg .voice.v-caballero .speaker{color:#f0b040}
+.dlg .voice.v-caballero .retrato{border-color:#d8a640;outline-color:#ff8a2e;background:#2a1008}
+.dlg .voice.v-impostor{background:repeating-linear-gradient(0deg,#efe6d0 0 3px,#e4d8bc 3px 4px);color:#111;border-top:2px dashed #222}
+.dlg .voice.v-impostor .retrato{border-color:#111;background:#e4d8bc}
+.dlg .voice.v-cuerpo,.dlg .voice.v-estomago{background:linear-gradient(#e6ddd2,#d4c6b6);color:#3a1a14;border-top-color:#8a7a6a}
+.dlg .voice.v-cuerpo .retrato,.dlg .voice.v-estomago .retrato{border-color:#8a7a6a;background:#c8b9a6}
+.dlg .voice.sub{opacity:1}
+.dlg .voice.tw-espera{opacity:.45}
+.tw-h{color:transparent}
+.tw-v{color:inherit}
+html.vis-on .narration{position:relative}
+/* tirada: el escenario queda a la vista detrás de la carta */
+html.vis-on #modal{background:#0a0a1259;align-items:flex-end;padding:0 12px 16px}
+html.vis-on #modal .card{box-shadow:0 12px 40px #000a;max-width:520px;width:100%;padding:14px 22px 14px;display:grid;grid-template-columns:auto 1fr;column-gap:18px;align-items:center;text-align:left}
+html.vis-on #modal .card>*{grid-column:2;margin:2px 0}
+html.vis-on #modal .card .dice-row{grid-column:1;grid-row:1/span 5;margin:0;transform:scale(.72);transform-origin:center}
+html.vis-on #modal .card h2{font-size:22px;line-height:1.15}
+html.vis-on #modal .card .roll{font-size:18px}
+html.vis-on #modal .card button{justify-self:start}
+.marco{scroll-margin-top:8px}
+/* temas con filtro: el lienzo pixel art no se invierte */
+html.vis-on body[data-theme=noche] .app,html.vis-on body[data-theme=bosque] .app,html.vis-on body[data-theme=contraste] .app{filter:none}
+html.vis-on body[data-theme=noche] .app>aside,html.vis-on body[data-theme=noche] .mast,html.vis-on body[data-theme=noche] #scene>:not(.marco),html.vis-on body[data-theme=noche] .dlg{filter:invert(.9) hue-rotate(180deg)}
+html.vis-on body[data-theme=noche] .vis-cv{filter:brightness(.85)}
+html.vis-on body[data-theme=bosque] .app>aside,html.vis-on body[data-theme=bosque] .mast,html.vis-on body[data-theme=bosque] #scene>:not(.marco),html.vis-on body[data-theme=bosque] .dlg{filter:hue-rotate(75deg) saturate(.7)}
+html.vis-on body[data-theme=contraste] .app>aside,html.vis-on body[data-theme=contraste] .mast,html.vis-on body[data-theme=contraste] #scene>:not(.marco),html.vis-on body[data-theme=contraste] .dlg{filter:contrast(1.35) saturate(.5)}
+html.vis-on body[data-theme=contraste] .vis-cv{filter:contrast(1.15)}
+@media(max-width:700px){.marco{margin:20px -12px 8px}.dlg .voice{grid-template-columns:auto 1fr;padding:10px 12px 12px;min-height:0;column-gap:10px}.dlg .voice .retrato{width:56px;height:56px;border-width:2px}.stage.vis figcaption{font-size:10px;max-width:86%}}
+@media(prefers-reduced-motion:reduce){.dlg .voice{transition:none}}
