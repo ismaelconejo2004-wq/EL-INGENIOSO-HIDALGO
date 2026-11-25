@@ -53,8 +53,10 @@ function servidor(gzip) {
       await p.evaluate(id => { state.scene = id; state.turn++; render(); document.querySelector('.marco').scrollIntoView(); VIS.pedir(); }, id);
       await p.waitForTimeout(3500);
       const fps = await p.evaluate(() => VIS.fps());
+      // fps de la página: refrescos reales del navegador durante 2 s, con el lienzo animándose
+      const pagina = await p.evaluate(() => new Promise(r => { let n = 0, t0 = performance.now(), peor = 0, ant = t0; const f = t => { n++; peor = Math.max(peor, t - ant); ant = t; if (t - t0 < 2000) requestAnimationFrame(f); else r({ fps: n / ((t - t0) / 1000), peor }); }; requestAnimationFrame(f); }));
       const ms = await p.evaluate(() => { const t0 = performance.now(); for (let i = 0; i < 120; i++) VIS.dibujarYa(); return (performance.now() - t0) / 120; });
-      r[id] = { fps: Math.round(fps), msFotograma: +ms.toFixed(2) };
+      r[id] = { fpsPagina: Math.round(pagina.fps), peorFotogramaMs: Math.round(pagina.peor), composicionHz: Math.round(fps), msFotograma: +ms.toFixed(2) };
     }
     // 3 · el bucle se detiene con la pestaña oculta
     await p.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => true }); document.dispatchEvent(new Event('visibilitychange')); });

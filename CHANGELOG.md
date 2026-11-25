@@ -1,5 +1,18 @@
 # Registro de cambios
 
+## Optimización y menús nuevos
+
+- **Rendimiento**:
+  - fondo precompuesto, luces y viñetas cacheadas y desaturación por CSS;
+  - composición a 30 Hz con acción y 12 Hz en reposo (la página sigue a 60 fps);
+  - clics sin pintado síncrono ni lecturas de geometría forzadas (de 90–156 ms a 16–32 ms con CPU 4× más lenta);
+  - fondos de las escenas siguientes precalentados en tiempo ocioso;
+  - texto letra a letra y mapa lateral más baratos.
+  - Detalle en `docs/RENDIMIENTO.md`.
+- **Menú principal** con fondo animado por el motor (los molinos al ocaso y don Quijote y Sancho cabalgando con parallax) en lugar del SVG. Carta de pergamino con marco pixelado, escudo y botones-tablilla con iconos (Continuar, Jugar, Ajustes, Salida) que se vuelven rojos al pasar por encima. Medallones pixel art para el Modo clásico y el Modo Pesadilla.
+- **Introducción** sobre la misma escena, de la noche (luna, luciérnagas) al amanecer en fundido. En Pesadilla, ocaso con niebla.
+- **Libro, mercado y tirada** con el mismo marco. Cintas del libro con iconos, interruptores y deslizadores de Ajustes con los colores del juego.
+
 ## Rediseño visual (rama `claude/hidalgo-visual-upgrade-pip31k`)
 
 No cambian la historia, las escenas, las opciones, los efectos numéricos ni el equilibrio: solo cómo se ve y se anima el juego. Las partidas guardadas (`hidalgo`, `hidalgo_prof`, `hidalgo_cfg`, `hidalgo_gm`) siguen valiendo. Solo se añade a `hidalgo_cfg` la clave opcional `tw` (texto letra a letra), con valor 1 por defecto.

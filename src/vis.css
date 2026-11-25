@@ -2,7 +2,7 @@
 .marco{position:relative;margin:28px 0 10px;border:3px double #7a4b26;outline:1px solid #c9a35a;outline-offset:2px;background:#1b1424;box-shadow:0 10px 28px #2a1a0e55}
 .stage.vis{margin:0;height:auto;border:0;background:#0a0a12;overflow:hidden;display:block;position:relative}
 .stage.vis::before,.stage.vis::after{display:none}
-.vis-cv{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
+.vis-cv{will-change:transform;display:block;width:100%;height:auto;filter:var(--vis-sat,saturate(1));image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
 .stage.vis figcaption{position:absolute;left:8px;top:8px;right:auto;bottom:auto;max-width:70%;padding:3px 8px;font:11px/1.35 'DM Mono',ui-monospace,monospace;letter-spacing:.04em;color:#f3e6c4;background:#1b1424c4;border:1px solid #c9a35a66}
 .dlg{display:flex;flex-direction:column;gap:0;background:#2a1c14}
 .dlg .voice{margin:0;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr;column-gap:14px;align-items:start;padding:12px 16px 14px;border:0;border-top:2px solid #7a4b26;background:linear-gradient(#f3e6c4,#e8d7ad);color:#2a1c14;font-style:italic;font-size:var(--fs,18px);line-height:1.55;min-height:104px;transition:opacity .25s}
@@ -39,10 +39,10 @@ html.vis-on #modal .card button{justify-self:start}
 /* temas con filtro: el lienzo pixel art no se invierte */
 html.vis-on body[data-theme=noche] .app,html.vis-on body[data-theme=bosque] .app,html.vis-on body[data-theme=contraste] .app{filter:none}
 html.vis-on body[data-theme=noche] .app>aside,html.vis-on body[data-theme=noche] .mast,html.vis-on body[data-theme=noche] #scene>:not(.marco),html.vis-on body[data-theme=noche] .dlg{filter:invert(.9) hue-rotate(180deg)}
-html.vis-on body[data-theme=noche] .vis-cv{filter:brightness(.85)}
+html.vis-on body[data-theme=noche] .vis-cv{filter:brightness(.85) var(--vis-sat,saturate(1))}
 html.vis-on body[data-theme=bosque] .app>aside,html.vis-on body[data-theme=bosque] .mast,html.vis-on body[data-theme=bosque] #scene>:not(.marco),html.vis-on body[data-theme=bosque] .dlg{filter:hue-rotate(75deg) saturate(.7)}
 html.vis-on body[data-theme=contraste] .app>aside,html.vis-on body[data-theme=contraste] .mast,html.vis-on body[data-theme=contraste] #scene>:not(.marco),html.vis-on body[data-theme=contraste] .dlg{filter:contrast(1.35) saturate(.5)}
-html.vis-on body[data-theme=contraste] .vis-cv{filter:contrast(1.15)}
+html.vis-on body[data-theme=contraste] .vis-cv{filter:contrast(1.15) var(--vis-sat,saturate(1))}
 @media(max-width:700px){.marco{margin:20px -12px 8px}.dlg .voice{grid-template-columns:auto 1fr;padding:10px 12px 12px;min-height:0;column-gap:10px}.dlg .voice .retrato{width:56px;height:56px;border-width:2px}.stage.vis figcaption{font-size:10px;max-width:86%}}
 @media(prefers-reduced-motion:reduce){.dlg .voice{transition:none}}
 
@@ -97,3 +97,42 @@ html.vis-on #bkPage .chapter.pxd{display:flex;align-items:center}
 @media(prefers-reduced-motion:reduce){html.vis-on .flot{animation:none;opacity:1}html.vis-on .meter.pulso-up .track,html.vis-on .meter.pulso-down .track{animation:none}html.vis-on .track .fill,html.vis-on .track .ghost{transition:none}}
 body.noanim .flot{animation:none!important}
 @media(hover:none) and (pointer:coarse){html.vis-on .hint{display:none}}
+
+html.vis-on #mapbox{contain:layout paint}
+html.vis-on .marco{contain:layout paint}
+html.vis-on .narration>p,html.vis-on .bridge,html.vis-on .dlg .voice{contain:layout paint}
+
+/* ===== VIS · menú principal e introducción ===== */
+html.vis-on .m-bg,html.vis-on .i-bg{display:none}
+.vis-fondo{will-change:transform,opacity;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+html.vis-on #menu.on{background:#22122a}
+html.vis-on #menu::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,#0000 35%,#1a0c1c99 100%);pointer-events:none}
+html.vis-on #intro .vis-fondo.alba{opacity:0}
+html.vis-on #intro::after{content:'';position:absolute;inset:0;background:linear-gradient(#0a0a1288,#0a0a1222 45%,#0a0a1288);pointer-events:none}
+html.vis-on #intro>:not(canvas){z-index:1}
+html.vis-on #i-text,html.vis-on #i-title,html.vis-on #i-hint{z-index:2;text-shadow:0 2px 0 #0008,0 0 18px #000a}
+html.vis-on .m-card.px-card{z-index:1;background:var(--px-papel) repeat,#f3e6c4;background-size:64px 64px;border:20px solid transparent;border-image:var(--px-marco) 8 fill / 20px / 0 round;box-shadow:0 18px 0 -6px #1a0c1c66,0 30px 60px #0008;image-rendering:pixelated;padding:28px 30px 22px}
+html.vis-on .m-card.px-card:before{display:none}
+html.vis-on .m-escudo{display:block;margin:0 auto 2px;width:56px;height:56px;image-rendering:pixelated}
+html.vis-on .px-card .m-title{color:#3a1a10;text-shadow:3px 3px 0 #d8a64099;letter-spacing:.005em}
+html.vis-on .px-card .m-orn{color:#a8483a}
+html.vis-on .px-card .mbtn{display:flex;align-items:center;justify-content:center;gap:8px;background:none;border:12px solid transparent;border-image:var(--px-marco) 8 fill / 12px / 0 round;box-shadow:none;padding:6px 14px;image-rendering:pixelated;transition:transform .1s steps(2)}
+html.vis-on .px-card .mbtn .pxi{margin:0;width:20px;height:20px;background-size:20px 20px}
+html.vis-on .px-card .mbtn:hover,html.vis-on .px-card .mbtn:focus-visible{border-image-source:var(--px-marco-rojo);color:#fbe3b0;background:none;transform:translateY(-2px);box-shadow:none;outline:none}
+html.vis-on .px-card .mbtn:active{transform:translateY(1px)}
+html.vis-on .px-card .mode{border:16px solid transparent;border-image:var(--px-marco) 8 fill / 16px / 0 round;background:none;box-shadow:none;padding:10px 12px 8px;image-rendering:pixelated;transition:transform .12s steps(2)}
+html.vis-on .px-card .mode:hover,html.vis-on .px-card .mode:focus-visible{transform:translateY(-3px);box-shadow:none;outline:none;filter:drop-shadow(0 6px 0 #3a1a1033)}
+html.vis-on .px-card .mode.pes:not(.locked):hover,html.vis-on .px-card .mode.pes:not(.locked):focus-visible{border-image-source:var(--px-marco-rojo)}
+html.vis-on .px-card .mode.pes:not(.locked):hover *{color:#fbe3b0}
+html.vis-on .px-card .mode .pxm{width:56px;height:56px;image-rendering:pixelated}
+html.vis-on .px-card .mode-l{border-top-color:#c9a35a}
+/* libro y ventanas con el mismo marco */
+html.vis-on #mktModal .card,html.vis-on #modal .card{background:var(--px-papel) repeat,#f3e6c4;background-size:64px 64px;border:16px solid transparent;border-image:var(--px-marco) 8 fill / 16px / 0 round;image-rendering:pixelated}
+html.vis-on .rib{display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:8px}
+html.vis-on .rib .pxi{margin:0;transform:none;image-rendering:pixelated}
+html.vis-on .tg{border:2px solid #4a2c1a;background:#efe3c2;box-shadow:inset 0 -2px 0 #c9a35a;font:600 11px 'DM Mono',ui-monospace,monospace}
+html.vis-on .tg.on{background:#a8483a;color:#fbe3b0;box-shadow:inset 0 -2px 0 #6e1c16}
+html.vis-on .shopbtn{border:12px solid transparent;border-image:var(--px-marco) 8 fill / 12px / 0 round;background:none;image-rendering:pixelated}
+@media(max-width:720px){html.vis-on .m-card.px-card{border-width:14px;border-image-width:14px;padding:18px 14px 14px}}
+html.vis-on .rib{height:108px}html.vis-on .rib:hover{height:122px}html.vis-on .rib.on{height:140px}
+html.vis-on input[type=range]{accent-color:#a8483a}

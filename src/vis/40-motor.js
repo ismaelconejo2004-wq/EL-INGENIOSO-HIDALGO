@@ -5,6 +5,7 @@
   const H = 180, GY = V.GY;
   let cv = null, ctx = null, W = 320, OX = 40; // ancho interno elástico 320-400 y desplazamiento de fondos
   let S = null; // escena actual
+  V.ganchos = []; // tareas que comparten el bucle (p. ej. el texto letra a letra)
   let raf = 0, visible = true, enVista = true, t0 = 0, ultimo = 0;
   const fpsBuf = [];
   const snap = { cv: null }; // fotograma anterior para transiciones
@@ -24,16 +25,22 @@
     cv.addEventListener('click', () => V.dialogo && V.dialogo.saltar());
     if ('IntersectionObserver' in window) new IntersectionObserver(es => { enVista = es[0].isIntersecting; pedir(); }).observe(cv);
     document.addEventListener('visibilitychange', () => { visible = !document.hidden; pedir(); });
-    addEventListener('resize', () => { medir(); dibujar(performance.now()); });
+    const sc = document.getElementById('scene');
+    if (sc && 'ResizeObserver' in window) new ResizeObserver(es => { const w = Math.round(es[0].contentRect.width); if (w && w !== anchoCSS) { anchoCSS = w; if (cv.parentNode) { medir(); dibujar(performance.now()); } } }).observe(sc);
+    else addEventListener('resize', () => { anchoCSS = 0; medir(); dibujar(performance.now()); });
   }
+  // El ancho CSS se lee solo al cambiar el tamaño (ResizeObserver), nunca justo después de
+  // reescribir el DOM: esa lectura obligaba al navegador a recolocar toda la página en cada clic.
+  let anchoCSS = 0;
   function medir() {
     const p = cv.parentNode; if (!p) return;
-    const cssW = p.clientWidth || 640, dpr = window.devicePixelRatio || 1;
+    if (!anchoCSS) anchoCSS = p.clientWidth || 640;
+    const cssW = anchoCSS, dpr = window.devicePixelRatio || 1;
     const s = Math.max(1, Math.floor(cssW * dpr / 320));
     const w = Math.max(320, Math.min(400, Math.round(cssW * dpr / s)));
     if (w !== W || cv.width !== w) { W = w; cv.width = W; cv.height = H; ctx.imageSmoothingEnabled = false; }
     OX = Math.round((V.W0 - W) / 2);
-    cv.style.aspectRatio = W + ' / ' + H;
+    const ar = W + ' / ' + H; if (cv.style.aspectRatio !== ar) cv.style.aspectRatio = ar;
     if (S) colocar(S, true);
   }
   V.ancho = () => W;
@@ -59,10 +66,31 @@
   }
   function hash(s) { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; }
 
+  /* ---------- precalentado: fondos de las escenas siguientes, en tiempo ocioso ---------- */
+  const ocioso = window.requestIdleCallback || (f => setTimeout(() => f({ timeRemaining: () => 8 }), 120));
+  let colaP = [];
+  function precalentar() {
+    if (typeof scenes === 'undefined' || !S || !scenes[S.id]) return;
+    const sig = new Set();
+    for (const c of scenes[S.id].choices) {
+      const n = c[3] && c[3].next; if (!n || n[0] === '@') continue;
+      sig.add(n); if (typeof RD !== 'undefined' && RD[S.id + '>' + n]) sig.add(RD[S.id + '>' + n]);
+    }
+    colaP = [...sig].filter(id => scenes[id]);
+    ocioso(trabajarP);
+  }
+  function trabajarP(dl) {
+    while (colaP.length && (!dl || dl.timeRemaining() > 6)) {
+      const e = V.escena(colaP.shift());
+      const L = capas(e); if (W) fondoFijo(e, L);
+    }
+    if (colaP.length) ocioso(trabajarP);
+  }
+
   /* ---------- reparto y marcas ---------- */
   function montarReparto(e, id) {
     const an = e.an, A = [], sinSancho = (typeof state !== 'undefined' && state.alone) || (typeof NOSAN !== 'undefined' && NOSAN.includes(id)) || NOSAN_EXTRA.includes(id);
-    const L = capas(e), dentro = L.interior || e.interior || e.f === 'patio' || (e.f === 'liza' && an === 'fly');
+    const dentro = e.interior || e.f === 'patio' || (e.f === 'liza' && an === 'fly');
     const bacia = typeof state !== 'undefined' && state.inventory && state.inventory.yelmo > 0;
     if (e.l === 'alonso') {
       if (an === 'sleep') A.push({ id: 'alonso', rol: 'izq', m: e.f === 'alcoba' ? (V.W0 / 2 + 50) / V.W0 : 0.5, pose: 'tendido', fija: 1, y: e.f === 'alcoba' ? 119 : GY, cama: e.f === 'alcoba' });
@@ -109,7 +137,7 @@
     if (!cv) crear();
     const e = V.escena(id);
     const nuevo = !S || S.id !== id || o.forzar;
-    if (!nuevo) { S.e = e; refrescarReparto(); pedir(); return; }
+    if (!nuevo) { S.e = e; S.L = null; refrescarReparto(); pedir(); return; }
     // fotograma anterior para la transición
     if (S && !V.menosMov() && cv.width) { snap.cv = snap.cv || document.createElement('canvas'); snap.cv.width = cv.width; snap.cv.height = cv.height; snap.cv.getContext('2d').drawImage(cv, 0, 0); }
     S = { id, e, t: performance.now(), actores: [], part: [], trans: (S && !V.menosMov()) ? (o.pagina ? 'pagina' : 'iris') : null, quieto: false, habla: null };
@@ -117,7 +145,9 @@
     S.actores.forEach(a => { a.entrando = 1; a.x = a.rol === 'npc' ? W + 30 + (a.k || 0) * 14 : -40 - (a.rol === 'sancho' ? 30 : 0); });
     medir(); colocar(S, false);
     if (!V.menosMov()) S.actores.forEach(a => { if (a.entrando) { a.dur = 1.1 + Math.abs(a.tx - a.x) / 400; a.x0 = a.x; } });
-    pedir(); dibujar(performance.now());
+    // se dibuja en el próximo fotograma, fuera del clic (con movimiento reducido no hay bucle: un fotograma suelto)
+    pedir(); if (V.menosMov() || !raf) requestAnimationFrame(() => dibujar(performance.now()));
+    precalentar();
   };
   function refrescarReparto() {
     // el estado cambió sin cambiar de escena (p. ej. se usó un objeto): conserva posiciones
@@ -132,29 +162,50 @@
   V.habla = function (quien) { if (S) { S.habla = quien; pedir(); } };
 
   /* ---------- bucle ---------- */
-  V.ganchos = []; // tareas que comparten el bucle (p. ej. el texto letra a letra)
-  function puedeDibujar() {
+  // ¿Hay algo encima del juego? Se consulta el DOM como mucho 4 veces por segundo, no en cada fotograma.
+  let bloqueo = false, bloqueoT = 0;
+  function tapado(now) {
+    if (now - bloqueoT > 250) {
+      bloqueoT = now;
+      bloqueo = (typeof MENUON === 'function' && MENUON()) || !!document.querySelector('#bookModal.show,#mktModal.show');
+    }
+    return bloqueo;
+  }
+  V.revisarBloqueo = () => { bloqueoT = 0; };
+  function puedeDibujar(now) {
     if (!S || !visible || !enVista) return false;
-    if (typeof MENUON === 'function' && MENUON()) return false;
-    if (document.querySelector('#bookModal.show,#mktModal.show')) return false;
+    if (tapado(now || performance.now())) return false;
     if (V.menosMov()) return !!(S.dados && !S.dados.fin);
     return true;
   }
-  function hayQueAnimar() {
+  function hayQueAnimar(now) {
     if (!visible) return false;
-    return V.ganchos.some(g => g.activo()) || puedeDibujar();
+    return V.ganchos.some(g => g.activo()) || puedeDibujar(now);
   }
-  function pedir() { if (!raf && hayQueAnimar()) { ultimo = 0; raf = requestAnimationFrame(tick); } }
+  function pedir() { V.revisarBloqueo(); if (!raf && hayQueAnimar()) { ultimo = 0; raf = requestAnimationFrame(tick); } }
   V.pedir = pedir;
+  // El pixel art se anima a 8-12 fotogramas por segundo: componer a 30 Hz basta y
+  // deja la mitad de los refrescos libres. El navegador sigue a 60 fps.
+  V.HZ = 30;
+  // En reposo (sin transición, dados, entradas ni acción) bastan 12 Hz: los sprites van a 8.
+  function hz() {
+    if (!S || S.trans || (S.dados && !S.dados.fin) || V.ganchos.some(g => g.activo() && g.rapido)) return V.HZ;
+    const an = S.e.an;
+    if (an === 'walk' || an === 'fight' || an === 'toss' || an === 'fly' || S.actores.some(a => a.entrando)) return V.HZ;
+    return 12;
+  }
+  V.hz = hz;
+  let dibujado = 0;
   function tick(now) {
     raf = 0;
-    if (!hayQueAnimar()) return;
-    for (const g of V.ganchos) if (g.activo()) g.paso(now);
-    if (puedeDibujar()) {
-      if (ultimo) { fpsBuf.push(1000 / Math.max(1, now - ultimo)); if (fpsBuf.length > 120) fpsBuf.shift(); }
-      ultimo = now;
+    if (!hayQueAnimar(now)) return;
+    const toca = now - dibujado >= 1000 / hz() - 2;
+    if (toca) for (const g of V.ganchos) if (g.activo()) g.paso(now);
+    if (toca && puedeDibujar(now)) {
+      if (ultimo) { fpsBuf.push(1000 / Math.max(1, now - ultimo)); if (fpsBuf.length > 60) fpsBuf.shift(); }
+      ultimo = now; dibujado = now;
       dibujar(now);
-    } else ultimo = 0;
+    } else if (!puedeDibujar(now)) ultimo = 0;
     raf = requestAnimationFrame(tick);
   }
   V.fps = () => fpsBuf.length ? fpsBuf.reduce((a, b) => a + b, 0) / fpsBuf.length : 0;
@@ -164,19 +215,28 @@
   function dibujar(now) {
     if (!S || !ctx) return;
     const t = (now - S.t) / 1000, quieto = V.menosMov(), tt = quieto ? 0 : t;
-    const e = S.e, L = capas(e), hora = e.pal, horaA = e.palA;
+    if (S.trans === 'iris' && snap.cv && !quieto && t < 0.32) { transicion(t, quieto); return; }
+    const e = S.e, L = S.L || (S.L = capas(e)), hora = e.pal, horaA = e.palA;
     // cámara: en escenas de camino el paisaje se desplaza
     const marcha = e.an === 'walk' && !quieto ? tt * 14 : 0;
-    const tn = tension();
+    const tn = S.postal ? { cor: 0, sal: 0, ham: 0 } : tension();
     ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
-    ctx.fillStyle = HEX[hora][0]; ctx.fillRect(0, 0, W, H);
-    capa(L.cielo, 0);
-    capa(L.lejos, marcha * 0.15);
     const ond = (tn.cor > 0.3 && !quieto) ? Math.round(Math.sin(tt * 1.7) * tn.cor * 1.5) : 0;
-    ctx.save(); ctx.translate(0, ond); capa(L.medio, marcha * 0.4); ctx.restore();
-    animFondo(L, tt, hora, 'medio', marcha * 0.4);
-    capa(L.suelo, marcha);
-    animFondo(L, tt, hora, 'suelo', marcha);
+    if (!marcha && !ond) {
+      // escena quieta: cielo, lejos, medio y suelo ya compuestos (con el tinte de la tarde) en un solo lienzo
+      ctx.drawImage(fondoFijo(e, L), 0, 0);
+      animFondo(L, tt, hora, 'medio', 0);
+      animFondo(L, tt, hora, 'suelo', 0);
+    } else {
+      ctx.fillStyle = HEX[hora][0]; ctx.fillRect(0, 0, W, H);
+      capa(L.cielo, 0);
+      capa(L.lejos, marcha * 0.15);
+      ctx.save(); ctx.translate(0, ond); capa(L.medio, marcha * 0.4); ctx.restore();
+      animFondo(L, tt, hora, 'medio', marcha * 0.4);
+      capa(L.suelo, marcha);
+      animFondo(L, tt, hora, 'suelo', marcha);
+      if (e.tarde) tinteTarde(ctx);
+    }
     // actores (de atrás a delante)
     actualizarActores(tt, quieto);
     const orden = S.actores.slice().sort((a, b) => (a.fondo ? -1 : 0) - (b.fondo ? -1 : 0) || a.y - b.y);
@@ -186,11 +246,21 @@
     capa(L.frente, marcha * 1.6);
     // luz
     luces(L, tt, hora, e);
-    if (e.tarde) { ctx.globalCompositeOperation = 'soft-light'; ctx.fillStyle = 'rgba(255,170,90,.35)'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
-    if (L.papel && e.h === 'noche') { ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = 'rgba(120,110,170,.45)'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
+    if (L.papel && e.h === 'noche') { ctx.globalAlpha = 0.45; ctx.drawImage(cache('velo|' + W, () => liso(W, 'rgb(60,50,110)')), 0, 0); ctx.globalAlpha = 1; }
     postTension(tn, tt, quieto);
     if (S.dados) dados(now);
     transicion(t, quieto);
+  }
+  function liso(w, col) { const c = document.createElement('canvas'); c.width = w; c.height = H; const x = c.getContext('2d'); x.fillStyle = col; x.fillRect(0, 0, w, H); return c; }
+  function tinteTarde(cx) { cx.globalCompositeOperation = 'soft-light'; cx.fillStyle = 'rgba(255,170,90,.35)'; cx.fillRect(0, 0, W, H); cx.globalCompositeOperation = 'source-over'; }
+  function fondoFijo(e, L) {
+    return cache('fijo|' + e.f + '|' + e.variante + '|' + e.props.join(',') + '|' + e.h + '|' + e.pal + '|' + (e.tarde ? 1 : 0) + '|' + W, () => {
+      const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+      x.fillStyle = HEX[e.pal][0]; x.fillRect(0, 0, W, H);
+      for (const k of ['cielo', 'lejos', 'medio', 'suelo']) x.drawImage(L[k], -OX, 0);
+      if (e.tarde) tinteTarde(x);
+      return c;
+    });
   }
   function capa(c, dx) {
     if (!dx) { ctx.drawImage(c, -OX, 0); return; }
@@ -432,11 +502,15 @@
     ctx.globalCompositeOperation = 'lighter';
     for (const l of ls) {
       const fl = l.f && !V.menosMov() ? (Math.sin(t * 13 + l.x) * 0.5 + Math.sin(t * 7.3) * 0.5) * 0.08 : 0;
-      const x = l.x - OX, r = l.r * (1 + fl);
-      const g = ctx.createRadialGradient(x, l.y, 1, x, l.y, r);
-      const col = l.frio ? '120,160,220' : '255,150,60';
-      g.addColorStop(0, 'rgba(' + col + ',' + ((noche ? 0.42 : 0.18) + fl) + ')'); g.addColorStop(1, 'rgba(' + col + ',0)');
-      ctx.fillStyle = g; ctx.fillRect(x - r, l.y - r, r * 2, r * 2);
+      const x = l.x - OX, r = l.r;
+      const g = cache('luz|' + r + '|' + (l.frio ? 1 : 0), () => {
+        const c = document.createElement('canvas'); c.width = c.height = r * 2; const cx = c.getContext('2d');
+        const gr = cx.createRadialGradient(r, r, 1, r, r, r), col = l.frio ? '120,160,220' : '255,150,60';
+        gr.addColorStop(0, 'rgba(' + col + ',1)'); gr.addColorStop(1, 'rgba(' + col + ',0)'); cx.fillStyle = gr; cx.fillRect(0, 0, r * 2, r * 2); return c;
+      });
+      ctx.globalAlpha = Math.max(0, Math.min(1, (noche ? 0.42 : 0.18) + fl));
+      ctx.drawImage(g, x - r, l.y - r);
+      ctx.globalAlpha = 1;
       if (l.rayo) { ctx.fillStyle = 'rgba(255,230,170,.08)'; ctx.beginPath(); ctx.moveTo(x - 18, l.y - 18); ctx.lineTo(x + 18, l.y - 18); ctx.lineTo(x + 70, GY + 10); ctx.lineTo(x - 10, GY + 10); ctx.fill(); }
     }
     ctx.globalCompositeOperation = 'source-over';
@@ -445,12 +519,18 @@
   /* ---------- tensión: viñeta, grano, desaturación ---------- */
   let grano = null, granoT = 0;
   function postTension(tn, t, quieto) {
-    const vig = (col, a) => { const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, W * 0.7); g.addColorStop(0, 'rgba(' + col + ',0)'); g.addColorStop(1, 'rgba(' + col + ',' + a + ')'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); };
+    const vig = (col, a) => {
+      if (a <= 0.01) return;
+      const v = cache('vig|' + col + '|' + W, () => { const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); const g = x.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, W * 0.7); g.addColorStop(0, 'rgba(' + col + ',0)'); g.addColorStop(1, 'rgba(' + col + ',1)'); x.fillStyle = g; x.fillRect(0, 0, W, H); return c; });
+      ctx.globalAlpha = Math.min(1, a); ctx.drawImage(v, 0, 0); ctx.globalAlpha = 1;
+    };
+    // la desaturación la hace la GPU con un filtro CSS sobre el lienzo (antes, un modo de fusión por fotograma)
+    const sat = tn.ham > 0 ? 'saturate(' + (1 - 0.45 * tn.ham).toFixed(2) + ')' : '';
+    if (!S.postal && cv.dataset.sat !== sat) { cv.dataset.sat = sat; cv.style.setProperty('--vis-sat', sat || 'saturate(1)'); }
     vig('20,10,30', 0.35); // viñeta suave siempre: enmarca la escena
     if (tn.cor > 0) vig('70,30,110', 0.55 * tn.cor);
     if (tn.sal > 0) vig('110,10,10', (0.4 + (quieto ? 0 : Math.sin(t * Math.PI * 2 / 2.4) * 0.15)) * tn.sal);
     if (tn.ham > 0) {
-      ctx.globalCompositeOperation = 'saturation'; ctx.fillStyle = 'rgba(128,128,128,' + (0.35 * tn.ham) + ')'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over';
       if (!grano) { grano = document.createElement('canvas'); grano.width = 128; grano.height = 128; const g = grano.getContext('2d'), im = g.createImageData(128, 128); for (let i = 0; i < im.data.length; i += 4) { const v = Math.random() < 0.5 ? 0 : 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = Math.random() < 0.18 ? 40 : 0; } g.putImageData(im, 0, 0); }
       if (!quieto) granoT = Math.floor(t * 12);
       const ox = (granoT * 37) % 128, oy = (granoT * 53) % 128;
@@ -536,6 +616,22 @@
     pedir();
   };
 
+  /* ---------- postales: una escena del motor dibujada en otro lienzo (menú, introducción) ---------- */
+  V.postal = function (lienzo, cfg, now) {
+    const c2 = lienzo.getContext('2d'); if (!c2) return;
+    const g = [S, cv, ctx, W, OX];
+    W = lienzo.width; OX = Math.round((V.W0 - W) / 2); cv = lienzo; ctx = c2; ctx.imageSmoothingEnabled = false;
+    let P = lienzo._S;
+    if (!P || P.clave !== cfg.clave) {
+      const e = Object.assign({}, V.escena(cfg.base || 'road'), cfg.e);
+      P = lienzo._S = { id: cfg.clave, clave: cfg.clave, e, t: now, part: [], actores: [], postal: true };
+      S = P; P.actores = montarReparto(e, cfg.clave);
+      if (cfg.marcas) P.actores.forEach(a => { if (cfg.marcas[a.rol] !== undefined) a.m = cfg.marcas[a.rol]; });
+      colocar(P, true);
+    }
+    S = P;
+    try { dibujar(now); } finally { [S, cv, ctx, W, OX] = g; }
+  };
   V.escenaActual = () => S;
   V.dibujarYa = () => dibujar(performance.now());
 })(VIS);

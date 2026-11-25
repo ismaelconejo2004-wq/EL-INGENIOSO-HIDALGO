@@ -1,5 +1,5 @@
 {
- "fecha": "2026-11-25T00:39:40.514Z",
+ "fecha": "2026-11-25T06:39:37.118Z",
  "vistas": {
   "escritorio": {
    "start": {
@@ -665,7 +665,9 @@
     "hora": "noche",
     "actores": [
      "dq",
-     "sancho"
+     "rocinante",
+     "sancho",
+     "rucio"
     ],
     "prob": []
    },
@@ -1081,7 +1083,9 @@
     "hora": "noche",
     "actores": [
      "dq",
-     "sancho"
+     "rocinante",
+     "sancho",
+     "rucio"
     ],
     "prob": []
    },
@@ -1146,7 +1150,9 @@
     "hora": "noche",
     "actores": [
      "dq",
-     "sancho"
+     "rocinante",
+     "sancho",
+     "rucio"
     ],
     "prob": []
    },
@@ -1966,7 +1972,9 @@
     "hora": "noche",
     "actores": [
      "dq",
-     "sancho"
+     "rocinante",
+     "sancho",
+     "rucio"
     ],
     "prob": []
    },
@@ -2382,7 +2390,9 @@
     "hora": "noche",
     "actores": [
      "dq",
-     "sancho"
+     "rocinante",
+     "sancho",
+     "rucio"
     ],
     "prob": []
    },
@@ -2447,7 +2457,9 @@
     "hora": "noche",
     "actores": [
      "dq",
-     "sancho"
+     "rocinante",
+     "sancho",
+     "rucio"
     ],
     "prob": []
    },

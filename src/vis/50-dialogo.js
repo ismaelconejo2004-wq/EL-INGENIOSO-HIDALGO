@@ -119,6 +119,8 @@
     if (!D.activo) return;
     const c = D.cola[D.i]; if (!c) { terminar(); return; }
     if (now < D.pausa) return;
+    // como mucho ~16 cambios de DOM por segundo: cada cambio obliga a recolocar el párrafo
+    if (now - (D.ult || 0) < 60) return; D.ult = now;
     const lleva = Math.floor((now - D.t) / 1000 * cps());
     let restante = lleva, hecho = true, ultimo = '';
     for (const p of c.partes) {
@@ -248,6 +250,7 @@
     const _ie = window.introEnd; if (_ie) window.introEnd = function () { const r = _ie.apply(this, arguments); V.pedir(); return r; };
     const _cb = window.closeBook; if (_cb) window.closeBook = function () { const r = _cb.apply(this, arguments); V.pedir(); return r; };
     if (V.instalarUI) V.instalarUI();
+    if (V.instalarMenu) V.instalarMenu();
     window.render();
     return true;
   };

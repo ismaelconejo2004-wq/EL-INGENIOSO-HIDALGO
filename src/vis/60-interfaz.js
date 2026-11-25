@@ -20,6 +20,11 @@
     infeccion(b) { b.circ(8, 8, 5, C.olivo); b.circ(8, 8, 2, C.encina); b.p(3, 3, C.olivo); b.p(13, 13, C.olivo); },
     cura(b) { b.r(6, 2, 4, 12, C.lino); b.r(2, 6, 12, 4, C.lino); b.r(7, 3, 2, 10, C.rojo); b.r(3, 7, 10, 2, C.rojo); },
     ruta(b) { b.r(2, 3, 12, 10, C.lino); b.r(6, 3, 1, 10, C.calS); b.r(10, 3, 1, 10, C.calS); b.line(3, 11, 9, 6, C.rojo); b.p(12, 5, C.rojo); },
+    jugar(b) { b.line(2, 14, 13, 3, C.madera, 2); b.poly([11, 2, 15, 1, 14, 5], C.hierroL); b.r(2, 12, 3, 3, C.rojo); },
+    ajustes(b) { b.circ(8, 8, 6, C.hierro); b.circ(8, 8, 3, C.lino); for (const [x, y] of [[8, 1], [8, 15], [1, 8], [15, 8], [3, 3], [13, 13], [3, 13], [13, 3]]) b.r(x - 1, y - 1, 2, 2, C.hierro); b.circ(8, 8, 1, C.hierro); },
+    salida(b) { b.r(4, 2, 9, 13, C.maderaO); b.r(5, 3, 7, 12, C.madera); b.p(10, 9, C.oro); b.r(2, 14, 13, 1, C.tierraS); },
+    calavera(b) { b.ell(8, 7, 6, 5, C.lino); b.r(5, 11, 7, 3, C.lino); b.r(5, 6, 2, 2, C.negro); b.r(9, 6, 2, 2, C.negro); b.p(8, 9, C.negro); b.p(6, 13, C.calS); b.p(8, 13, C.calS); b.p(10, 13, C.calS); },
+    continuar(b) { b.r(3, 3, 10, 10, C.lino); b.r(3, 3, 3, 10, C.rojo); b.r(7, 6, 5, 1, C.calS); b.r(7, 9, 4, 1, C.calS); },
     libro(b) { b.r(2, 3, 12, 10, C.rojoO); b.r(3, 4, 5, 8, C.lino); b.r(8, 4, 5, 8, C.lino); b.r(8, 3, 1, 10, C.maderaO); }
   };
   const URL = {};
@@ -30,7 +35,7 @@
     const cv = b.canvas('mediodia');
     URL[key] = cv.toDataURL(); return URL[key];
   }
-  V.icono = icono;
+  V.icono = icono; V.vineta = (t, b) => vineta(t, b);
 
   /* ---------- marco barroco (9 piezas) y papel ---------- */
   function marco() {
@@ -41,13 +46,19 @@
     for (let i = 8; i < 16; i += 2) { b.p(i, 1, C.tierraL); b.p(i, 22, C.tierraL); b.p(1, i, C.tierraL); b.p(22, i, C.tierraL); }
     return b.canvas('mediodia').toDataURL();
   }
+  function marcoRojo() {
+    const b = new B(24, 24);
+    b.r(0, 0, 24, 24, C.rojoO); b.r(1, 1, 22, 22, C.oro); b.r(2, 2, 20, 20, C.rojoO); b.r(3, 3, 18, 18, C.rojo);
+    for (const [x, y] of [[1, 1], [20, 1], [1, 20], [20, 20]]) { b.r(x, y, 3, 3, C.oro); b.p(x + 1, y + 1, C.destello); }
+    return b.canvas('mediodia').toDataURL();
+  }
   function papel() {
     const b = new B(32, 32), r = V.rng(9); b.r(0, 0, 32, 32, C.lino);
     for (let i = 0; i < 40; i++) b.p(r() * 32 | 0, r() * 32 | 0, r() < 0.7 ? C.cal : C.calS);
     return b.canvas('mediodia').toDataURL();
   }
   function hojaEstilo() {
-    const css = [`:root{--px-marco:url(${marco()});--px-papel:url(${papel()})}`];
+    const css = [`:root{--px-marco:url(${marco()});--px-marco-rojo:url(${marcoRojo()});--px-papel:url(${papel()})}`];
     for (const k in ICO) css.push(`.pxi-${k}{background-image:url(${icono(k)})}`);
     const st = document.createElement('style'); st.id = 'vis-iconos'; st.textContent = css.join('\n'); document.head.appendChild(st);
   }
@@ -69,12 +80,12 @@
       if (prev && prev[k] !== undefined && prev[k] !== v) {
         const d = v - prev[k];
         // estela: al bajar, queda la marca del valor anterior y se consume despacio
-        if (g) { g.style.transition = 'none'; g.style.width = Math.max(prev[k], v) + '%'; g.className = 'ghost ' + (d < 0 ? 'baja' : 'sube'); void g.offsetWidth; g.style.transition = ''; setTimeout(() => { g.style.width = v + '%'; }, V.menosMov() ? 0 : 450); }
+        if (g) { g.style.transition = 'none'; g.style.width = Math.max(prev[k], v) + '%'; g.className = 'ghost ' + (d < 0 ? 'baja' : 'sube'); requestAnimationFrame(() => { g.style.transition = ''; setTimeout(() => { g.style.width = v + '%'; }, V.menosMov() ? 0 : 450); }); }
         const num = document.getElementById(k + 'Num');
         if (num) {
           const f = document.createElement('span'); f.className = 'flot ' + (d > 0 ? 'up' : 'down'); f.textContent = (d > 0 ? '+' : '−') + Math.abs(d); f.setAttribute('aria-hidden', 'true');
           num.parentNode.style.position = 'relative'; num.parentNode.appendChild(f); setTimeout(() => f.remove(), 1800);
-          m.classList.remove('pulso-up', 'pulso-down'); void m.offsetWidth; m.classList.add(d > 0 ? 'pulso-up' : 'pulso-down');
+          m.classList.remove('pulso-up', 'pulso-down'); requestAnimationFrame(() => m.classList.add(d > 0 ? 'pulso-up' : 'pulso-down'));
         }
       } else if (g) g.style.width = v + '%';
       if (fill) fill.setAttribute('data-v', v);
@@ -128,6 +139,14 @@
   }
 
   /* ---------- mapa, alforjas y perfil con el mismo lenguaje ---------- */
+  const RIB = { perfil: 'honor', alforjas: 'gana', logros: 'reales', diario: 'libro', ruta: 'ruta', ajustes: 'ajustes' };
+  function cintas() {
+    document.querySelectorAll('#bkRibbons .rib').forEach(r => {
+      if (r.querySelector('.pxi')) return;
+      const k = Object.keys(RIB).find(x => (r.getAttribute('onclick') || '').includes("'" + x + "'"));
+      if (k) r.insertAdjacentHTML('afterbegin', `<i class="pxi pxi-${RIB[k]}" aria-hidden="true"></i>`);
+    });
+  }
   function libro() {
     const pg = document.getElementById('bkPage'); if (!pg) return;
     pg.querySelectorAll('.chapter:not(.pxd)').forEach(h => {
@@ -142,8 +161,15 @@
   V.instalarUI = function () {
     hojaEstilo();
     window.illustration = ilustracion;
-    const _db = window.drawBook; if (_db) window.drawBook = function () { const r = _db.apply(this, arguments); try { libro(); } catch (e) { } return r; };
+    const _db = window.drawBook; if (_db) window.drawBook = function () { const r = _db.apply(this, arguments); try { libro(); cintas(); } catch (e) { } return r; };
     const _om = window.openMkt; if (_om) window.openMkt = function () { const r = _om.apply(this, arguments); try { chips(document.getElementById('mktModal')); } catch (e) { } return r; };
+    // el mapa lateral (SVG con filtros caros) solo se reconstruye si cambia la ruta o el contador
+    const _rm = window.renderMap; let kMapa = '';
+    if (_rm) window.renderMap = function () {
+      const f = state.flags || {}, k = (state.trail || []).join(',') + '|' + loc(state.scene) + '|' + (f.dul || 0) + '|' + (f.des || 0) + '|' + state.mode;
+      if (k === kMapa && document.querySelector('#mapbox .mapwrap')) return;
+      kMapa = k; return _rm.apply(this, arguments);
+    };
     const _t = V.trasRender;
     V.trasRender = function () { _t.apply(this, arguments); panel(); opciones(); };
   };

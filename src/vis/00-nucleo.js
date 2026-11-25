@@ -176,5 +176,7 @@ var VIS = window.VIS = window.VIS || {};
 
   V.HORAS = HORAS; V.HEX = HEX; V.C = C; V.TONO = TONO; V.B = B; V.rng = rng; V.perfil = perfil; V.cache = cache;
   V.texto = texto; V.anchoTexto = anchoTexto; V.CACHE = CACHE;
-  V.menosMov = () => (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || (typeof CFG !== 'undefined' && !CFG.anim);
+  // la consulta se crea una vez: leer .matches es barato (antes se creaba en cada fotograma)
+  const MQ = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  V.menosMov = () => MQ.matches || (typeof CFG !== 'undefined' && !CFG.anim);
 })(VIS);

@@ -1,62 +1,82 @@
 {
-  "bytes": 518999,
-  "gzip": 170494,
+  "bytes": 535902,
+  "gzip": 175324,
   "cargaGzip": {
-    "fcp": 292,
-    "dcl": 1335,
-    "load": 1337,
-    "script": 331
+    "fcp": 280,
+    "dcl": 1405,
+    "load": 1407,
+    "script": 373
   },
   "cargaSinGzip": {
-    "fcp": 392,
-    "dcl": 3041,
-    "load": 3045,
-    "script": 290
+    "fcp": 344,
+    "dcl": 3170,
+    "load": 3174,
+    "script": 337
   },
   "fps": {
     "escritorio": {
       "mills": {
-        "fps": 60,
-        "msFotograma": 0.08
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 30,
+        "msFotograma": 0.07
       },
       "cabreros": {
-        "fps": 60,
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 21,
         "msFotograma": 0.07
       },
       "ev_tormenta": {
-        "fps": 60,
-        "msFotograma": 0.59
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 30,
+        "msFotograma": 0.07
       },
       "galeotes": {
-        "fps": 60,
-        "msFotograma": 0.06
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 20,
+        "msFotograma": 0.04
       },
       "altisidora": {
-        "fps": 60,
-        "msFotograma": 0.07
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 20,
+        "msFotograma": 0.04
       },
       "bucleConPestanaOculta": "detenido"
     },
     "movil_cpu4x": {
       "mills": {
-        "fps": 60,
-        "msFotograma": 0.56
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 30,
+        "msFotograma": 0.3
       },
       "cabreros": {
-        "fps": 60,
-        "msFotograma": 0.32
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 20,
+        "msFotograma": 0.2
       },
       "ev_tormenta": {
-        "fps": 60,
-        "msFotograma": 0.32
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 30,
+        "msFotograma": 0.41
       },
       "galeotes": {
-        "fps": 60,
-        "msFotograma": 0.4
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 20,
+        "msFotograma": 0.22
       },
       "altisidora": {
-        "fps": 60,
-        "msFotograma": 0.3
+        "fpsPagina": 60,
+        "peorFotogramaMs": 17,
+        "composicionHz": 19,
+        "msFotograma": 0.18
       },
       "bucleConPestanaOculta": "detenido"
     }

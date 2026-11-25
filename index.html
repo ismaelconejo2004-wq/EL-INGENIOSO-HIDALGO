@@ -860,7 +860,7 @@ document.addEventListener('keydown',e=>{if(MENUON()){if(document.getElementById(
 .marco{position:relative;margin:28px 0 10px;border:3px double #7a4b26;outline:1px solid #c9a35a;outline-offset:2px;background:#1b1424;box-shadow:0 10px 28px #2a1a0e55}
 .stage.vis{margin:0;height:auto;border:0;background:#0a0a12;overflow:hidden;display:block;position:relative}
 .stage.vis::before,.stage.vis::after{display:none}
-.vis-cv{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
+.vis-cv{will-change:transform;display:block;width:100%;height:auto;filter:var(--vis-sat,saturate(1));image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
 .stage.vis figcaption{position:absolute;left:8px;top:8px;right:auto;bottom:auto;max-width:70%;padding:3px 8px;font:11px/1.35 'DM Mono',ui-monospace,monospace;letter-spacing:.04em;color:#f3e6c4;background:#1b1424c4;border:1px solid #c9a35a66}
 .dlg{display:flex;flex-direction:column;gap:0;background:#2a1c14}
 .dlg .voice{margin:0;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr;column-gap:14px;align-items:start;padding:12px 16px 14px;border:0;border-top:2px solid #7a4b26;background:linear-gradient(#f3e6c4,#e8d7ad);color:#2a1c14;font-style:italic;font-size:var(--fs,18px);line-height:1.55;min-height:104px;transition:opacity .25s}
@@ -897,10 +897,10 @@ html.vis-on #modal .card button{justify-self:start}
 /* temas con filtro: el lienzo pixel art no se invierte */
 html.vis-on body[data-theme=noche] .app,html.vis-on body[data-theme=bosque] .app,html.vis-on body[data-theme=contraste] .app{filter:none}
 html.vis-on body[data-theme=noche] .app>aside,html.vis-on body[data-theme=noche] .mast,html.vis-on body[data-theme=noche] #scene>:not(.marco),html.vis-on body[data-theme=noche] .dlg{filter:invert(.9) hue-rotate(180deg)}
-html.vis-on body[data-theme=noche] .vis-cv{filter:brightness(.85)}
+html.vis-on body[data-theme=noche] .vis-cv{filter:brightness(.85) var(--vis-sat,saturate(1))}
 html.vis-on body[data-theme=bosque] .app>aside,html.vis-on body[data-theme=bosque] .mast,html.vis-on body[data-theme=bosque] #scene>:not(.marco),html.vis-on body[data-theme=bosque] .dlg{filter:hue-rotate(75deg) saturate(.7)}
 html.vis-on body[data-theme=contraste] .app>aside,html.vis-on body[data-theme=contraste] .mast,html.vis-on body[data-theme=contraste] #scene>:not(.marco),html.vis-on body[data-theme=contraste] .dlg{filter:contrast(1.35) saturate(.5)}
-html.vis-on body[data-theme=contraste] .vis-cv{filter:contrast(1.15)}
+html.vis-on body[data-theme=contraste] .vis-cv{filter:contrast(1.15) var(--vis-sat,saturate(1))}
 @media(max-width:700px){.marco{margin:20px -12px 8px}.dlg .voice{grid-template-columns:auto 1fr;padding:10px 12px 12px;min-height:0;column-gap:10px}.dlg .voice .retrato{width:56px;height:56px;border-width:2px}.stage.vis figcaption{font-size:10px;max-width:86%}}
 @media(prefers-reduced-motion:reduce){.dlg .voice{transition:none}}
 
@@ -955,6 +955,45 @@ html.vis-on #bkPage .chapter.pxd{display:flex;align-items:center}
 @media(prefers-reduced-motion:reduce){html.vis-on .flot{animation:none;opacity:1}html.vis-on .meter.pulso-up .track,html.vis-on .meter.pulso-down .track{animation:none}html.vis-on .track .fill,html.vis-on .track .ghost{transition:none}}
 body.noanim .flot{animation:none!important}
 @media(hover:none) and (pointer:coarse){html.vis-on .hint{display:none}}
+
+html.vis-on #mapbox{contain:layout paint}
+html.vis-on .marco{contain:layout paint}
+html.vis-on .narration>p,html.vis-on .bridge,html.vis-on .dlg .voice{contain:layout paint}
+
+/* ===== VIS · menú principal e introducción ===== */
+html.vis-on .m-bg,html.vis-on .i-bg{display:none}
+.vis-fondo{will-change:transform,opacity;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+html.vis-on #menu.on{background:#22122a}
+html.vis-on #menu::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,#0000 35%,#1a0c1c99 100%);pointer-events:none}
+html.vis-on #intro .vis-fondo.alba{opacity:0}
+html.vis-on #intro::after{content:'';position:absolute;inset:0;background:linear-gradient(#0a0a1288,#0a0a1222 45%,#0a0a1288);pointer-events:none}
+html.vis-on #intro>:not(canvas){z-index:1}
+html.vis-on #i-text,html.vis-on #i-title,html.vis-on #i-hint{z-index:2;text-shadow:0 2px 0 #0008,0 0 18px #000a}
+html.vis-on .m-card.px-card{z-index:1;background:var(--px-papel) repeat,#f3e6c4;background-size:64px 64px;border:20px solid transparent;border-image:var(--px-marco) 8 fill / 20px / 0 round;box-shadow:0 18px 0 -6px #1a0c1c66,0 30px 60px #0008;image-rendering:pixelated;padding:28px 30px 22px}
+html.vis-on .m-card.px-card:before{display:none}
+html.vis-on .m-escudo{display:block;margin:0 auto 2px;width:56px;height:56px;image-rendering:pixelated}
+html.vis-on .px-card .m-title{color:#3a1a10;text-shadow:3px 3px 0 #d8a64099;letter-spacing:.005em}
+html.vis-on .px-card .m-orn{color:#a8483a}
+html.vis-on .px-card .mbtn{display:flex;align-items:center;justify-content:center;gap:8px;background:none;border:12px solid transparent;border-image:var(--px-marco) 8 fill / 12px / 0 round;box-shadow:none;padding:6px 14px;image-rendering:pixelated;transition:transform .1s steps(2)}
+html.vis-on .px-card .mbtn .pxi{margin:0;width:20px;height:20px;background-size:20px 20px}
+html.vis-on .px-card .mbtn:hover,html.vis-on .px-card .mbtn:focus-visible{border-image-source:var(--px-marco-rojo);color:#fbe3b0;background:none;transform:translateY(-2px);box-shadow:none;outline:none}
+html.vis-on .px-card .mbtn:active{transform:translateY(1px)}
+html.vis-on .px-card .mode{border:16px solid transparent;border-image:var(--px-marco) 8 fill / 16px / 0 round;background:none;box-shadow:none;padding:10px 12px 8px;image-rendering:pixelated;transition:transform .12s steps(2)}
+html.vis-on .px-card .mode:hover,html.vis-on .px-card .mode:focus-visible{transform:translateY(-3px);box-shadow:none;outline:none;filter:drop-shadow(0 6px 0 #3a1a1033)}
+html.vis-on .px-card .mode.pes:not(.locked):hover,html.vis-on .px-card .mode.pes:not(.locked):focus-visible{border-image-source:var(--px-marco-rojo)}
+html.vis-on .px-card .mode.pes:not(.locked):hover *{color:#fbe3b0}
+html.vis-on .px-card .mode .pxm{width:56px;height:56px;image-rendering:pixelated}
+html.vis-on .px-card .mode-l{border-top-color:#c9a35a}
+/* libro y ventanas con el mismo marco */
+html.vis-on #mktModal .card,html.vis-on #modal .card{background:var(--px-papel) repeat,#f3e6c4;background-size:64px 64px;border:16px solid transparent;border-image:var(--px-marco) 8 fill / 16px / 0 round;image-rendering:pixelated}
+html.vis-on .rib{display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:8px}
+html.vis-on .rib .pxi{margin:0;transform:none;image-rendering:pixelated}
+html.vis-on .tg{border:2px solid #4a2c1a;background:#efe3c2;box-shadow:inset 0 -2px 0 #c9a35a;font:600 11px 'DM Mono',ui-monospace,monospace}
+html.vis-on .tg.on{background:#a8483a;color:#fbe3b0;box-shadow:inset 0 -2px 0 #6e1c16}
+html.vis-on .shopbtn{border:12px solid transparent;border-image:var(--px-marco) 8 fill / 12px / 0 round;background:none;image-rendering:pixelated}
+@media(max-width:720px){html.vis-on .m-card.px-card{border-width:14px;border-image-width:14px;padding:18px 14px 14px}}
+html.vis-on .rib{height:108px}html.vis-on .rib:hover{height:122px}html.vis-on .rib.on{height:140px}
+html.vis-on input[type=range]{accent-color:#a8483a}
 </style><script id="vis-js">
 /* ===== VIS · núcleo: paletas, búfer indexado, utilidades ===== */
 /* Todo el arte se pinta con índices de paleta (0-31) sobre búferes Uint8.
@@ -1134,7 +1173,9 @@ var VIS = window.VIS = window.VIS || {};
 
   V.HORAS = HORAS; V.HEX = HEX; V.C = C; V.TONO = TONO; V.B = B; V.rng = rng; V.perfil = perfil; V.cache = cache;
   V.texto = texto; V.anchoTexto = anchoTexto; V.CACHE = CACHE;
-  V.menosMov = () => (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || (typeof CFG !== 'undefined' && !CFG.anim);
+  // la consulta se crea una vez: leer .matches es barato (antes se creaba en cada fotograma)
+  const MQ = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  V.menosMov = () => MQ.matches || (typeof CFG !== 'undefined' && !CFG.anim);
 })(VIS);
 /* ===== VIS · fondos: 25 escenarios base pintados por código ===== */
 (function (V) {
@@ -2077,6 +2118,7 @@ cirujano|plaza|mediodia|||barbero|talk|`;
   const H = 180, GY = V.GY;
   let cv = null, ctx = null, W = 320, OX = 40; // ancho interno elástico 320-400 y desplazamiento de fondos
   let S = null; // escena actual
+  V.ganchos = []; // tareas que comparten el bucle (p. ej. el texto letra a letra)
   let raf = 0, visible = true, enVista = true, t0 = 0, ultimo = 0;
   const fpsBuf = [];
   const snap = { cv: null }; // fotograma anterior para transiciones
@@ -2096,16 +2138,22 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     cv.addEventListener('click', () => V.dialogo && V.dialogo.saltar());
     if ('IntersectionObserver' in window) new IntersectionObserver(es => { enVista = es[0].isIntersecting; pedir(); }).observe(cv);
     document.addEventListener('visibilitychange', () => { visible = !document.hidden; pedir(); });
-    addEventListener('resize', () => { medir(); dibujar(performance.now()); });
+    const sc = document.getElementById('scene');
+    if (sc && 'ResizeObserver' in window) new ResizeObserver(es => { const w = Math.round(es[0].contentRect.width); if (w && w !== anchoCSS) { anchoCSS = w; if (cv.parentNode) { medir(); dibujar(performance.now()); } } }).observe(sc);
+    else addEventListener('resize', () => { anchoCSS = 0; medir(); dibujar(performance.now()); });
   }
+  // El ancho CSS se lee solo al cambiar el tamaño (ResizeObserver), nunca justo después de
+  // reescribir el DOM: esa lectura obligaba al navegador a recolocar toda la página en cada clic.
+  let anchoCSS = 0;
   function medir() {
     const p = cv.parentNode; if (!p) return;
-    const cssW = p.clientWidth || 640, dpr = window.devicePixelRatio || 1;
+    if (!anchoCSS) anchoCSS = p.clientWidth || 640;
+    const cssW = anchoCSS, dpr = window.devicePixelRatio || 1;
     const s = Math.max(1, Math.floor(cssW * dpr / 320));
     const w = Math.max(320, Math.min(400, Math.round(cssW * dpr / s)));
     if (w !== W || cv.width !== w) { W = w; cv.width = W; cv.height = H; ctx.imageSmoothingEnabled = false; }
     OX = Math.round((V.W0 - W) / 2);
-    cv.style.aspectRatio = W + ' / ' + H;
+    const ar = W + ' / ' + H; if (cv.style.aspectRatio !== ar) cv.style.aspectRatio = ar;
     if (S) colocar(S, true);
   }
   V.ancho = () => W;
@@ -2131,10 +2179,31 @@ cirujano|plaza|mediodia|||barbero|talk|`;
   }
   function hash(s) { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; }
 
+  /* ---------- precalentado: fondos de las escenas siguientes, en tiempo ocioso ---------- */
+  const ocioso = window.requestIdleCallback || (f => setTimeout(() => f({ timeRemaining: () => 8 }), 120));
+  let colaP = [];
+  function precalentar() {
+    if (typeof scenes === 'undefined' || !S || !scenes[S.id]) return;
+    const sig = new Set();
+    for (const c of scenes[S.id].choices) {
+      const n = c[3] && c[3].next; if (!n || n[0] === '@') continue;
+      sig.add(n); if (typeof RD !== 'undefined' && RD[S.id + '>' + n]) sig.add(RD[S.id + '>' + n]);
+    }
+    colaP = [...sig].filter(id => scenes[id]);
+    ocioso(trabajarP);
+  }
+  function trabajarP(dl) {
+    while (colaP.length && (!dl || dl.timeRemaining() > 6)) {
+      const e = V.escena(colaP.shift());
+      const L = capas(e); if (W) fondoFijo(e, L);
+    }
+    if (colaP.length) ocioso(trabajarP);
+  }
+
   /* ---------- reparto y marcas ---------- */
   function montarReparto(e, id) {
     const an = e.an, A = [], sinSancho = (typeof state !== 'undefined' && state.alone) || (typeof NOSAN !== 'undefined' && NOSAN.includes(id)) || NOSAN_EXTRA.includes(id);
-    const L = capas(e), dentro = L.interior || e.interior || e.f === 'patio' || (e.f === 'liza' && an === 'fly');
+    const dentro = e.interior || e.f === 'patio' || (e.f === 'liza' && an === 'fly');
     const bacia = typeof state !== 'undefined' && state.inventory && state.inventory.yelmo > 0;
     if (e.l === 'alonso') {
       if (an === 'sleep') A.push({ id: 'alonso', rol: 'izq', m: e.f === 'alcoba' ? (V.W0 / 2 + 50) / V.W0 : 0.5, pose: 'tendido', fija: 1, y: e.f === 'alcoba' ? 119 : GY, cama: e.f === 'alcoba' });
@@ -2181,7 +2250,7 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     if (!cv) crear();
     const e = V.escena(id);
     const nuevo = !S || S.id !== id || o.forzar;
-    if (!nuevo) { S.e = e; refrescarReparto(); pedir(); return; }
+    if (!nuevo) { S.e = e; S.L = null; refrescarReparto(); pedir(); return; }
     // fotograma anterior para la transición
     if (S && !V.menosMov() && cv.width) { snap.cv = snap.cv || document.createElement('canvas'); snap.cv.width = cv.width; snap.cv.height = cv.height; snap.cv.getContext('2d').drawImage(cv, 0, 0); }
     S = { id, e, t: performance.now(), actores: [], part: [], trans: (S && !V.menosMov()) ? (o.pagina ? 'pagina' : 'iris') : null, quieto: false, habla: null };
@@ -2189,7 +2258,9 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     S.actores.forEach(a => { a.entrando = 1; a.x = a.rol === 'npc' ? W + 30 + (a.k || 0) * 14 : -40 - (a.rol === 'sancho' ? 30 : 0); });
     medir(); colocar(S, false);
     if (!V.menosMov()) S.actores.forEach(a => { if (a.entrando) { a.dur = 1.1 + Math.abs(a.tx - a.x) / 400; a.x0 = a.x; } });
-    pedir(); dibujar(performance.now());
+    // se dibuja en el próximo fotograma, fuera del clic (con movimiento reducido no hay bucle: un fotograma suelto)
+    pedir(); if (V.menosMov() || !raf) requestAnimationFrame(() => dibujar(performance.now()));
+    precalentar();
   };
   function refrescarReparto() {
     // el estado cambió sin cambiar de escena (p. ej. se usó un objeto): conserva posiciones
@@ -2204,29 +2275,50 @@ cirujano|plaza|mediodia|||barbero|talk|`;
   V.habla = function (quien) { if (S) { S.habla = quien; pedir(); } };
 
   /* ---------- bucle ---------- */
-  V.ganchos = []; // tareas que comparten el bucle (p. ej. el texto letra a letra)
-  function puedeDibujar() {
+  // ¿Hay algo encima del juego? Se consulta el DOM como mucho 4 veces por segundo, no en cada fotograma.
+  let bloqueo = false, bloqueoT = 0;
+  function tapado(now) {
+    if (now - bloqueoT > 250) {
+      bloqueoT = now;
+      bloqueo = (typeof MENUON === 'function' && MENUON()) || !!document.querySelector('#bookModal.show,#mktModal.show');
+    }
+    return bloqueo;
+  }
+  V.revisarBloqueo = () => { bloqueoT = 0; };
+  function puedeDibujar(now) {
     if (!S || !visible || !enVista) return false;
-    if (typeof MENUON === 'function' && MENUON()) return false;
-    if (document.querySelector('#bookModal.show,#mktModal.show')) return false;
+    if (tapado(now || performance.now())) return false;
     if (V.menosMov()) return !!(S.dados && !S.dados.fin);
     return true;
   }
-  function hayQueAnimar() {
+  function hayQueAnimar(now) {
     if (!visible) return false;
-    return V.ganchos.some(g => g.activo()) || puedeDibujar();
+    return V.ganchos.some(g => g.activo()) || puedeDibujar(now);
   }
-  function pedir() { if (!raf && hayQueAnimar()) { ultimo = 0; raf = requestAnimationFrame(tick); } }
+  function pedir() { V.revisarBloqueo(); if (!raf && hayQueAnimar()) { ultimo = 0; raf = requestAnimationFrame(tick); } }
   V.pedir = pedir;
+  // El pixel art se anima a 8-12 fotogramas por segundo: componer a 30 Hz basta y
+  // deja la mitad de los refrescos libres. El navegador sigue a 60 fps.
+  V.HZ = 30;
+  // En reposo (sin transición, dados, entradas ni acción) bastan 12 Hz: los sprites van a 8.
+  function hz() {
+    if (!S || S.trans || (S.dados && !S.dados.fin) || V.ganchos.some(g => g.activo() && g.rapido)) return V.HZ;
+    const an = S.e.an;
+    if (an === 'walk' || an === 'fight' || an === 'toss' || an === 'fly' || S.actores.some(a => a.entrando)) return V.HZ;
+    return 12;
+  }
+  V.hz = hz;
+  let dibujado = 0;
   function tick(now) {
     raf = 0;
-    if (!hayQueAnimar()) return;
-    for (const g of V.ganchos) if (g.activo()) g.paso(now);
-    if (puedeDibujar()) {
-      if (ultimo) { fpsBuf.push(1000 / Math.max(1, now - ultimo)); if (fpsBuf.length > 120) fpsBuf.shift(); }
-      ultimo = now;
+    if (!hayQueAnimar(now)) return;
+    const toca = now - dibujado >= 1000 / hz() - 2;
+    if (toca) for (const g of V.ganchos) if (g.activo()) g.paso(now);
+    if (toca && puedeDibujar(now)) {
+      if (ultimo) { fpsBuf.push(1000 / Math.max(1, now - ultimo)); if (fpsBuf.length > 60) fpsBuf.shift(); }
+      ultimo = now; dibujado = now;
       dibujar(now);
-    } else ultimo = 0;
+    } else if (!puedeDibujar(now)) ultimo = 0;
     raf = requestAnimationFrame(tick);
   }
   V.fps = () => fpsBuf.length ? fpsBuf.reduce((a, b) => a + b, 0) / fpsBuf.length : 0;
@@ -2236,19 +2328,28 @@ cirujano|plaza|mediodia|||barbero|talk|`;
   function dibujar(now) {
     if (!S || !ctx) return;
     const t = (now - S.t) / 1000, quieto = V.menosMov(), tt = quieto ? 0 : t;
-    const e = S.e, L = capas(e), hora = e.pal, horaA = e.palA;
+    if (S.trans === 'iris' && snap.cv && !quieto && t < 0.32) { transicion(t, quieto); return; }
+    const e = S.e, L = S.L || (S.L = capas(e)), hora = e.pal, horaA = e.palA;
     // cámara: en escenas de camino el paisaje se desplaza
     const marcha = e.an === 'walk' && !quieto ? tt * 14 : 0;
-    const tn = tension();
+    const tn = S.postal ? { cor: 0, sal: 0, ham: 0 } : tension();
     ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
-    ctx.fillStyle = HEX[hora][0]; ctx.fillRect(0, 0, W, H);
-    capa(L.cielo, 0);
-    capa(L.lejos, marcha * 0.15);
     const ond = (tn.cor > 0.3 && !quieto) ? Math.round(Math.sin(tt * 1.7) * tn.cor * 1.5) : 0;
-    ctx.save(); ctx.translate(0, ond); capa(L.medio, marcha * 0.4); ctx.restore();
-    animFondo(L, tt, hora, 'medio', marcha * 0.4);
-    capa(L.suelo, marcha);
-    animFondo(L, tt, hora, 'suelo', marcha);
+    if (!marcha && !ond) {
+      // escena quieta: cielo, lejos, medio y suelo ya compuestos (con el tinte de la tarde) en un solo lienzo
+      ctx.drawImage(fondoFijo(e, L), 0, 0);
+      animFondo(L, tt, hora, 'medio', 0);
+      animFondo(L, tt, hora, 'suelo', 0);
+    } else {
+      ctx.fillStyle = HEX[hora][0]; ctx.fillRect(0, 0, W, H);
+      capa(L.cielo, 0);
+      capa(L.lejos, marcha * 0.15);
+      ctx.save(); ctx.translate(0, ond); capa(L.medio, marcha * 0.4); ctx.restore();
+      animFondo(L, tt, hora, 'medio', marcha * 0.4);
+      capa(L.suelo, marcha);
+      animFondo(L, tt, hora, 'suelo', marcha);
+      if (e.tarde) tinteTarde(ctx);
+    }
     // actores (de atrás a delante)
     actualizarActores(tt, quieto);
     const orden = S.actores.slice().sort((a, b) => (a.fondo ? -1 : 0) - (b.fondo ? -1 : 0) || a.y - b.y);
@@ -2258,11 +2359,21 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     capa(L.frente, marcha * 1.6);
     // luz
     luces(L, tt, hora, e);
-    if (e.tarde) { ctx.globalCompositeOperation = 'soft-light'; ctx.fillStyle = 'rgba(255,170,90,.35)'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
-    if (L.papel && e.h === 'noche') { ctx.globalCompositeOperation = 'multiply'; ctx.fillStyle = 'rgba(120,110,170,.45)'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over'; }
+    if (L.papel && e.h === 'noche') { ctx.globalAlpha = 0.45; ctx.drawImage(cache('velo|' + W, () => liso(W, 'rgb(60,50,110)')), 0, 0); ctx.globalAlpha = 1; }
     postTension(tn, tt, quieto);
     if (S.dados) dados(now);
     transicion(t, quieto);
+  }
+  function liso(w, col) { const c = document.createElement('canvas'); c.width = w; c.height = H; const x = c.getContext('2d'); x.fillStyle = col; x.fillRect(0, 0, w, H); return c; }
+  function tinteTarde(cx) { cx.globalCompositeOperation = 'soft-light'; cx.fillStyle = 'rgba(255,170,90,.35)'; cx.fillRect(0, 0, W, H); cx.globalCompositeOperation = 'source-over'; }
+  function fondoFijo(e, L) {
+    return cache('fijo|' + e.f + '|' + e.variante + '|' + e.props.join(',') + '|' + e.h + '|' + e.pal + '|' + (e.tarde ? 1 : 0) + '|' + W, () => {
+      const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+      x.fillStyle = HEX[e.pal][0]; x.fillRect(0, 0, W, H);
+      for (const k of ['cielo', 'lejos', 'medio', 'suelo']) x.drawImage(L[k], -OX, 0);
+      if (e.tarde) tinteTarde(x);
+      return c;
+    });
   }
   function capa(c, dx) {
     if (!dx) { ctx.drawImage(c, -OX, 0); return; }
@@ -2504,11 +2615,15 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     ctx.globalCompositeOperation = 'lighter';
     for (const l of ls) {
       const fl = l.f && !V.menosMov() ? (Math.sin(t * 13 + l.x) * 0.5 + Math.sin(t * 7.3) * 0.5) * 0.08 : 0;
-      const x = l.x - OX, r = l.r * (1 + fl);
-      const g = ctx.createRadialGradient(x, l.y, 1, x, l.y, r);
-      const col = l.frio ? '120,160,220' : '255,150,60';
-      g.addColorStop(0, 'rgba(' + col + ',' + ((noche ? 0.42 : 0.18) + fl) + ')'); g.addColorStop(1, 'rgba(' + col + ',0)');
-      ctx.fillStyle = g; ctx.fillRect(x - r, l.y - r, r * 2, r * 2);
+      const x = l.x - OX, r = l.r;
+      const g = cache('luz|' + r + '|' + (l.frio ? 1 : 0), () => {
+        const c = document.createElement('canvas'); c.width = c.height = r * 2; const cx = c.getContext('2d');
+        const gr = cx.createRadialGradient(r, r, 1, r, r, r), col = l.frio ? '120,160,220' : '255,150,60';
+        gr.addColorStop(0, 'rgba(' + col + ',1)'); gr.addColorStop(1, 'rgba(' + col + ',0)'); cx.fillStyle = gr; cx.fillRect(0, 0, r * 2, r * 2); return c;
+      });
+      ctx.globalAlpha = Math.max(0, Math.min(1, (noche ? 0.42 : 0.18) + fl));
+      ctx.drawImage(g, x - r, l.y - r);
+      ctx.globalAlpha = 1;
       if (l.rayo) { ctx.fillStyle = 'rgba(255,230,170,.08)'; ctx.beginPath(); ctx.moveTo(x - 18, l.y - 18); ctx.lineTo(x + 18, l.y - 18); ctx.lineTo(x + 70, GY + 10); ctx.lineTo(x - 10, GY + 10); ctx.fill(); }
     }
     ctx.globalCompositeOperation = 'source-over';
@@ -2517,12 +2632,18 @@ cirujano|plaza|mediodia|||barbero|talk|`;
   /* ---------- tensión: viñeta, grano, desaturación ---------- */
   let grano = null, granoT = 0;
   function postTension(tn, t, quieto) {
-    const vig = (col, a) => { const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, W * 0.7); g.addColorStop(0, 'rgba(' + col + ',0)'); g.addColorStop(1, 'rgba(' + col + ',' + a + ')'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); };
+    const vig = (col, a) => {
+      if (a <= 0.01) return;
+      const v = cache('vig|' + col + '|' + W, () => { const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); const g = x.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, W * 0.7); g.addColorStop(0, 'rgba(' + col + ',0)'); g.addColorStop(1, 'rgba(' + col + ',1)'); x.fillStyle = g; x.fillRect(0, 0, W, H); return c; });
+      ctx.globalAlpha = Math.min(1, a); ctx.drawImage(v, 0, 0); ctx.globalAlpha = 1;
+    };
+    // la desaturación la hace la GPU con un filtro CSS sobre el lienzo (antes, un modo de fusión por fotograma)
+    const sat = tn.ham > 0 ? 'saturate(' + (1 - 0.45 * tn.ham).toFixed(2) + ')' : '';
+    if (!S.postal && cv.dataset.sat !== sat) { cv.dataset.sat = sat; cv.style.setProperty('--vis-sat', sat || 'saturate(1)'); }
     vig('20,10,30', 0.35); // viñeta suave siempre: enmarca la escena
     if (tn.cor > 0) vig('70,30,110', 0.55 * tn.cor);
     if (tn.sal > 0) vig('110,10,10', (0.4 + (quieto ? 0 : Math.sin(t * Math.PI * 2 / 2.4) * 0.15)) * tn.sal);
     if (tn.ham > 0) {
-      ctx.globalCompositeOperation = 'saturation'; ctx.fillStyle = 'rgba(128,128,128,' + (0.35 * tn.ham) + ')'; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over';
       if (!grano) { grano = document.createElement('canvas'); grano.width = 128; grano.height = 128; const g = grano.getContext('2d'), im = g.createImageData(128, 128); for (let i = 0; i < im.data.length; i += 4) { const v = Math.random() < 0.5 ? 0 : 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = Math.random() < 0.18 ? 40 : 0; } g.putImageData(im, 0, 0); }
       if (!quieto) granoT = Math.floor(t * 12);
       const ox = (granoT * 37) % 128, oy = (granoT * 53) % 128;
@@ -2608,6 +2729,22 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     pedir();
   };
 
+  /* ---------- postales: una escena del motor dibujada en otro lienzo (menú, introducción) ---------- */
+  V.postal = function (lienzo, cfg, now) {
+    const c2 = lienzo.getContext('2d'); if (!c2) return;
+    const g = [S, cv, ctx, W, OX];
+    W = lienzo.width; OX = Math.round((V.W0 - W) / 2); cv = lienzo; ctx = c2; ctx.imageSmoothingEnabled = false;
+    let P = lienzo._S;
+    if (!P || P.clave !== cfg.clave) {
+      const e = Object.assign({}, V.escena(cfg.base || 'road'), cfg.e);
+      P = lienzo._S = { id: cfg.clave, clave: cfg.clave, e, t: now, part: [], actores: [], postal: true };
+      S = P; P.actores = montarReparto(e, cfg.clave);
+      if (cfg.marcas) P.actores.forEach(a => { if (cfg.marcas[a.rol] !== undefined) a.m = cfg.marcas[a.rol]; });
+      colocar(P, true);
+    }
+    S = P;
+    try { dibujar(now); } finally { [S, cv, ctx, W, OX] = g; }
+  };
   V.escenaActual = () => S;
   V.dibujarYa = () => dibujar(performance.now());
 })(VIS);
@@ -2732,6 +2869,8 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     if (!D.activo) return;
     const c = D.cola[D.i]; if (!c) { terminar(); return; }
     if (now < D.pausa) return;
+    // como mucho ~16 cambios de DOM por segundo: cada cambio obliga a recolocar el párrafo
+    if (now - (D.ult || 0) < 60) return; D.ult = now;
     const lleva = Math.floor((now - D.t) / 1000 * cps());
     let restante = lleva, hecho = true, ultimo = '';
     for (const p of c.partes) {
@@ -2861,6 +3000,7 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     const _ie = window.introEnd; if (_ie) window.introEnd = function () { const r = _ie.apply(this, arguments); V.pedir(); return r; };
     const _cb = window.closeBook; if (_cb) window.closeBook = function () { const r = _cb.apply(this, arguments); V.pedir(); return r; };
     if (V.instalarUI) V.instalarUI();
+    if (V.instalarMenu) V.instalarMenu();
     window.render();
     return true;
   };
@@ -2887,6 +3027,11 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     infeccion(b) { b.circ(8, 8, 5, C.olivo); b.circ(8, 8, 2, C.encina); b.p(3, 3, C.olivo); b.p(13, 13, C.olivo); },
     cura(b) { b.r(6, 2, 4, 12, C.lino); b.r(2, 6, 12, 4, C.lino); b.r(7, 3, 2, 10, C.rojo); b.r(3, 7, 10, 2, C.rojo); },
     ruta(b) { b.r(2, 3, 12, 10, C.lino); b.r(6, 3, 1, 10, C.calS); b.r(10, 3, 1, 10, C.calS); b.line(3, 11, 9, 6, C.rojo); b.p(12, 5, C.rojo); },
+    jugar(b) { b.line(2, 14, 13, 3, C.madera, 2); b.poly([11, 2, 15, 1, 14, 5], C.hierroL); b.r(2, 12, 3, 3, C.rojo); },
+    ajustes(b) { b.circ(8, 8, 6, C.hierro); b.circ(8, 8, 3, C.lino); for (const [x, y] of [[8, 1], [8, 15], [1, 8], [15, 8], [3, 3], [13, 13], [3, 13], [13, 3]]) b.r(x - 1, y - 1, 2, 2, C.hierro); b.circ(8, 8, 1, C.hierro); },
+    salida(b) { b.r(4, 2, 9, 13, C.maderaO); b.r(5, 3, 7, 12, C.madera); b.p(10, 9, C.oro); b.r(2, 14, 13, 1, C.tierraS); },
+    calavera(b) { b.ell(8, 7, 6, 5, C.lino); b.r(5, 11, 7, 3, C.lino); b.r(5, 6, 2, 2, C.negro); b.r(9, 6, 2, 2, C.negro); b.p(8, 9, C.negro); b.p(6, 13, C.calS); b.p(8, 13, C.calS); b.p(10, 13, C.calS); },
+    continuar(b) { b.r(3, 3, 10, 10, C.lino); b.r(3, 3, 3, 10, C.rojo); b.r(7, 6, 5, 1, C.calS); b.r(7, 9, 4, 1, C.calS); },
     libro(b) { b.r(2, 3, 12, 10, C.rojoO); b.r(3, 4, 5, 8, C.lino); b.r(8, 4, 5, 8, C.lino); b.r(8, 3, 1, 10, C.maderaO); }
   };
   const URL = {};
@@ -2897,7 +3042,7 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     const cv = b.canvas('mediodia');
     URL[key] = cv.toDataURL(); return URL[key];
   }
-  V.icono = icono;
+  V.icono = icono; V.vineta = (t, b) => vineta(t, b);
 
   /* ---------- marco barroco (9 piezas) y papel ---------- */
   function marco() {
@@ -2908,13 +3053,19 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     for (let i = 8; i < 16; i += 2) { b.p(i, 1, C.tierraL); b.p(i, 22, C.tierraL); b.p(1, i, C.tierraL); b.p(22, i, C.tierraL); }
     return b.canvas('mediodia').toDataURL();
   }
+  function marcoRojo() {
+    const b = new B(24, 24);
+    b.r(0, 0, 24, 24, C.rojoO); b.r(1, 1, 22, 22, C.oro); b.r(2, 2, 20, 20, C.rojoO); b.r(3, 3, 18, 18, C.rojo);
+    for (const [x, y] of [[1, 1], [20, 1], [1, 20], [20, 20]]) { b.r(x, y, 3, 3, C.oro); b.p(x + 1, y + 1, C.destello); }
+    return b.canvas('mediodia').toDataURL();
+  }
   function papel() {
     const b = new B(32, 32), r = V.rng(9); b.r(0, 0, 32, 32, C.lino);
     for (let i = 0; i < 40; i++) b.p(r() * 32 | 0, r() * 32 | 0, r() < 0.7 ? C.cal : C.calS);
     return b.canvas('mediodia').toDataURL();
   }
   function hojaEstilo() {
-    const css = [`:root{--px-marco:url(${marco()});--px-papel:url(${papel()})}`];
+    const css = [`:root{--px-marco:url(${marco()});--px-marco-rojo:url(${marcoRojo()});--px-papel:url(${papel()})}`];
     for (const k in ICO) css.push(`.pxi-${k}{background-image:url(${icono(k)})}`);
     const st = document.createElement('style'); st.id = 'vis-iconos'; st.textContent = css.join('\n'); document.head.appendChild(st);
   }
@@ -2936,12 +3087,12 @@ cirujano|plaza|mediodia|||barbero|talk|`;
       if (prev && prev[k] !== undefined && prev[k] !== v) {
         const d = v - prev[k];
         // estela: al bajar, queda la marca del valor anterior y se consume despacio
-        if (g) { g.style.transition = 'none'; g.style.width = Math.max(prev[k], v) + '%'; g.className = 'ghost ' + (d < 0 ? 'baja' : 'sube'); void g.offsetWidth; g.style.transition = ''; setTimeout(() => { g.style.width = v + '%'; }, V.menosMov() ? 0 : 450); }
+        if (g) { g.style.transition = 'none'; g.style.width = Math.max(prev[k], v) + '%'; g.className = 'ghost ' + (d < 0 ? 'baja' : 'sube'); requestAnimationFrame(() => { g.style.transition = ''; setTimeout(() => { g.style.width = v + '%'; }, V.menosMov() ? 0 : 450); }); }
         const num = document.getElementById(k + 'Num');
         if (num) {
           const f = document.createElement('span'); f.className = 'flot ' + (d > 0 ? 'up' : 'down'); f.textContent = (d > 0 ? '+' : '−') + Math.abs(d); f.setAttribute('aria-hidden', 'true');
           num.parentNode.style.position = 'relative'; num.parentNode.appendChild(f); setTimeout(() => f.remove(), 1800);
-          m.classList.remove('pulso-up', 'pulso-down'); void m.offsetWidth; m.classList.add(d > 0 ? 'pulso-up' : 'pulso-down');
+          m.classList.remove('pulso-up', 'pulso-down'); requestAnimationFrame(() => m.classList.add(d > 0 ? 'pulso-up' : 'pulso-down'));
         }
       } else if (g) g.style.width = v + '%';
       if (fill) fill.setAttribute('data-v', v);
@@ -2995,6 +3146,14 @@ cirujano|plaza|mediodia|||barbero|talk|`;
   }
 
   /* ---------- mapa, alforjas y perfil con el mismo lenguaje ---------- */
+  const RIB = { perfil: 'honor', alforjas: 'gana', logros: 'reales', diario: 'libro', ruta: 'ruta', ajustes: 'ajustes' };
+  function cintas() {
+    document.querySelectorAll('#bkRibbons .rib').forEach(r => {
+      if (r.querySelector('.pxi')) return;
+      const k = Object.keys(RIB).find(x => (r.getAttribute('onclick') || '').includes("'" + x + "'"));
+      if (k) r.insertAdjacentHTML('afterbegin', `<i class="pxi pxi-${RIB[k]}" aria-hidden="true"></i>`);
+    });
+  }
   function libro() {
     const pg = document.getElementById('bkPage'); if (!pg) return;
     pg.querySelectorAll('.chapter:not(.pxd)').forEach(h => {
@@ -3009,10 +3168,86 @@ cirujano|plaza|mediodia|||barbero|talk|`;
   V.instalarUI = function () {
     hojaEstilo();
     window.illustration = ilustracion;
-    const _db = window.drawBook; if (_db) window.drawBook = function () { const r = _db.apply(this, arguments); try { libro(); } catch (e) { } return r; };
+    const _db = window.drawBook; if (_db) window.drawBook = function () { const r = _db.apply(this, arguments); try { libro(); cintas(); } catch (e) { } return r; };
     const _om = window.openMkt; if (_om) window.openMkt = function () { const r = _om.apply(this, arguments); try { chips(document.getElementById('mktModal')); } catch (e) { } return r; };
+    // el mapa lateral (SVG con filtros caros) solo se reconstruye si cambia la ruta o el contador
+    const _rm = window.renderMap; let kMapa = '';
+    if (_rm) window.renderMap = function () {
+      const f = state.flags || {}, k = (state.trail || []).join(',') + '|' + loc(state.scene) + '|' + (f.dul || 0) + '|' + (f.des || 0) + '|' + state.mode;
+      if (k === kMapa && document.querySelector('#mapbox .mapwrap')) return;
+      kMapa = k; return _rm.apply(this, arguments);
+    };
     const _t = V.trasRender;
     V.trasRender = function () { _t.apply(this, arguments); panel(); opciones(); };
+  };
+})(VIS);
+/* ===== VIS · menú principal e introducción con escenas del propio motor ===== */
+(function (V) {
+  'use strict';
+  // Fondo del menú: los molinos al ocaso, don Quijote y Sancho cabalgando (parallax).
+  const MENU = { clave: 'menu', base: 'road', marcas: { sancho: 0.07, dq: 0.2 }, e: { f: 'molinos', h: 'ocaso', pal: 'ocaso', palA: 'ocaso', tarde: false, props: [], clima: ['polvo'], r: [], an: 'walk', l: 'dq', variante: 'mancha', interior: false } };
+  const NOCHE = { clave: 'intro-noche', base: 'road', e: { f: 'molinos', h: 'noche', pal: 'noche', palA: 'luna', tarde: false, props: [], clima: ['luciernagas'], r: [], an: 'walk', l: 'dq', variante: 'mancha', interior: false } };
+  const ALBA = { clave: 'intro-alba', base: 'road', e: Object.assign({}, NOCHE.e, { h: 'amanecer', pal: 'amanecer', palA: 'amanecer', clima: ['polvo'] }) };
+  const PESA = { clave: 'intro-pesadilla', base: 'road', e: Object.assign({}, NOCHE.e, { h: 'ocaso', pal: 'ocaso', palA: 'lumbre', clima: ['niebla'] }) };
+  let cMenu = null, cNoche = null, cAlba = null, introT0 = 0, introPes = false, introDur = 30000;
+
+  function lienzo(padre, cls) {
+    const c = document.createElement('canvas'); c.className = 'vis-fondo ' + (cls || ''); c.setAttribute('aria-hidden', 'true');
+    padre.insertBefore(c, padre.firstChild); medir(c); return c;
+  }
+  // ancho interno según la proporción de la pantalla (alto fijo de 180 px)
+  function medir(c) {
+    const r = innerWidth / Math.max(1, innerHeight), w = Math.max(240, Math.min(400, Math.round(180 * r)));
+    if (c.width !== w) { c.width = w; c.height = 180; c._S = null; }
+  }
+  const visible = id => { const m = document.getElementById(id); return !!(m && m.classList.contains('on')); };
+
+  function decorar() {
+    const card = document.querySelector('#menu .m-card'); if (!card) return;
+    card.classList.add('px-card');
+    // iconos pixel en los botones
+    const ic = { 'm-cont': 'continuar' };
+    document.querySelectorAll('#m-main .mbtn').forEach(b => {
+      const t = b.textContent.trim().toLowerCase();
+      const k = ic[b.id] || (t.startsWith('jugar') ? 'jugar' : t.startsWith('ajustes') ? 'ajustes' : t.startsWith('salida') ? 'salida' : 'libro');
+      b.insertAdjacentHTML('afterbegin', `<i class="pxi pxi-${k}" aria-hidden="true"></i>`);
+    });
+    // medallones en lugar de los iconos vectoriales de los modos
+    document.querySelectorAll('#m-modes .mode').forEach(m => {
+      const svg = m.querySelector('svg'); if (!svg) return;
+      const img = document.createElement('img'); img.className = 'pxm'; img.alt = ''; img.width = 56; img.height = 56;
+      img.src = V.vineta(m.classList.contains('pes') ? 'calavera' : 'libro'); svg.replaceWith(img);
+    });
+    // escudo del título
+    const t = card.querySelector('.m-title');
+    if (t && !card.querySelector('.m-escudo')) t.insertAdjacentHTML('beforebegin', `<img class="m-escudo" src="${V.vineta('cordura')}" alt="" width="56" height="56" aria-hidden="true">`);
+  }
+
+  V.instalarMenu = function () {
+    const m = document.getElementById('menu'), it = document.getElementById('intro');
+    if (m) cMenu = lienzo(m, 'menu');
+    if (it) { cNoche = lienzo(it, 'noche'); cAlba = lienzo(it, 'alba'); it.insertBefore(cAlba, cNoche.nextSibling); }
+    decorar();
+    addEventListener('resize', () => [cMenu, cNoche, cAlba].forEach(c => c && medir(c)));
+    const _pi = window.playIntro;
+    if (_pi) window.playIntro = function (mode) { introT0 = performance.now(); introPes = mode === 'pesadilla'; if (cNoche) cNoche._S = null; if (cAlba) { cAlba._S = null; cAlba.style.opacity = 0; } const r = _pi.apply(this, arguments); introDur = (parseFloat(document.getElementById('intro').style.getPropertyValue('--dur')) || 30) * 1000; V.pedir(); return r; };
+    const _sm = window.showMenu; if (_sm) window.showMenu = function () { const r = _sm.apply(this, arguments); V.pedir(); return r; };
+    // un solo bucle: el menú y la introducción son tareas más del mismo requestAnimationFrame
+    V.ganchos.push({
+      activo: () => !document.hidden && (visible('menu') || visible('intro')),
+      paso(now) {
+        // fondo ambiental: 15 fotogramas por segundo son suficientes
+        if (now - (this.ult || 0) < 80) return; this.ult = now;
+        const quieto = V.menosMov();
+        if (visible('menu') && cMenu) { if (!quieto || !cMenu._S) V.postal(cMenu, MENU, quieto ? 0 : now); }
+        if (visible('intro') && cNoche) {
+          const k = quieto ? 1 : Math.min(1, (now - introT0) / introDur);
+          V.postal(cNoche, introPes ? PESA : NOCHE, quieto ? 0 : now);
+          if (!introPes) { const a = Math.max(0, (k - 0.3) / 0.7); cAlba.style.opacity = a.toFixed(3); if (a > 0) V.postal(cAlba, ALBA, quieto ? 0 : now); }
+        }
+      }
+    });
+    V.pedir();
   };
 })(VIS);
 /* ===== VIS · arranque ===== */

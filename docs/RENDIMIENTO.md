@@ -1,6 +1,6 @@
 # Rendimiento
 
-Medido con `node tests/rendimiento.js` (Chromium de Playwright, 25-11-2026). Los datos en bruto están en `tests/rendimiento.json`.
+Medido con `node tests/rendimiento.js` (Chromium de Playwright, 25-11-2026). Tras la **segunda pasada de optimización** (ver al final), el archivo pesa 523 KB (175 KB con gzip) y carga en 1,4 s en el móvil simulado con gzip. Los datos en bruto están en `tests/rendimiento.json`.
 
 ## Presupuesto
 
@@ -64,3 +64,44 @@ npm test             # 3000 partidas en jsdom (unos 10 min con 4 núcleos)
 npm run capturas     # 238 capturas en tests/capturas + informe.json
 npm run rendimiento  # este documento
 ```
+
+## Segunda pasada de optimización
+
+Se hizo a raíz de que el juego «iba un poco lageado» en un equipo real. Lo medí con trazas de Chromium (`Performance`, `Profiler`), CPU 4× más lenta y pantalla de densidad 2.
+
+### Causas encontradas
+
+| Causa | Efecto |
+|---|---|
+| Composición a 60 Hz con degradados radiales y modos de fusión (`saturation`, `soft-light`, `lighter`) de lienzo completo **en cada fotograma** | Hilo principal ocupado al 86 % con la escena quieta. Tras elegir, saturado durante 8,8 s; al desplazar la página, 32 s de tirones |
+| `matchMedia(...)` y `querySelector(...)` en cada fotograma | Coste fijo inútil |
+| Cada clic pintaba el fondo nuevo de forma síncrona: el reparto lo pedía solo para saber si era interior | 90–156 ms bloqueados por clic |
+| `clientWidth` y `offsetWidth` leídos justo después de reescribir el DOM | Recolocación forzada de toda la página en cada clic |
+| El texto letra a letra cambiaba el DOM 30 veces por segundo | Layout continuo mientras se escribe |
+| El mapa SVG con filtros `feTurbulence` se reconstruía en cada elección | Repintado caro del panel derecho |
+| Menú con aspas SVG giratorias | Pintado continuo en el hilo principal |
+
+### Arreglos
+
+- **Fondo precompuesto**: en escenas sin desplazamiento, cielo, lejos, medio y suelo (con el tinte de la tarde) forman un solo lienzo cacheado.
+- **Luces y viñetas** como lienzos cacheados que se dibujan con `globalAlpha`. La desaturación por hambre es un filtro CSS sobre el lienzo, que hace la GPU.
+- **Frecuencia adaptativa**: 30 Hz con movimiento real (transiciones, dados, entradas, cargas, caminatas, manteo, vuelo) y 12 Hz en reposo. Los sprites se animan a 8 fotogramas por segundo, así que no se pierde nada. El navegador sigue a 60 fps.
+- **Comprobaciones con caché**: el bloqueo por menú o libro se consulta como mucho 4 veces por segundo, y `matchMedia` se crea una sola vez.
+- **Clic sin trabajo pesado**: el reparto usa la tabla de escenas. El ancho se lee con `ResizeObserver`. El primer fotograma se dibuja en el siguiente `requestAnimationFrame`, y mientras se cierra el iris solo se pinta la instantánea.
+- **Precalentado en tiempo ocioso** (`requestIdleCallback`) de los fondos de todas las escenas a las que se puede ir desde la actual.
+- **Texto letra a letra** a unos 16 cambios de DOM por segundo, con `contain: layout paint` en párrafos y cajas.
+- **Mapa lateral** reconstruido solo si cambian la ruta o el contador.
+- **Menú e introducción** dibujados con el propio motor a 12 Hz (antes, SVG animado), dentro del mismo `requestAnimationFrame`.
+
+### Antes y después (CPU 4× más lenta)
+
+| Medida | Antes | Después | Original sin motor visual |
+|---|---|---|---|
+| Hilo ocupado, escena quieta (`inn`) | 86 % (traza) | **14–15 %**, del que el script es un 2–3 % | 1 % |
+| Hilo ocupado, escena con acción (`mills`) | — | 21 % | 1 % |
+| Clic en una opción (bloqueo síncrono) | 90–156 ms | **16–32 ms** | 12–23 ms |
+| Elegir y transición (traza de 2,7 s) | hilo saturado durante 8,8 s | 51 % | 14 % |
+| Desplazar la página (24 pasos de rueda) | 32 s, con tareas de más de 50 ms | 3,6 s, sin tareas largas | 3,2 s |
+| fps de la página / peor fotograma | 60 (con tirones al elegir) | **60 / 17 ms** en todas las escenas | 60 |
+
+El resto del coste en reposo (unos 12–20 %) es composición del lienzo por software: Chromium sin GPU en este entorno de pruebas. En un navegador con aceleración gráfica recae en la GPU. El original no anima nada en reposo, por eso casi no gasta.
