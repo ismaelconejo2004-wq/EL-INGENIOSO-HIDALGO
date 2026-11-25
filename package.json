@@ -4,7 +4,7 @@
   "description": "Juego narrativo de decisiones sobre don Quijote. Un solo index.html; estas dependencias son solo para construir y probar.",
   "scripts": {
     "build": "node tools/build.js",
-    "test": "node tests/simular.js",
+    "test": "node tests/mercado.js && node tests/simular.js",
     "capturas": "node tests/capturas.js",
     "rendimiento": "node tests/rendimiento.js"
   },

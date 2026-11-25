@@ -105,3 +105,9 @@ Se hizo a raíz de que el juego «iba un poco lageado» en un equipo real. Lo me
 | fps de la página / peor fotograma | 60 (con tirones al elegir) | **60 / 17 ms** en todas las escenas | 60 |
 
 El resto del coste en reposo (unos 12–20 %) es composición del lienzo por software: Chromium sin GPU en este entorno de pruebas. En un navegador con aceleración gráfica recae en la GPU. El original no anima nada en reposo, por eso casi no gasta.
+
+### Con el libro abierto
+
+- El cambio de página copia la página derecha antes de cada decisión (`cloneNode` y una copia de los retratos). El clic pasa de 16–32 ms a **37–66 ms** con la CPU 4× más lenta, es decir, unos 10–15 ms reales.
+- La hoja es una animación CSS 3D (`rotateY`) que hace el compositor.
+- El lienzo de la escena mide su ancho con un `ResizeObserver` sobre su hueco de la página izquierda.

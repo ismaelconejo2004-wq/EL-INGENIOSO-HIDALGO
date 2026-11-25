@@ -1,5 +1,21 @@
 # Registro de cambios
 
+## El juego como libro abierto y mercados limitados
+
+- **Toda la interfaz es un libro abierto** con tapa de cuero, lomo, cantos de hojas y folio al pie de cada página, que avanza con las jornadas:
+  - **Página izquierda:** las cinco estadísticas en formato compacto, el estado (crisis), las voces interiores, la **escena animada** y unas pestañas de **Alforjas, Ruta, Cuaderno y Compañía**.
+  - **Página derecha:** la época y los botones (Menú, Volver al principio) en la cabecera, el relato, las voces con retrato y las **decisiones**.
+- **Cambio de página en cada decisión**: la hoja derecha (una copia de la página anterior) gira sobre el lomo, deja ver la siguiente y su dorso cae sobre la izquierda, con el sonido de página. Sustituye al iris del lienzo. El texto letra a letra empieza cuando la hoja ya ha descubierto la página. Con movimiento reducido el cambio es instantáneo.
+- **En pantallas estrechas** (menos de 960 px) las páginas se apilan en este orden: escena con estadísticas, relato con decisiones y pestañas. La hoja se levanta y se desvanece.
+- **Temas**: el tema noche usa en el libro una paleta oscura propia en lugar de invertir colores. Bosque y contraste siguen con su filtro, sin tocar el lienzo.
+- No cambia ningún `id` ni la lógica: los nodos del juego se recolocan dentro del libro. Si no hay lienzo (por ejemplo en jsdom), la interfaz clásica de tres columnas sigue intacta.
+- **Mercados: como mucho dos compras por visita** (regla de juego, en el script principal):
+  - el mercado muestra «Compras en este mercado: n de 2» y desactiva la compra al llegar al límite;
+  - vender sigue libre;
+  - el cupo se renueva en la siguiente jornada (otra visita);
+  - se guarda en la clave nueva y opcional `state.mk`, así que las partidas antiguas siguen valiendo;
+  - lo comprueba `tests/mercado.js`, incluido en `npm test`.
+
 ## Optimización y menús nuevos
 
 - **Rendimiento**:

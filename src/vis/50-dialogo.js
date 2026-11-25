@@ -214,7 +214,7 @@
     window.choose = function (i) {
       D.saltar();
       const r = _ch.apply(this, arguments);
-      if (window.pending && document.getElementById('modal').classList.contains('show')) {
+      if (!V.modoLibro && window.pending && document.getElementById('modal').classList.contains('show')) {
         const m = document.querySelector('#scene .marco'); if (m && m.scrollIntoView) m.scrollIntoView({ block: 'start', behavior: V.menosMov() ? 'auto' : 'smooth' });
       }
       return r;
@@ -250,6 +250,7 @@
     const _ie = window.introEnd; if (_ie) window.introEnd = function () { const r = _ie.apply(this, arguments); V.pedir(); return r; };
     const _cb = window.closeBook; if (_cb) window.closeBook = function () { const r = _cb.apply(this, arguments); V.pedir(); return r; };
     if (V.instalarUI) V.instalarUI();
+    if (V.instalarLibro) V.instalarLibro();
     if (V.instalarMenu) V.instalarMenu();
     window.render();
     return true;

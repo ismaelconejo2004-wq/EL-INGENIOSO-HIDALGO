@@ -25,7 +25,7 @@
     cv.addEventListener('click', () => V.dialogo && V.dialogo.saltar());
     if ('IntersectionObserver' in window) new IntersectionObserver(es => { enVista = es[0].isIntersecting; pedir(); }).observe(cv);
     document.addEventListener('visibilitychange', () => { visible = !document.hidden; pedir(); });
-    const sc = document.getElementById('scene');
+    const sc = document.getElementById('lj-escena') || document.getElementById('scene');
     if (sc && 'ResizeObserver' in window) new ResizeObserver(es => { const w = Math.round(es[0].contentRect.width); if (w && w !== anchoCSS) { anchoCSS = w; if (cv.parentNode) { medir(); dibujar(performance.now()); } } }).observe(sc);
     else addEventListener('resize', () => { anchoCSS = 0; medir(); dibujar(performance.now()); });
   }
@@ -140,7 +140,7 @@
     if (!nuevo) { S.e = e; S.L = null; refrescarReparto(); pedir(); return; }
     // fotograma anterior para la transición
     if (S && !V.menosMov() && cv.width) { snap.cv = snap.cv || document.createElement('canvas'); snap.cv.width = cv.width; snap.cv.height = cv.height; snap.cv.getContext('2d').drawImage(cv, 0, 0); }
-    S = { id, e, t: performance.now(), actores: [], part: [], trans: (S && !V.menosMov()) ? (o.pagina ? 'pagina' : 'iris') : null, quieto: false, habla: null };
+    S = { id, e, t: performance.now(), actores: [], part: [], trans: (S && !V.menosMov() && !V.sinIris) ? (o.pagina ? 'pagina' : 'iris') : null, quieto: false, habla: null };
     S.actores = montarReparto(e, id);
     S.actores.forEach(a => { a.entrando = 1; a.x = a.rol === 'npc' ? W + 30 + (a.k || 0) * 14 : -40 - (a.rol === 'sancho' ? 30 : 0); });
     medir(); colocar(S, false);
@@ -612,7 +612,8 @@
     if (!S || !ctx) return;
     const hora = S.e.palA, c = cache('fl|' + txt + '|' + bueno + '|' + hora, () => { const b = new B(V.anchoTexto(txt) + 2, 9); V.texto(b, txt, 0, 0, bueno ? C.oro : C.rojo, C.negro); return b.canvas(hora); });
     const dq = S.actores.find(a => a.rol === 'dq' || a.rol === 'izq') || { x: W / 2 };
-    S.part.push({ k: 'num', cv: c, x: dq.x + (S.part.length % 3) * 10 - 10, y: GY - 80, vx: 0, vy: -10, v: 1.6, t: 0 });
+    const n = S.part.filter(p => p.k === 'num' && p.t < p.v * 0.7).length; // se apilan, no se pisan
+    S.part.push({ k: 'num', cv: c, x: Math.max(c.width / 2 + 2, Math.min(W - c.width / 2 - 2, dq.x)), y: GY - 80 - n * 11, vx: 0, vy: -10, v: 1.6, t: 0 });
     pedir();
   };
 

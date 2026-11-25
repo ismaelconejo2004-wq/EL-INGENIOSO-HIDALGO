@@ -33,7 +33,7 @@ const VISTAS = [
       const r = await p.evaluate(id => {
         state.scene = id; state.turn++; render();
         const S = VIS.escenaActual(); S.t -= 6000; S.part = []; VIS.dibujarYa();
-        const m = document.querySelector('#scene .marco'); window.scrollTo(0, m.getBoundingClientRect().top + scrollY - 8);
+        const m = document.getElementById('lj-escena') || document.querySelector('#scene .marco'); window.scrollTo(0, m.getBoundingClientRect().top + scrollY - 8);
         const W = VIS.ancho(), prob = [];
         // texto cortado
         document.querySelectorAll('#scene .dlg .voice, #scene .choice, #scene .narration p, .stage figcaption').forEach(e => {
