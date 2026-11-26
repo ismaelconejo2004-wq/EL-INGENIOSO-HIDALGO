@@ -231,10 +231,12 @@
       ctx.fillStyle = HEX[hora][0]; ctx.fillRect(0, 0, W, H);
       capa(L.cielo, 0);
       capa(L.lejos, marcha * 0.15);
+      bruma(ctx, e, L);
       ctx.save(); ctx.translate(0, ond); capa(L.medio, marcha * 0.4); ctx.restore();
       animFondo(L, tt, hora, 'medio', marcha * 0.4);
       capa(L.suelo, marcha);
       animFondo(L, tt, hora, 'suelo', marcha);
+      haces(ctx, e, L);
       if (e.tarde) tinteTarde(ctx);
     }
     // actores (de atrás a delante)
@@ -242,6 +244,7 @@
     const orden = S.actores.slice().sort((a, b) => (a.fondo ? -1 : 0) - (b.fondo ? -1 : 0) || a.y - b.y);
     for (const a of orden) pintarActor(a, tt, horaA);
     animFondo(L, tt, hora, 'delante', marcha);
+    pajaros(tt, quieto, hora, e, L);
     particulas(tt, quieto, hora, e, L);
     capa(L.frente, marcha * 1.6);
     // luz
@@ -251,14 +254,40 @@
     if (S.dados) dados(now);
     transicion(t, quieto);
   }
+  // perspectiva aérea: una bruma del color del horizonte separa lo lejano de lo cercano
+  function bruma(cx, e, L) {
+    if (L.interior || L.papel) return;
+    const P = HEX[e.pal], g = cx.createLinearGradient(0, 78, 0, 132);
+    const c = P[4], rgb = [1, 3, 5].map(i => parseInt(c.substr(i, 2), 16)).join(',');
+    g.addColorStop(0, 'rgba(' + rgb + ',0)'); g.addColorStop(0.6, 'rgba(' + rgb + ',' + (e.h === 'noche' ? 0.18 : 0.34) + ')'); g.addColorStop(1, 'rgba(' + rgb + ',0)');
+    cx.fillStyle = g; cx.fillRect(0, 78, W, 54);
+  }
+  // haces de luz del sol bajo (amanecer y ocaso) en exteriores
+  function haces(cx, e, L) {
+    if (L.interior || L.papel || (e.h !== 'amanecer' && e.h !== 'ocaso') || e.clima.includes('lluvia') || e.clima.includes('niebla')) return;
+    const sx = (e.h === 'amanecer' ? 70 : 330) - OX, sy = e.h === 'amanecer' ? 90 : 92;
+    cx.save(); cx.globalCompositeOperation = 'screen';
+    for (let i = 0; i < 5; i++) {
+      const a = (e.h === 'amanecer' ? 0.15 : Math.PI - 0.15) + (i - 2) * 0.13 * (e.h === 'amanecer' ? 1 : -1), l = 420;
+      const g = cx.createLinearGradient(sx, sy, sx + Math.cos(a) * l, sy + Math.sin(a) * l);
+      g.addColorStop(0, 'rgba(255,210,150,.16)'); g.addColorStop(1, 'rgba(255,210,150,0)');
+      cx.fillStyle = g; cx.beginPath(); cx.moveTo(sx, sy);
+      cx.lineTo(sx + Math.cos(a - 0.035) * l, sy + Math.sin(a - 0.035) * l); cx.lineTo(sx + Math.cos(a + 0.035) * l, sy + Math.sin(a + 0.035) * l); cx.fill();
+    }
+    cx.restore();
+  }
   function liso(w, col) { const c = document.createElement('canvas'); c.width = w; c.height = H; const x = c.getContext('2d'); x.fillStyle = col; x.fillRect(0, 0, w, H); return c; }
   function tinteTarde(cx) { cx.globalCompositeOperation = 'soft-light'; cx.fillStyle = 'rgba(255,170,90,.35)'; cx.fillRect(0, 0, W, H); cx.globalCompositeOperation = 'source-over'; }
   function fondoFijo(e, L) {
     return cache('fijo|' + e.f + '|' + e.variante + '|' + e.props.join(',') + '|' + e.h + '|' + e.pal + '|' + (e.tarde ? 1 : 0) + '|' + W, () => {
       const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
       x.fillStyle = HEX[e.pal][0]; x.fillRect(0, 0, W, H);
-      for (const k of ['cielo', 'lejos', 'medio', 'suelo']) x.drawImage(L[k], -OX, 0);
+      x.drawImage(L.cielo, -OX, 0); x.drawImage(L.lejos, -OX, 0);
+      bruma(x, e, L);
+      x.drawImage(L.medio, -OX, 0); x.drawImage(L.suelo, -OX, 0);
+      haces(x, e, L);
       if (e.tarde) tinteTarde(x);
+      if (e.h === 'amanecer' && !L.interior) { x.globalCompositeOperation = 'soft-light'; x.fillStyle = 'rgba(255,160,170,.28)'; x.fillRect(0, 0, W, H); x.globalCompositeOperation = 'source-over'; }
       return c;
     });
   }
@@ -291,7 +320,14 @@
     if (quien && ((quien === 'sancho' && a.id === 'sancho') || (quien === 'dq' && a.rol === 'dq') || (quien === 'npc' && a.rol === 'npc' && !a.k && !V.esAnimal(a.id))))
       return ['hablar', Math.floor(t * 5) & 1];
     if (an === 'talk' && !quien && a.rol === 'npc' && !a.k && !V.esAnimal(a.id) && (Math.floor(t / 2.4) % 2 === 1)) return ['hablar', Math.floor(t * 5) & 1];
-    return ['reposo', Math.floor(t * 1.2) & 1];
+    const ciclo = (t + (a.k || 0) * 1.7 + (a.rol === 'sancho' ? 0.9 : 0)) % 4.3;
+    return ['reposo', ciclo < 0.14 ? 2 : Math.floor(t * 1.2) & 1];
+  }
+  // sombra de contacto bajo los pies (más pequeña y tenue si el actor está en el aire)
+  function sombra(x, y, w, alto) {
+    const k = Math.max(0.35, 1 - Math.max(0, alto) / 60), ww = Math.round(w * k);
+    const c = cache('sombra|' + ww, () => { const s = document.createElement('canvas'); s.width = ww * 2 + 2; s.height = 6; const g = s.getContext('2d'); g.fillStyle = 'rgba(20,10,30,1)'; g.beginPath(); g.ellipse(ww + 1, 3, ww, 2.5, 0, 0, Math.PI * 2); g.fill(); return s; });
+    ctx.globalAlpha = 0.32 * k; ctx.drawImage(c, Math.round(x - ww - 1), Math.round(y - 3)); ctx.globalAlpha = 1;
   }
   function pintarActor(a, t, hora) {
     let [pose, f] = poseDe(a, t);
@@ -324,6 +360,7 @@
       const mc = V.actorCanvas(mid, mPose, mf, hora, false);
       const bob = mPose === 'caminar' ? (mf & 1) : 0;
       if (a.detras) x -= 13;
+      if (!a.detras) sombra(x + 2, y, mid === 'rucio' ? 15 : 19, -dy);
       if (!(a.detras && mid === 'clavileno')) ctx.drawImage(mc, x - mc._ax, y + dy - mc._ay);
       const sp = V.SILLA[mid], hx = x - mc._ax + sp[0], hy = y + dy - mc._ay + sp[1] - bob;
       const rc = V.actorCanvas(a.id, 'montado', 0, hora, false, a.extra);
@@ -341,6 +378,7 @@
     }
     if (rot) { ctx.save(); ctx.translate(x, y + dy - 18); ctx.rotate(rot); ctx.drawImage(c, -c._ax, -c._ay + 18); ctx.restore(); return; }
     if (a.enjaulado) { ctx.drawImage(c, x - c._ax, y - 10 - c._ay); return; }
+    sombra(x, y, V.esAnimal(a.id) ? (a.id === 'rocinante' || a.id === 'rucio' || a.id === 'yegua' ? 17 : 10) : 7, -dy);
     ctx.drawImage(c, x - c._ax, y + dy - c._ay);
     if (a.id === 'dq') brillos(a, x, y + dy - Math.round(V.spec('dq').alto * 0.44), t, V.spec('dq'));
     if (a.entrando && !V.menosMov() && Math.random() < 0.15) polvo(x, y, 1);
@@ -453,6 +491,18 @@
   function polvo(x, y, n) { if (!S || V.menosMov()) return; for (let i = 0; i < n; i++) S.part.push({ k: 'p', x: x + (Math.random() - 0.5) * 8, y: y - Math.random() * 3, vx: (Math.random() - 0.5) * 14, vy: -4 - Math.random() * 8, v: 0.6 + Math.random() * 0.6, t: 0 }); }
   V.polvo = polvo;
   let tAnt = 0;
+  // bandadas lejanas: dos o tres pájaros que cruzan el cielo despacio
+  function pajaros(t, quieto, hora, e, L) {
+    if (L.interior || L.papel || e.h === 'noche' || e.clima.includes('lluvia') || e.clima.includes('niebla')) return;
+    ctx.fillStyle = HEX[hora][1];
+    for (let i = 0; i < 3; i++) {
+      const v = 7 + i * 2.3, x = ((i * 137 + t * v) % (W + 60)) - 30, y = 26 + i * 9 + Math.sin(t * 0.7 + i) * 3;
+      const ala = quieto ? 0 : (Math.floor(t * 5 + i * 2) & 1);
+      ctx.fillRect(Math.round(x), Math.round(y), 1, 1);
+      ctx.fillRect(Math.round(x) - 1, Math.round(y) - 1 + ala, 1, 1); ctx.fillRect(Math.round(x) + 1, Math.round(y) - 1 + ala, 1, 1);
+      ctx.fillRect(Math.round(x) - 2, Math.round(y) - 1 + ala * 2 - ala, 1, 1); ctx.fillRect(Math.round(x) + 2, Math.round(y) - 1 + ala * 2 - ala, 1, 1);
+    }
+  }
   function particulas(t, quieto, hora, e, L) {
     const P = HEX[hora], dt = Math.min(0.05, Math.max(0, t - tAnt)); tAnt = t;
     const cl = e.clima;

@@ -157,7 +157,8 @@
     const hx = cx - 3 + lean + (rodilla ? 0 : 0), pelo = PELO[s.pelo] || 19, piel = s.tinta ? [30, 17] : [C.piel, C.pielS];
     b.r(hx, top, 7, 8, piel[0]); b.r(hx, top, 2, 8, piel[1]);
     b.p(hx + 7, top + 4, piel[0]); // nariz
-    b.p(hx + 5, top + 3, C.pano); // ojo
+    b.p(hx + 5, top + 3, pose === 'reposo' && f === 2 ? piel[1] : C.pano); // ojo (parpadeo en el fotograma 2)
+    if (pose !== 'reposo' || f !== 2) b.p(hx + 5, top + 2, piel[1]); // párpado: sombra sobre el ojo
     if (pose === 'hablar' && (f & 1)) b.p(hx + 6, top + 6, C.rojoO); // boca abierta
     if (pose === 'golpe' && f === 0) { b.p(hx + 5, top + 2, C.pano); b.p(hx + 6, top + 6, C.pano); }
     b.r(hx, top, 3, 4, pelo); b.r(hx, top - 1, 6, 2, pelo);
@@ -176,8 +177,20 @@
     accesorio(b, s, pose, f, hxF, hyF, cx, fy, sh, lean);
     if (pose === 'leer') { b.r(cx + 3, sh + 6, 6, 4, C.lino); b.p(cx + 6, sh + 6, C.calS); b.line(cx + 1, sh + 1, cx + 3, sh + 8, J[0], 2); b.p(cx + 4, sh + 9, piel[0]); }
     if (s.tinta) b.swap({ 27: 30, 28: 17 });
+    luzBorde(b);
     return b.outline(C.negro);
   }
+  // Luz de borde: el último píxel opaco de cada fila (lado derecho, de donde viene la luz)
+  // pasa a su tono claro. Da volumen sin redibujar las figuras.
+  const CLARO = { 20: 22, 21: 20, 24: 3, 1: 24, 10: 9, 11: 10, 18: 10, 19: 18, 29: 25, 0: 1, 30: 31, 17: 16, 14: 13, 15: 14, 23: 31, 25: 26, 26: 31, 9: 30, 12: 11, 16: 31, 27: 30, 28: 27, 13: 9, 22: 31 };
+  function luzBorde(b) {
+    for (let y = 0; y < b.h; y++) {
+      let x = b.w - 1; while (x >= 0 && b.d[y * b.w + x] === 255) x--;
+      if (x < 0) continue;
+      const i = y * b.w + x, c = b.d[i]; if (CLARO[c] !== undefined && (y & 1 || b.d[i - 1] !== 255)) b.d[i] = CLARO[c];
+    }
+  }
+  V.luzBorde = luzBorde;
   function mano(pose, f, lado, s) {
     if (lado === 'atras') {
       if (pose === 'caminar') return [[-3, 10], [-1, 11], [2, 10], [0, 11]][f & 3];
@@ -267,6 +280,7 @@
     if (tipo === 'rocinante') { b.r(bx - 4, by - 7, 9, 4, C.rojo); b.r(bx - 4, by - 3, 9, 3, C.rojoO); b.line(bx + 1, by - 3, bx + 2, by + 8, C.maderaO); }
     if (asno) { b.r(bx - 9, by - 5, 6, 9, C.rojo); b.r(bx + 2, by - 5, 6, 9, C.ocre); b.hl(bx - 9, bx + 7, by - 6, C.maderaO); }
     if (madera) { b.r(bx - 4, by - 7, 9, 3, C.rojo); b.p(hx + 5, hy - 2, C.hierro); b.r(hx + 4, hy - 3, 2, 2, C.hierro); }
+    luzBorde(b);
     return b.outline(C.negro);
   }
   const SILLA = { rocinante: [30, 21], rucio: [30, 25], clavileno: [30, 21] }; // punto de la cadera del jinete
