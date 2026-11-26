@@ -1,5 +1,15 @@
 # Registro de cambios
 
+## Libro también en el móvil en vertical
+
+- En un móvil en vertical (menos de 700 px de ancho) el juego ya no se apila en una sola columna. Ahora es un **libro de encuadernación superior**, como un cuaderno abierto:
+  - página de arriba con las estadísticas (icono y cifra), la escena y las pestañas;
+  - lomo horizontal;
+  - página de abajo con el relato y las decisiones.
+- Cada página se desplaza por dentro y el libro ocupa toda la pantalla.
+- **En cada decisión la hoja de abajo se levanta sobre el lomo** y cae sobre la de arriba.
+- Al girar el móvil en horizontal aparece el libro clásico de dos páginas, una al lado de la otra.
+
 ## Libro de dos páginas en cualquier pantalla
 
 - El libro abierto, con la hoja que gira en cada decisión, se mantiene desde 700 px de ancho: portátiles con zoom, tablets y móviles en horizontal. Antes, por debajo de 960 px las páginas se apilaban en una sola columna y parecía que el libro había desaparecido.

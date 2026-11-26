@@ -203,21 +203,52 @@ html.vis-on body.modo-libro[data-theme=bosque] .dlg{filter:none}
 html.vis-on body.modo-libro[data-theme=contraste] .lj-pag.der,html.vis-on body.modo-libro[data-theme=contraste] .lj-izq-inf,html.vis-on body.modo-libro[data-theme=contraste] .lj-izq-sup>:not(.lj-escena){filter:contrast(1.35) saturate(.5)}
 html.vis-on body.modo-libro[data-theme=contraste] .dlg{filter:none}
 /* pantallas estrechas: las páginas se apilan (escena, relato, alforjas) */
+/* móvil en vertical: libro de encuadernación superior (página arriba, lomo horizontal, página abajo) */
 @media(max-width:699px){
- body.modo-libro{overflow:auto}
- .libro-juego{display:flex;flex-direction:column;height:auto;width:auto;margin:0;padding:8px;border-radius:0}
- .libro-juego::before,.lj-lomo{display:none}
- .lj-pag.izq{display:contents}
- .lj-izq-sup{order:1;background:#f3e7c9;padding:8px 12px 10px;border-radius:4px 4px 0 0}
- .lj-pag.der{order:2;background:#f4e9cd;border-radius:0}
- .lj-izq-inf{order:3;background:#efe2c0;padding:6px 12px 10px;border-radius:0 0 4px 4px}
- .lj-cuerpo{overflow:visible;padding:2px 14px 8px}
- .lj-pag.der .lj-cab{margin:8px 14px 0}
- .lj-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
- .lj-paneles{overflow:visible}
- .lj-tab{padding:5px 7px 4px;font-size:10px}
- .hoja{transform-origin:left center;animation-duration:.7s}
- body.modo-libro .hint,.lj-folio{display:none}
+ body.modo-libro{overflow:hidden}
+ .libro-juego{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,46fr) 14px minmax(0,54fr);width:calc(100vw - 12px);height:calc(100vh - 12px);height:calc(100dvh - 12px);margin:6px auto;padding:8px 8px 10px;border-radius:12px 12px 10px 10px;
+  background:linear-gradient(#3b1f12,#5a3018 6%,#4a2614 50%,#5a3018 94%,#3b1f12)}
+ .libro-juego::before{inset:6px 6px 4px;box-shadow:-2px 3px 0 #d9c9a0,2px 3px 0 #d9c9a0,0 6px 0 #c8b68a}
+ .lj-lomo{background:linear-gradient(#cdb788,#a88a5a 30%,#7a5a34 50%,#a88a5a 70%,#cdb788)}
+ .lj-pag.izq{background:linear-gradient(#efe2c0 0,#f4e9cd 10%,#f3e7c9 82%,#e2cfa4 96%,#cdb788 100%);border-radius:4px 4px 0 0;overflow-y:auto;overscroll-behavior:contain}
+ .lj-pag.der{background:linear-gradient(#cdb788 0,#e2cfa4 4%,#f3e7c9 16%,#f4e9cd 92%,#efe2c0 100%);border-radius:0 0 4px 4px}
+ .lj-izq-sup{padding:6px 10px 0}
+ .lj-izq-inf{padding:4px 10px 6px;min-height:0;flex:none}
+ .lj-cab{font-size:9px;letter-spacing:.1em;padding-bottom:4px}
+ .lj-cab b{font-size:13px}
+ .lj-stats{grid-template-columns:repeat(5,minmax(0,1fr));gap:2px 6px;padding:5px 0 2px}
+ .lj-stats .meter-head{font-size:0!important;margin-bottom:2px!important;justify-content:space-between}
+ .lj-stats .meter-head span:last-child{font-size:11px!important}
+ .lj-stats .meter-head .pxi{margin:0;width:13px;height:13px;background-size:13px 13px}
+ .lj-stats .track{height:6px!important;border-width:1px!important}
+ .lj-voces{display:none}
+ .lj-escena{margin-top:4px}
+ .lj-escena .stage.vis{outline:0;border-width:2px}
+ .lj-tabs{margin-top:6px}
+ .lj-tab{padding:4px 6px 3px;font-size:9px;letter-spacing:.02em}
+ .lj-tab .pxi{display:none}
+ .lj-paneles{overflow:visible;padding-top:6px}
+ .lj-pag.der .lj-cab{margin:4px 10px 0}
+ .lj-pag.der .lj-cab>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+ .lj-pag.der .lj-cab button{padding:3px 5px;font-size:9px}
+ .lj-cuerpo{padding:0 10px 8px 12px}
+ .lj-cuerpo .content{padding:8px 0 16px}
+ .lj-cuerpo .eyebrow{margin-bottom:6px;font-size:10px}
+ .lj-cuerpo .title{font-size:24px;margin-bottom:12px}
+ .lj-cuerpo .rule{margin:10px 0}
+ .lj-cuerpo .narration{font-size:min(var(--fs,18px),16px);line-height:1.6}
+ .lj-cuerpo .bridge{font-size:13px;padding:8px 10px}
+ html.vis-on .lj-cuerpo .choice.px-op{grid-template-columns:22px 38px minmax(0,1fr);gap:6px;padding:4px 6px;border-width:10px}
+ html.vis-on .lj-cuerpo .choice-art.px,html.vis-on .lj-cuerpo .choice-art.px img{width:36px;height:36px}
+ html.vis-on .lj-cuerpo .choice.px-op .num{width:22px;height:22px;font-size:9px}
+ html.vis-on .lj-cuerpo .choice.px-op .check{grid-column:3;justify-self:start}
+ .lj-cuerpo .marco .dlg .voice{padding:8px 10px;min-height:0;font-size:15px}
+ .lj-cuerpo .marco .dlg .voice .retrato{width:48px;height:48px}
+ .lj-folio,body.modo-libro .hint{display:none}
+ /* la hoja inferior se levanta sobre el lomo y cae sobre la página de arriba */
+ .hoja{transform-origin:center top;animation-name:pasarHojaV;animation-duration:.75s}
+ .hoja .dorso{transform:rotateX(180deg);background:linear-gradient(#efe2c0,#f4e9cd 14%,#f3e7c9 86%,#d8c39a)}
+ @keyframes pasarHojaV{0%{transform:rotateX(0)}100%{transform:rotateX(180deg)}}
 }
 @media(prefers-reduced-motion:reduce){.hoja{display:none}}
 /* tema noche en el libro: paleta oscura propia (invertir por partes rompía el contraste) */
