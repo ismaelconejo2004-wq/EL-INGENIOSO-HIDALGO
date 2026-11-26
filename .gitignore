@@ -1,1 +1,3 @@
 node_modules/
+# capturas generadas por npm run capturas (no se versionan)
+tests/capturas/
