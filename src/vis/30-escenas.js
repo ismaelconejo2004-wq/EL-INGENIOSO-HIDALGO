@@ -125,7 +125,10 @@ ev_peregrinos|camino|mediodia|||peregrino*2|talk|
 torneo|plaza|mediodia|polvo||estudiante+cabrero|toss|
 sancho_cuenta|camino|tarde||||talk|
 diego_frio|casanoble|tarde|||diego|talk|
-cirujano|plaza|mediodia|||barbero|talk|`;
+cirujano|plaza|mediodia|||barbero|talk|
+primera_venta|venta|noche|luciernagas||ventero+maritornes+moza|bow|
+andres|llanura|mediodia|||labrador+cabrero|talk|
+escrutinio|biblioteca|tarde|||cura+barbero+ama|watch|alonso`;
   const E = {};
   T.split('\n').forEach(l => {
     const p = l.split('|');

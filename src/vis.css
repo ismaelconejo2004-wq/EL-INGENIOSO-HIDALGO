@@ -353,3 +353,16 @@ html.vis-on body.modo-libro[data-theme=noche] .lj-pag::after{mix-blend-mode:over
 html.vis-on body.modo-libro[data-theme=noche] .bridge.nota-margen{color:#cdbb93;background:none}
 @media(prefers-reduced-motion:reduce){html.vis-on .track .prev{animation:none}}
 @media(max-width:699px){.lj-pag.der .lj-cinta{display:none}}
+
+/* ===== glosas del cronista ===== */
+.glosa{margin:18px 0 6px;border:1px solid #c9a35a;background:#f6ecd0;font-size:14px;line-height:1.55}
+.glosa summary{cursor:pointer;list-style:none;padding:6px 10px;font:600 11px 'DM Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#6b4a2a;display:flex;align-items:center;gap:8px}
+.glosa summary::-webkit-details-marker{display:none}
+.glosa summary::before{content:'❧';font-size:15px;color:#b8892f;transition:transform .2s}
+.glosa[open] summary::before{transform:rotate(90deg)}
+.glosa p{margin:0;padding:0 12px 10px 30px;font-style:italic;color:#4a3d27}
+.glosa .g-tipo{padding:1px 6px;border-radius:2px;color:#fbf0d2;font-size:10px;letter-spacing:.06em}
+.g-fiel .g-tipo{background:#4f7a38}.g-adap .g-tipo{background:#a8742a}.g-hipo .g-tipo{background:#7a4b6a}.g-apoc .g-tipo{background:#34508a}.g-inc .g-tipo{background:#6b5a3e}
+html.vis-on body.modo-libro[data-theme=noche] .glosa{background:#33281c;border-color:#6b5434}
+html.vis-on body.modo-libro[data-theme=noche] .glosa p{color:#cdbb93}
+html.vis-on body.modo-libro[data-theme=noche] .glosa summary{color:#e2d5b6}

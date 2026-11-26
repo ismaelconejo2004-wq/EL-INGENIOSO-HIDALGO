@@ -379,12 +379,12 @@ if(e.rel)d.push(...relUp(e.rel));state.notes.push(`<b>Decisión:</b> ${text}`);l
 if(nx==='start'){state={sanity:62,honor:48,hunger:31,loyalty:50,turn:0,evs:[],scene:'start',notes:[],health:80,inventory:{unguento:1,panqueso:1},gm:state.gm};toast('Una nueva salida');render();return}
 if(!state.scene.startsWith('ev_faint'))state.hunger=Math.min(100,state.hunger+hstep());if(state.mode==='apo'&&state.turn%3===0)state.loyalty=Math.max(0,state.loyalty-1);d.push(...passive());
 if(nx==='@back'){nx=state.after||'road';state.after=null}
-if(nx==='@final'){nx=(state.flags.dul>=5&&state.honor>=50)?'amor':state.sanity>=75?'lecho':'salida';state.fin=nx==='amor'?'amor':nx==='lecho'?'lucido':'terco'}
+if(nx==='@final'){nx=(state.flags.dul>=5&&state.honor>=50)?'amor':state.sanity>=50?'lecho':'salida';state.fin=nx==='amor'?'amor':nx==='lecho'?'lucido':'terco'}
 if(e.flag)state.flags[e.flag]=1;nx=(RDF[state.scene+'>'+nx]?RDF[state.scene+'>'+nx](state):null)||RD[state.scene+'>'+nx]||nx;if(e.mode)state.mode=e.mode;if(e.des){state.flags.des=(state.flags.des||0)+e.des;d.push('Desamor +'+e.des)}if(e.burla){state.flags.burla=(state.flags.burla||0)+e.burla;if(state.flags.burla>=4)state.flags.burlado=1}if(e.fin)state.fin=e.fin;if(state.scene==='a_epilogo'){if(state.fin==='rumor'&&state.sanity<55)state.fin='nuncio';if(state.fin==='norte'&&state.health<40)state.fin='nuncio'}if(e.flag)state.flags[e.flag]=1;if(e.alone)state.alone=1;if(e.dul){state.flags.dul=(state.flags.dul||0)+e.dul;d.push('Dulcinea '+(e.dul>0?'+':'')+e.dul)}if(e.coins){state.coins=Math.max(0,(state.coins||0)+e.coins);d.push('Reales '+(e.coins>0?'+':'')+e.coins)}sfx('page');
 if(state.gm==='pesadilla'&&e.next&&e.next!=='@back'&&!nx.startsWith('ev_')&&!state.scene.startsWith('ev_')&&!NOJ.includes(nx)&&state.turn>=3&&rnd(state,state.turn*19+7)<22){let pl=detPool().filter(k=>!(state.seen||[]).includes(k)&&k!==nx);if(pl.length){nx=pl[rnd(state,state.turn*23+3)%pl.length];_ip=4}}
 let cr=crisis(nx);if(nx!=='end'&&state.scene!=='ev_muerte'&&deathCheck()){nx='ev_muerte';cr=null;_ip=3;sfx('bad')}
 if(cr&&nx!=='end'&&!/^ev_(faint|fever|adios|c_|deshonra|muerte|locura)/.test(state.scene)&&!nx.startsWith('ev_')){state.after=nx;nx=cr;_ip=2;sfx('bad')}
-else if(e.next&&!nx.startsWith('ev_')&&!state.scene.startsWith('ev_')&&!['start','end','home','lecho','salida','amor','duelo'].includes(nx)&&state.turn>=2&&rnd(state,state.turn*13+1)<(state.gm==='pesadilla'?48:state.gm==='clasico'?24:30)){let k=pickEv(nx);if(k){state.evs.push(k);state.after=nx;nx=k;_ip=1}}
+else if(e.next&&!nx.startsWith('ev_')&&!state.scene.startsWith('ev_')&&!['start','end','home','lecho','salida','amor','duelo'].includes(nx)&&!(state.flags&&state.flags.primera&&!state.flags.sanchoUnido)&&state.turn>=2&&rnd(state,state.turn*13+1)<(state.gm==='pesadilla'?48:state.gm==='clasico'?24:30)){let k=pickEv(nx);if(k){state.evs.push(k);state.after=nx;nx=k;_ip=1}}
 state.bridge=mkBridge(_ip,nx);state.turn++;state.scene=nx;if(d.length)toast(d.join(' · '));render()}
 const NEW4={
 yangueses:{place:'Capítulo XV · Los yangüeses',title:'Una yegua y veinte estacas',body:['Junto a un arroyo, Rocinante, más animoso que de costumbre, intenta cortejar a las jacas de unos arrieros yangüeses. Las jacas lo reciben a coces y los arrieros, a estacazos.','Tú desenvainas la espada contra veinte hombres sin pararte a contar; Sancho, que no es caballero, corre a ayudarte con un palo y recibe su parte. Cuando acaba la lluvia de golpes, el escudero te recuerda que él es hombre pacífico y que nunca pondrá mano a la espada contra villanos.'],voice:['SANCHO','Señor, yo soy hombre pacífico, manso y sosegado. Si me muelen a palos, no será por falta de aviso.'],choices:[['Reprocharle que no te ayudara: un caballero no combate solo.','Un caballero no exige ayuda a su escudero, pero tampoco la rechaza.',null,{honor:3,loyalty:-5,sanity:-2,next:'inn'}],['Admitir que Rocinante empezó la pendencia y que la culpa es de todos.','Reconocer el error es poco heroico y bastante sano.','CORDURA',{sanity:5,honor:-2,loyalty:3,next:'inn'}],['Dejar que Sancho te cure con lo que lleve en las alforjas.','La paliza se cura con pan, no con teorías.',null,{hunger:-6,loyalty:5,honor:-2,next:'inn'}]]},
@@ -662,7 +662,7 @@ function endZ(){if(state.fin==='muerte'||state.fin==='locura')return null;const 
  if(state.health>=85&&!f.hurt20&&!state.alone)return['El caballero de hierro','Pocos caballeros andantes llegan al final con el cuerpo entero. Tú, con más ración que gloria.'];
  if(state.coins>=80&&!state.alone)return['El hidalgo bien proveído','Pocas veces un caballero andante vuelve con la bolsa más llena que la armadura.'];
  return null}
-const TITLES=[['Alonso Quijano, antes pastor','Muere cuerdo tras prometer la Arcadia'],['Alonso Quijano, con una salida en los labios','Muere cuerdo tras susurrar a Sancho que queda una salida'],['El caballero lúcido','Termina con Cordura ≥ 65 y Honor ≥ 60'],['El loco glorioso','Termina con Cordura < 40 y Honor ≥ 60'],['El amo de Sancho Panza','Termina con Sancho ≥ 70'],['El hidalgo desencantado','Termina con Honor < 35'],['El hidalgo de La Mancha','Un final sin extremos'],['Alonso Quijano el Bueno','Muere cuerdo en el lecho (Cordura ≥ 75)'],['El hidalgo que se quedó con Dulcinea','Dulcinea ≥ 5 y Honor ≥ 50 al volver a casa'],['El caballero solitario','Termina sin Sancho'],['El pastor Quijótiz','Promete la Arcadia y conserva la Cordura ≥ 40'],['El pastor de Dulcinea','Promete la Arcadia y vive el final de amor'],['El caballero de los amigos','Gana el aprecio de 4 personajes'],['El amigo del desterrado','Gana el aprecio de Ricote y llega a las galeras'],['El huésped de Roque Guinart','Conoce a Roque y termina con Honor < 45'],['El hidalgo que volvió de la raya','Baja de 20 de Salud y termina vivo (Salud ≥ 40)'],['El caballero de hierro','Termina con Salud ≥ 85 sin haber bajado de 20'],['El hidalgo bien proveído','Termina con 80 reales o más'],['El hidalgo curado por la paciencia','Apócrifo: cree el rumor de la cura'],['El Caballero Desamorado','Apócrifo: rumbo a Castilla la Vieja'],['El internado de la Casa del Nuncio','Apócrifo: quédate como internado'],['El bufón de la Casa del Nuncio','Apócrifo: internado y burlado por los nobles'],['El Desamorado sin remedio','Apócrifo: rumbo al norte con Desamor ≥ 6'],['Curado entre cuidados','Apócrifo: cura con el aprecio de Bárbara'],['El caballero con testigo','Apócrifo: internado y con el aprecio de Tarfe'],['Muerto de hambre en el camino','Muere de inanición'],['Muerto de calenturas','Muere de infección'],['Caído en el camino','Muere de heridas'],['Perdido para siempre en la locura','Pierde la razón tres veces']];
+const TITLES=[['Alonso Quijano, antes pastor','Muere cuerdo tras prometer la Arcadia'],['Alonso Quijano, con una salida en los labios','Muere cuerdo tras susurrar a Sancho que queda una salida'],['El caballero lúcido','Termina con Cordura ≥ 65 y Honor ≥ 60'],['El loco glorioso','Termina con Cordura < 40 y Honor ≥ 60'],['El amo de Sancho Panza','Termina con Sancho ≥ 70'],['El hidalgo desencantado','Termina con Honor < 35'],['El hidalgo de La Mancha','Un final sin extremos'],['Alonso Quijano el Bueno','Vuelve a casa con Cordura ≥ 50 y muere cuerdo en el lecho'],['El hidalgo que se quedó con Dulcinea','Dulcinea ≥ 5 y Honor ≥ 50 al volver a casa'],['El caballero solitario','Termina sin Sancho'],['El pastor Quijótiz','Promete la Arcadia y conserva la Cordura ≥ 40'],['El pastor de Dulcinea','Promete la Arcadia y vive el final de amor'],['El caballero de los amigos','Gana el aprecio de 4 personajes'],['El amigo del desterrado','Gana el aprecio de Ricote y llega a las galeras'],['El huésped de Roque Guinart','Conoce a Roque y termina con Honor < 45'],['El hidalgo que volvió de la raya','Baja de 20 de Salud y termina vivo (Salud ≥ 40)'],['El caballero de hierro','Termina con Salud ≥ 85 sin haber bajado de 20'],['El hidalgo bien proveído','Termina con 80 reales o más'],['El hidalgo curado por la paciencia','Apócrifo: cree el rumor de la cura'],['El Caballero Desamorado','Apócrifo: rumbo a Castilla la Vieja'],['El internado de la Casa del Nuncio','Apócrifo: quédate como internado'],['El bufón de la Casa del Nuncio','Apócrifo: internado y burlado por los nobles'],['El Desamorado sin remedio','Apócrifo: rumbo al norte con Desamor ≥ 6'],['Curado entre cuidados','Apócrifo: cura con el aprecio de Bárbara'],['El caballero con testigo','Apócrifo: internado y con el aprecio de Tarfe'],['Muerto de hambre en el camino','Muere de inanición'],['Muerto de calenturas','Muere de infección'],['Caído en el camino','Muere de heridas'],['Perdido para siempre en la locura','Pierde la razón tres veces']];
 ACH.push(['rumor','Curado por rumor','Terminar creyendo el rumor de la cura',s=>s.fin==='rumor'],['norte','Rumbo al norte','Terminar con el Desamorado en marcha',s=>s.fin==='norte'],['pastorT','Cayado en mano','Terminar como pastor Quijótiz',s=>!!PF.titles['El pastor Quijótiz']||!!PF.titles['El pastor de Dulcinea']],['amigosT','Amigo de muchos','Terminar como caballero de los amigos',s=>!!PF.titles['El caballero de los amigos']],['bufonT','Bufón del Nuncio','Terminar como bufón de la Casa del Nuncio',s=>!!PF.titles['El bufón de la Casa del Nuncio']],['hierroT','Caballero de hierro','Terminar con Salud ≥ 85 sin bajar de 20',s=>!!PF.titles['El caballero de hierro']],['rayaT','De vuelta de la raya','Terminar vivo tras bajar de 20 de Salud',s=>!!PF.titles['El hidalgo que volvió de la raya']],['dosCaras','Las dos novelas','Terminar una partida de Cervantes y otra de Avellaneda',s=>Object.keys(PF.titles).some(t=>/Desamorado|Nuncio|curado por la paciencia|Curado entre|testigo/.test(t))&&Object.keys(PF.titles).some(t=>!/Desamorado|Nuncio|curado por la paciencia|Curado entre|testigo|Muerto|Caído|Perdido/.test(t))],['coleccion','Coleccionista de finales','Conseguir 6 títulos distintos',s=>Object.keys(PF.titles).length>=6],['cronista','Cronista mayor','Ver 60 escenas distintas en una misma partida',s=>s.seen.length>=60],['sobrevive','Superviviente','Terminar una partida en dificultad «Sin piedad»',s=>s.scene==='end'&&s.fin!=='muerte'&&s.fin!=='locura'&&(typeof CFG!=='undefined'&&DF()===3)]);
 /* ===== FASE 4 · mapa de la Península hacia 1600 ===== */
 const IB={coast:[[-9.27,42.88],[-8.9,43.2],[-8.4,43.37],[-7.7,43.78],[-7.04,43.54],[-5.85,43.66],[-4.5,43.42],[-3.8,43.46],[-3.03,43.4],[-1.98,43.32],[-1.78,43.37],[-1.3,43.05],[-0.5,42.8],[0.7,42.8],[1.45,42.6],[2.2,42.45],[3.32,42.32],[3.0,41.85],[2.6,41.6],[2.17,41.38],[1.25,41.1],[0.87,40.72],[0.4,40.35],[-0.05,39.8],[-0.32,39.47],[0.2,38.85],[0.23,38.73],[-0.48,38.34],[-0.7,37.63],[-1.3,37.55],[-1.9,37.2],[-2.46,36.83],[-3.52,36.74],[-4.42,36.72],[-5.35,36.13],[-5.6,36.0],[-6.3,36.5],[-6.95,37.25],[-7.4,37.17],[-7.93,37.02],[-8.99,37.02],[-8.87,37.95],[-8.8,38.5],[-9.2,38.7],[-9.5,38.78],[-9.38,39.35],[-9.07,39.6],[-8.87,40.15],[-8.65,40.64],[-8.67,41.15],[-8.83,41.7],[-8.88,42.1],[-8.75,42.4],[-9.0,42.6]],
@@ -859,6 +859,227 @@ const MAXCOMPRAS=2;
 function comprasHechas(){let m=state.mk;return(m&&m.k===state.scene+'#'+state.turn)?m.n:0}
 trade=function(t,i){if(t==='b'){if(comprasHechas()>=MAXCOMPRAS){toast('En este mercado solo puedes comprar '+MAXCOMPRAS+' objetos');return}if(EQ.includes(i)&&state.inventory[i]>0){toast('Ya llevas ese equipo');return}if(state.coins<pr(i)){toast('No te alcanza el dinero');return}state.coins-=pr(i);state.inventory[i]=(state.inventory[i]||0)+1;state.buys=(state.buys||0)+1;state.mk={k:state.scene+'#'+state.turn,n:comprasHechas()+1}}else{if(!state.inventory[i])return;state.inventory[i]--;state.coins+=Math.max(1,Math.floor(pr(i)/2))}sfx('good');render();openMkt()};
 const _openMkt8=openMkt;openMkt=function(){_openMkt8();let n=comprasHechas(),q=MAXCOMPRAS-n,b=document.querySelector('#mktModal .mktbody');if(!b)return;b.insertAdjacentHTML('afterbegin',`<div class='crow mk-cupo'><span>Compras en este mercado</span><b>${n} de ${MAXCOMPRAS}</b></div>`);if(q<=0)b.querySelectorAll(`button[onclick^="trade('b'"]`).forEach(x=>{x.disabled=true;x.title='Ya has comprado '+MAXCOMPRAS+' objetos aquí'})};
+/* ===== FASE 9 · narrativa: fidelidad a las obras, primera salida, ecos entre historias, finales y glosas ===== */
+(function(){
+const S=scenes;
+const setB=(id,i,t)=>{if(S[id]&&S[id].body)S[id].body[i]=t};
+const setX=(id,o)=>{if(S[id])S[id].x=Object.assign(S[id].x||{},o)};
+const choiceSub=(id,i,t)=>{if(S[id]&&S[id].choices[i])S[id].choices[i][1]=t};
+/* --- 1 · correcciones de fidelidad --- */
+S.sancho.place='Capítulo VII · La casa del labrador';
+setB('sancho',0,'Sancho Panza, labrador vecino tuyo, hombre de bien pero de muy poca sal en la mollera, te escucha mientras unta pan con aceite. No parece impresionado por la armadura, pero sí por la solemnidad con que la llevas.');
+S.road.body[0]='Al caer la tarde, el camino se abrió sobre el campo de Montiel. A lo lejos se descubrían treinta o cuarenta figuras que giraban lentamente contra el cielo.';
+S.road.voice=['EL CABALLERO','¿Los ves, Sancho? Desaforados gigantes, de brazos tan largos que algunos los tienen de casi dos leguas.'];
+setB('mills',1,'Rocinante se detuvo. Sancho también. La aventura, en cambio, ya había empezado: la lanza se hizo pedazos en el aspa y el caballero rodó por el campo. «Algún sabio encantador», dijo al levantarse, «ha vuelto estos gigantes en molinos.»');
+S.vizcaino.body[1]='Dos espadas en alto. La historia se detiene justo ahí: el narrador confiesa que le falta el resto del manuscrito, hasta que en el Alcaná de Toledo un muchacho vende unos cartapacios en arábigo. Los escribió Cide Hamete Benengeli, historiador arábigo, y en ellos sigue el combate.';
+S.cabreros.body[0]='Los cabreros comparten su comida. Con un puñado de bellotas en la mano, don Quijote les habla de la Edad de Oro: «Dichosa edad y siglos dichosos aquellos a quien los antiguos pusieron nombre de dorados», cuando no había tuyo ni mío. Ellos escuchan sin entender, y después cuentan la historia de Grisóstomo, muerto de amor por Marcela.';
+S.encamisados.body[1]='Tú ves una dama robada y unos malandrines. Sancho ve a un puñado de clérigos con prisa. Solo uno de los dos tiene razón. Esa misma noche, a la luz de las hachas, Sancho te da un nombre nuevo: el Caballero de la Triste Figura.';
+S.montesinos.title='Una hora, o tres días';
+S.montesinos.place='Segunda parte, capítulos XXII-XXIII · La cueva de Montesinos';
+S.montesinos.body=['Don Quijote desciende atado a una soga de cien brazas y, al subir, cuenta que ha pasado tres días con Montesinos, Durandarte y Belerma, y con una Dulcinea encantada que le pide seis reales prestados sobre un faldellín.','Sancho no se lo cree. El primo humanista que os guía, tampoco: según ellos, no estuviste abajo mucho más de una hora.'];
+S.cautivo.body[0]='Tras la cena, en la misma venta, un cautivo recién llegado con una dama mora, Zoraida, relata cómo fue prisionero en Argel: cómo ella le arrojó cañas con cartas y dinero desde una ventana, y cómo huyeron en una barca con un renegado hasta que unos corsarios franceses los despojaron y los dejaron en la costa de España.';
+S.galeras.body[0]='Ante el virrey de Barcelona presentan a un joven arráez como capitán de un bergantín, pero resulta ser Ana Félix, morisca nacida en España, hija de Ricote. Cuenta que don Gregorio, su enamorado, los siguió a Berbería, donde ella lo escondió vestido de mujer, y que ha vuelto a por el tesoro de su padre para rescatarlo.';
+S.claudia.body[0]='Entre los árboles del campamento de Roque aparece una joven a caballo, vestida de hombre. Es Claudia Jerónima: creyó que don Vicente Torrellas iba a casarse con otra, le disparó y le ha dejado malherido, aunque aún lo ama.';
+S.claudia.choices[0][1]='Un caballero repara el daño aunque no lo haya hecho él.';
+BR['claudia#0']=['Le ofreces tu escudo y corréis tras don Vicente; lo halláis en brazos de sus criados. Jura que nunca pensó casarse con otra y muere perdonándola. Claudia, deshecha, decide entrar en un monasterio.','Roque te mira con un respeto nuevo, y la senda os conduce hacia la costa.'];
+S.tosilos.body[1]='Al verte venir, Tosilos mira a la hija de doña Rodríguez y se enamora de ella: se quita la celada, jura que prefiere casarse a pelear y se da por vencido. Tú sostienes que los encantadores han mudado la cara del labrador burlador en la del lacayo; la muchacha acepta, que más vale ser mujer legítima de un lacayo que burlada de un caballero.';
+S.avellaneda.place='Segunda parte, capítulo LIX · Una venta';
+S.avellaneda.body[1]='Se te quita el apetito. Otro hombre anda por el mundo con tu nombre, y en Zaragoza ya lo conocen más que a ti. Sabes lo que exige la honra: o desmentir al impostor en su terreno o negarle la plaza.';
+S.avellaneda.choices[0][1]='La respuesta de la novela: «no pondré los pies en Zaragoza, y así sacaré a la plaza del mundo la mentira dese historiador moderno».';
+S.impostor.body[0]='Al caer la tarde, camino de Zaragoza, un caballero te corta el paso. Lleva tu nombre, tu rostro cansado y un escudero que también se llama Sancho Panza y no es Sancho. Os miráis como quien se encuentra con su propio espejo.';
+S.toboso.place='Segunda parte, capítulos IX-X · El Toboso';
+S.toboso.body[0]='El Toboso aparece a medianoche, con sus calles oscuras. «Con la iglesia hemos dado, Sancho.» Al día siguiente, a la salida del lugar, Sancho señala a tres labradoras sobre tres pollinos y jura que una de ellas es Dulcinea.';
+S.duques.place='Segunda parte, capítulos XXX-XXXII · Palacio de los duques';
+S.barataria.place='Segunda parte, capítulos XLII-LIII · Barataria';
+S.barataria.body[0]='Antes de partir, le diste a Sancho tus consejos de buen gobierno: «Has de poner los ojos en quien eres, procurando conocerte a ti mismo». Ahora él tiene la vara de mando y una serie de pleitos enrevesados; escucha con paciencia, y su sentido común sorprende a los criados que esperaban un bufón.';
+S.booktrap.place='Segunda parte, capítulo XLI · Clavileño';
+S.retablo.place='Segunda parte, capítulos XXV-XXVII · La venta de maese Pedro';
+S.retablo.body[1]='Maese Pedro lloriquea por sus figuras y cobra cada una como si fuera de carne. Más tarde se sabrá que el titiritero del parche era Ginés de Pasamonte, uno de los galeotes de la cadena.';
+S.home.place='Segunda parte, capítulo LXXIII · El regreso';
+S.home.body=['A la entrada del lugar, dos muchachos riñen en una era: «No te canses, Periquillo, que no la has de ver en todos los días de tu vida». Una liebre perseguida se refugia bajo el rucio. Malum signum, murmuras: Dulcinea no parece.','El cura y el bachiller salen a recibirte; el ama y la sobrina, a regañarte. La aventura no resuelve si el mundo estaba encantado. Deja una pregunta más difícil: ¿qué hacemos con lo que aprendemos cuando volvemos a casa?'];
+S.lecho.place='Segunda parte, capítulo LXXIV · La casa';
+S.lecho.body=['Una calentura de seis días lo tumba. Despierta tras un sueño largo y dice con voz clara que ya no es don Quijote de la Mancha, sino Alonso Quijano, a quien sus costumbres dieron renombre de Bueno. «En los nidos de antaño no hay pájaros hogaño.»','Sancho llora y le ruega que no se muera, que se levanten y se vayan al campo vestidos de pastores. Vienen el cura, el bachiller y el barbero. El escribano escribe el testamento: la hacienda, para su sobrina Antonia Quijana, con la condición de que no se case con hombre que sepa qué cosa son libros de caballerías.'];
+S.salida.place='Rama hipotética · Final alterno';
+S.salida.title='Una cuarta salida';
+S.salida.body=['El hidalgo no ha escuchado a la Razón. Antes del amanecer ya está en pie, con la celada reparada otra vez y el rocín cojeando de pura costumbre. Es la salida que Cervantes no quiso escribir, para que nadie más pudiera hacerlo.','La historia, que debería terminar, se estira como un camino sin final.'];
+S.amor.body[1]='Es Aldonza Lorenzo, la moza de muy buen parecer de quien un tiempo anduviste enamorado sin que ella lo supiese. No tiene reinos, tiene un nombre y una voz. Te mira sin burla, como quien lleva años esperando que alguien pregunte por ella y no por un nombre prestado.';
+S.a_arg.body[0]='Los libros devotos que te dejó el cura te habían curado, o eso decían en Argamesilla. La casa está en silencio. Entonces llega don Álvaro Tarfe, caballero granadino, con otros caballeros camino de las justas de Zaragoza, curiosos por conocer al célebre hidalgo, y se aloja en tu casa.';
+S.a_archi.body[0]='El Archipámpano, gran señor de la corte con esposa e hija, se divierte con vosotros y agasaja a Sancho, que sueña con recibir en Madrid la orden de caballería con público honor. La corte entera acude a ver al escudero.';
+S.a_archi.choices[0][0]='Armar tú mismo a Sancho, antes de que lo hagan otros.';
+S.ev_pregonero.body[0]='Un pregonero lee a voces un edicto sobre un loco armado que anda por los caminos armando pendencias. Hay quien ríe y quien mira de reojo vuestras armas.';
+setX('ev_pregonero',{baciyelmo:'Alguien señala la bacía que llevas por yelmo: el edicto, por lo visto, hablaba de ti.'});
+/* --- 2 · la primera salida (I, II-VI), que faltaba --- */
+const NUEVAS={
+primera_venta:{place:'Capítulos II-III · La primera venta',title:'Un castillo para ser armado caballero',body:['Sales solo, por la puerta falsa de un corral, antes del alba de un día de julio. Caminas todo el día y, al anochecer, ves una venta que se te figura castillo, con sus cuatro torres y chapiteles de luciente plata. En la puerta hay dos mozas del partido; un porquero toca su cuerno y tú lo tomas por la señal de un enano.','El ventero, hombre gordo y pacífico, decide seguirte el humor. Te falta lo esencial: no has sido armado caballero. Velas las armas en el patio, a la luz de la luna, y unos arrieros que quieren dar de beber a sus recuas apartan tus armas de la pila.'],voice:['EL CABALLERO','Sin la orden de caballería, ninguna hazaña vale. Que me la dé el señor de este castillo, aunque huela a sardinas.'],choices:[
+['Defender la vela de armas contra los arrieros.','Un caballero no consiente que toquen sus armas.','HONOR',{honor:7,health:-3,sanity:-3,next:'andres'}],
+['Aceptar la ceremonia del ventero con su libro de cuentas por breviario.','La pescozada y el espaldarazo valen lo mismo si tú crees en ellos.',null,{honor:5,sanity:-2,next:'andres'}],
+['Preguntar al ventero por los dineros y las camisas limpias que, según él, llevan los caballeros.','Hasta los libros callan cosas necesarias.',null,{sanity:4,honor:-2,next:'andres'}]]},
+andres:{place:'Capítulos IV-V · Andrés y los mercaderes',title:'El primer agravio deshecho',body:['Ya armado, oyes quejas en un bosque: un labrador rico, Juan Haldudo, azota a un muchacho atado a una encina. Es Andrés, su criado, y le debe nueve meses de soldada. Obligas al amo a jurar que le pagará, y te vas convencido de haber deshecho el primer agravio de tu vida.','Más adelante te cruzas con unos mercaderes toledanos que van a comprar seda a Murcia. Les exiges que confiesen que no hay doncella más hermosa que Dulcinea; uno se burla, Rocinante tropieza, y un mozo de mulas te muele a palos con tu propia lanza. Un labrador vecino tuyo, Pedro Alonso, te recoge del suelo y te devuelve al lugar sobre su jumento.'],voice:['LA RAZÓN','Un juramento arrancado con la lanza dura lo que tarda la lanza en marcharse.'],choices:[
+['Confiar en el juramento de Juan Haldudo y seguir camino.','Así lo hace el caballero de la novela, y así le irá a Andrés.',null,{honor:6,sanity:-3,flag:'andres',next:'escrutinio'}],
+['Esperar escondido para ver si el amo cumple.','La justicia que no se vigila se deshace sola.','CORDURA',{sanity:5,honor:2,flag:'andres_vigila',next:'escrutinio'}],
+['Recitar romances viejos mientras Pedro Alonso te lleva a casa.','Valdovinos y el marqués de Mantua consuelan mejor que el ungüento.',null,{sanity:-4,honor:3,health:2,next:'escrutinio'}]]},
+escrutinio:{place:'Capítulos VI-VII · El escrutinio de la librería',title:'La biblioteca que desapareció',body:['Mientras duermes, el cura y maese Nicolás el barbero, con el ama y la sobrina, hacen escrutinio de tus libros. Salvan el Amadís de Gaula, por ser el primero y el mejor, y el Tirante el Blanco, «el mejor libro del mundo»; al resto lo condenan al corral y al fuego. Entre ellos hay uno de un tal Cervantes, «más versado en desdichas que en versos».','Cuando despiertas, el aposento de los libros ha sido tapiado. El ama te explica que un encantador vino en una nube, montado en una sierpe, y se llevó la biblioteca. Tú sabes su nombre: el sabio Frestón, tu enemigo.'],voice:['LA RAZÓN','Han quemado tus libros para curarte. No han caído en que los llevas ya todos dentro.'],choices:[
+['Culpar al sabio Frestón y jurar venganza.','Un enemigo con nombre es más fácil de combatir que una pérdida.',null,{honor:5,sanity:-4,flag:'freston',next:'sancho'}],
+['Fingir que te conformas y buscar en secreto un escudero.','Quince días de sosiego en casa, y luego la segunda salida.','CORDURA',{sanity:5,hunger:-10,flag:'freston',next:'sancho'}],
+['Pedir al cura que te devuelva al menos el Amadís.','El cura se muestra benévolo con el primero de todos.',null,{sanity:2,honor:2,hunger:-6,flag:'freston',next:'sancho'}]]}
+};
+const BRN={
+'primera_venta#0':['Embrazas la adarga y descargas la lanza sobre los arrieros que tocan tus armas.','Los arrieros retroceden y el ventero, temeroso, decide abreviar la ceremonia.','Llueven piedras desde el patio hasta que el ventero, harto, abrevia la ceremonia.','Al alba sales armado caballero, más ufano que sano.'],
+'primera_venta#1':['El ventero lee en su libro de la paja y la cebada como quien lee un breviario, te da una pescozada y un espaldarazo, y una de las mozas te ciñe la espada.','Sales al alba armado caballero, tan contento que el gozo te revienta por las cinchas del caballo.'],
+'primera_venta#2':['El ventero te aconseja llevar dineros, camisas limpias y una arqueta de ungüentos, porque los caballeros de los libros los llevaban aunque los libros no lo dijeran.','Sales armado caballero y con la resolución de buscar un escudero.'],
+'andres#0':['Te alejas satisfecho. No oyes que, apenas te pierdes de vista, Juan Haldudo vuelve a atar a Andrés a la encina y le azota el doble.','El camino te lleva, sin que lo sepas, a los mercaderes toledanos, y de ellos a tu casa, molido.'],
+'andres#1':['Esperas escondido entre los árboles.','El amo duda, mira el camino y, al fin, desata al muchacho y le paga algo de lo debido.','Te cansas de esperar y te marchas; a tus espaldas se oyen otra vez los azotes.','Luego vienen los mercaderes, y los palos, y la vuelta a casa sobre un jumento.'],
+'andres#2':['Tendido sobre el jumento de Pedro Alonso recitas el romance del marqués de Mantua, y el labrador te responde que no eres Valdovinos sino el señor Quijana.','Entráis en el lugar de noche, para que nadie vea al caballero molido.'],
+'escrutinio#0':['Juras que el sabio Frestón te las pagará, y en las semanas siguientes hablas de él a todas horas.','Entretanto, mandas recado a un vecino labrador: un caballero no debe volver a salir sin escudero.'],
+'escrutinio#1':['Te quedas quince días en casa, discutiendo de caballerías con el cura y el barbero.','Nadie sospecha nada: pareces sosegado.','Tu impaciencia se nota; el ama sospecha, pero no lo impide.','En secreto, solicitas a un vecino labrador para que sea tu escudero.'],
+'escrutinio#2':['El cura, que sabe de libros, te habla del Amadís con más ternura de la que esperabas.','Pero el aposento sigue tapiado, y tú ya has elegido a tu escudero.']
+};
+Object.assign(S,NUEVAS);Object.assign(BR,BRN);
+for(const k in NUEVAS)S[k].choices.forEach(c=>{if(c[2])c[5]=mkRoll(c)});
+Object.assign(ST,{primera_venta:{bg:'venta',l:'dq',r:['ventero','maritornes'],an:'bow',cap:'Don Quijote vela las armas en la primera venta'},andres:{bg:'llanura',l:'dq',r:['labrador','cabrero'],an:'talk',cap:'Juan Haldudo y el muchacho Andrés'},escrutinio:{bg:'biblioteca',l:'alonso',r:['cura','barbero','ama'],an:'watch',cap:'El cura y el barbero hacen escrutinio de la librería'}});
+Object.assign(LOC,{primera_venta:'mon',andres:'mon',escrutinio:'arg'});
+NOJ.push('primera_venta','andres','escrutinio');
+Object.assign(RD,{'yard>road':'primera_venta','helmet>road':'primera_venta'});
+// durante la primera salida no hay escudero
+const arrN={
+primera_venta:s=>{s.alone=1;s.flags.primera=1;return[{t:'Primera salida: el hidalgo sale solo'}]},
+sancho:s=>{if(s.flags.primera&&!s.flags.sanchoUnido){s.alone=0;s.flags.sanchoUnido=1;return[{t:'Segunda salida: Sancho Panza se hace escudero'}]}if(!s.flags.primera)s.flags.sinPrimera=1;return[]},
+cardenio:s=>{if(s.seen.includes('galeotes')&&!s.alone){s.flags.rucio_robado=1;return[{t:'Ginés de Pasamonte roba el rucio a Sancho'}]}return[]},
+curioso:s=>{if(s.inventory&&s.inventory.yelmo>0){s.flags.baciyelmo=1;return[{t:'El barbero reclama su bacía: la venta vota que es yelmo'}]}return[]},
+home:s=>{if(s.seen.includes('desencanto'))s.flags.azotes=1;return[]},
+impostor:s=>{if(s.seen.includes('vision'))s.flags.tinta=1;return[]},
+dorotea:s=>{if(s.flags.andres&&!s.flags.andres_vigila)s.flags.andres_vuelve=1;return[]}
+};
+for(const k in arrN){const o=ARR[k];ARR[k]=o?(s=>[...o(s),...arrN[k](s)]):arrN[k]}
+// pregonero y bacía
+const _arrP=ARR.ev_pregonero;ARR.ev_pregonero=s=>{if(s.inventory&&s.inventory.yelmo>0)s.flags.baciyelmo=1;return _arrP?_arrP(s):[]};
+/* --- 3 · ecos: personajes y objetos que vuelven --- */
+setX('sancho',{sinPrimera:'(En la novela, Sancho no acompaña al hidalgo en la primera salida: se une en la segunda, en el capítulo VII. Aquí has preferido no salir solo.)'});
+setX('mills',{freston:'«¿No te dije, Sancho, que aquel sabio Frestón que me robó el aposento y los libros ha vuelto estos gigantes en molinos, por quitarme la gloria de su vencimiento?»'});
+setX('dorotea',{andres_vuelve:'En el camino os sale al encuentro un muchacho: es Andrés. Cuenta delante de todos que Juan Haldudo, en cuanto te fuiste, le azotó el doble, y te ruega que, si otra vez lo ves en apuros, no lo socorras.'});
+setX('cardenio',{rucio_robado:'Esa noche, mientras dormís entre las peñas, Ginés de Pasamonte, al que libraste de la cadena, roba el rucio de Sancho. El escudero llora a su asno como a un hijo.'});
+setX('sanson',{rucio_robado:'Sansón pregunta cómo pudo perder Sancho el rucio en la sierra si luego aparece montado en él; Sancho explica que se lo robó Ginés de Pasamonte mientras dormía, y que lo recobró después. Hasta el libro tiene descuidos.'});
+setX('curioso',{baciyelmo:'Al amanecer entra en la venta el barbero al que quitaste la bacía, la reconoce y la reclama. Para seguirte el humor, los presentes votan que no es bacía sino yelmo, y Sancho, prudente, la llama baciyelmo.'});
+setX('home',{azotes:'Por el camino, Sancho ha «cumplido» los azotes de Dulcinea en una arboleda, descargándolos sobre las hayas mientras tú contabas los golpes.',rel_sanson:'Sansón Carrasco, que te venció en la playa para traerte a casa, te recibe con una sonrisa sin burla.'});
+setX('lecho',{arcadia:'Sancho te recuerda la vida pastoril que soñasteis: Quijótiz y Pancino, con sus zampoñas. «Quizá tras de alguna mata hallaremos a la señora Dulcinea desencantada.»',rel_sanson:'El bachiller Carrasco, que te sacó del camino con una lanza, escribe ahora tu epitafio.'});
+setX('impostor',{tinta:'Bajo su visera brilla la misma tinta del caballero que viste una vez en el margen de un libro: no es un hombre, es una página que ha aprendido a andar.'});
+setX('amor',{saludo_aldonza:'Te recuerda: eres el hidalgo que, una mañana a la salida del Toboso, le preguntó el nombre en vez de llamarla princesa.',dul_carta:'Lleva en la mano, arrugada, la carta que dictaste en Sierra Morena. Nunca nadie le había escrito.'});
+setX('salida',{arcadia:'Esta vez no llevas lanza, sino cayado: el pastor Quijótiz sale a buscar a su rebaño, y Sancho, que no se fía, sale detrás.'});
+setX('a_epilogo',{rel_tarfe:'Don Álvaro Tarfe guarda tu nombre en la memoria. Un año después, en otra novela, jurará ante escribano que el don Quijote que conoció no era el verdadero.'});
+S.toboso.choices[0][3].flag='saludo_aldonza';
+S.embajada.choices[0][3].flag='dul_carta';
+/* --- 4 · finales --- */
+const FIN={
+lucido:['Fin · Segunda parte, capítulo LXXIV','Alonso Quijano el Bueno',['Entre compasiones y lágrimas de los que allí se hallaron, dio su espíritu. El escribano pidió por testimonio que había muerto naturalmente, para quitar la ocasión de que algún otro autor lo resucitase.','El bachiller Sansón Carrasco puso este epitafio en su sepultura: «Yace aquí el Hidalgo fuerte / que a tanto estremo llegó / de valiente, que se advierte / que la muerte no triunfó / de su vida con su muerte».','Y la pluma de Cide Hamete, colgada de una espetera, dice para siempre: «Para mí sola nació don Quijote, y yo para él; él supo obrar y yo escribir».'],['LA RAZÓN','Por fin estamos de acuerdo, tú y yo. Lástima que haya hecho falta morir para ello.']],
+terco:['Fin · Rama hipotética','La salida que nadie escribió',['El hidalgo no murió en su cama: salió otra vez, y esta vez ningún cronista fue tras él. Cide Hamete colgó la pluma; el escribano no pudo dar fe de su muerte, y su historia quedó abierta como una puerta mal cerrada.','En la Mancha dicen que todavía se le ve algunas tardes, entre los molinos, contra la luz.'],['EL CABALLERO','Que lo escriba quien se atreva. Yo ya he salido.']],
+amor:['Fin · Rama hipotética','Aldonza, o Dulcinea',['La armadura quedó colgada en un clavo del Toboso, junto a las ristras de ajos. Nadie escribió esta historia, porque las historias felices tienen poca prosa.','Aldonza Lorenzo, que tenía muy buena mano para salar puercos, aprendió a reírse de los gigantes; él aprendió a llamarla por su nombre.'],['LA RAZÓN','No es el final de la novela. Pero es un final que la novela, a su modo, dejó posible.']],
+muerte:['Fin · Final del camino','La última jornada',['No hubo lecho, ni testamento ante escribano, ni epitafio del bachiller. El camino se quedó con el caballero, como se queda con las herraduras perdidas.','Sancho volvió solo a la aldea con el rucio y la lanza, y contó la historia tantas veces que acabó por mejorarla.'],['LA RAZÓN','Llegué tarde. El cuerpo habló antes que yo.']],
+locura:['Fin · Final del camino','El gigante que no era molino',['La razón no volvió. Dicen que el hidalgo sigue cabalgando por el campo de Montiel, hablando con los molinos, y que los molinos, por cortesía, le responden.','Es el final que Cervantes evitó: el de un loco sin regreso. Por eso la novela tiene otro.'],['EL CABALLERO','Y sin embargo, se mueven.']],
+rumor:['Fin · Avellaneda, capítulo XXXVI','Curado por la paciencia',['El Quijote de Avellaneda termina con el hidalgo encerrado en la Casa del Nuncio de Toledo y con noticias inciertas de lo que vino después. En esta versión, la paciencia ajena hizo lo que no hicieron los palos.','Un año más tarde, Cervantes respondió a aquel libro con su propia segunda parte: hizo que don Quijote se negara a pisar Zaragoza y que don Álvaro Tarfe declarase ante escribano que aquel no era el verdadero.'],['LA RAZÓN','Hay curas que no dejan cicatriz. Esta, al menos, deja un rumor.']],
+norte:['Fin · Avellaneda, capítulo XXXVI','Rumbo a Castilla la Vieja',['Avellaneda dejó la puerta abierta: el hidalgo, dicen, salió de la Casa del Nuncio y tomó el camino de Castilla la Vieja en busca de nuevas aventuras, que el autor prometía contar y nunca contó.','Cervantes cerró esa puerta en 1615 con la muerte de Alonso Quijano, para que ningún otro autor lo resucitase.'],['EL CABALLERO','Mientras haya camino, el libro no se acaba.']],
+nuncio:['Fin · Avellaneda, capítulo XXXVI','El patio de la Casa del Nuncio',['El don Quijote de Avellaneda termina donde empiezan los locos: entre rejas, en Toledo, mirando un patio. No hay testamento ni amigos junto a la cama; hay mayordomos y una sopa tibia.','Es la gran diferencia entre las dos segundas partes: Avellaneda encierra a su personaje; Cervantes lo deja morir cuerdo y libre.'],['LA RAZÓN','Te encerraron para curarte. Nadie te preguntó de qué.']]
+};
+function aplicarFin(){const f=FIN[state.fin];if(!f)return;const e=S.end;e.place=f[0];e.title=f[1];e.body=f[2].slice();e.voice=f[3]}
+const _r9=render;render=function(){if(state.scene==='end')aplicarFin();return _r9.apply(this,arguments)};
+/* --- 5 · glosas del cronista: qué es fiel, qué se adapta y qué se inventa --- */
+const GL={
+start:['A','I, 1: «del poco dormir y del mucho leer se le secó el celebro». Las tres noches en vela y las voces interiores son del juego.'],
+yard:['F','I, 1: limpia unas armas de sus bisabuelos, hace de cartones una media celada y tarda cuatro días en dar nombre a su rocín: Rocinante, «nombre alto, sonoro y significativo».'],
+helmet:['F','I, 1: la primera celada se deshace de una cuchillada; la rehace con barras de hierro y, sin probarla otra vez, la da por finísima.'],
+book:['H','Interludio inventado. Dramatiza la lectura que trastorna al hidalgo; prepara el motivo del doble de tinta.'],
+vision:['H','Invención del juego. El caballero de tinta anticipa al don Quijote de Avellaneda, el otro yo hecho de páginas.'],
+primera_venta:['F','I, 2-3: la venta que parece castillo, la Tolosa y la Molinera, la vela de armas y la ceremonia burlesca del ventero.'],
+andres:['F','I, 4-5: Andrés y Juan Haldudo; los mercaderes toledanos; Pedro Alonso lo devuelve a casa mientras recita el romance del marqués de Mantua.'],
+escrutinio:['F','I, 6-7: el escrutinio salva el Amadís y el Tirante; se cita La Galatea de Cervantes. El aposento tapiado se atribuye al sabio Frestón.'],
+sancho:['A','I, 7: «un labrador vecino suyo, hombre de bien… pero de muy poca sal en la mollera», tentado con una ínsula.'],
+road:['F','I, 8: «treinta o cuarenta molinos de viento que hay en aquel campo».'],
+mills:['F','I, 8: la lanza se hace pedazos y don Quijote culpa a Frestón, que «ha vuelto estos gigantes en molinos».'],
+vizcaino:['F','I, 8-9: el combate queda suspendido; el resto aparece en el Alcaná de Toledo, en los cartapacios arábigos de Cide Hamete Benengeli.'],
+adventure:['H','Encrucijada del juego: ordena las rutas y permite saltar a la segunda parte o al apócrifo.'],
+cabreros:['F','I, 10-11: las bellotas y el discurso de la Edad de Oro; el cabrero le cura la oreja con romero y sal.'],
+marcela:['F','I, 12-14: el discurso de Marcela («Yo nací libre») y el entierro de Grisóstomo.'],
+yangueses:['F','I, 15: Rocinante y las jacas galicianas de los yangüeses.'],
+manteo:['F','I, 16-17: Maritornes y el arriero, el bálsamo de Fierabrás y el manteo de Sancho.'],
+inn:['A','I, 17: la receta del bálsamo es del texto; el juego la separa del manteo para dar una decisión propia.'],
+sheep:['F','I, 18: los ejércitos de Alifanfarón de la Trapobana y Pentapolín del Arremangado Brazo son dos manadas de ovejas.'],
+encamisados:['F','I, 19: el cuerpo que llevan de Baeza a Segovia; esa noche Sancho lo llama el Caballero de la Triste Figura.'],
+batanes:['F','I, 20: seis mazos de batán; Sancho traba a Rocinante para retener a su amo.'],
+mambrino:['F','I, 21: la bacía de azófar del barbero se convierte en el yelmo de Mambrino.'],
+galeotes:['F','I, 22: la cadena de galeotes, Ginés de Pasamonte y la lluvia de piedras en pago.'],
+sierra:['F','I, 23: la maleta, las camisas y el librillo de memoria de Cardenio.'],
+cardenio:['F','I, 23-24: el Roto de la Mala Figura y la reina Madásima. El robo del rucio por Ginés se añadió en la segunda edición de 1605, de ahí las incoherencias que el propio Sansón comenta en II, 3-4.'],
+embajada:['F','I, 25-31: penitencia a imitación de Beltenebros; la carta a Dulcinea que Sancho olvida y recita de memoria; Dulcinea «ahechando trigo».'],
+dorotea:['F','I, 27-31: Dorotea, burlada por don Fernando, se finge princesa Micomicona. Andrés reaparece en I, 31.'],
+curioso:['F','I, 33-35: El curioso impertinente y la batalla con los cueros de vino; el baciyelmo se disputa en I, 44-45.'],
+cautivo:['F','I, 37-41: discurso de las armas y las letras e historia de Ruy Pérez de Viedma y Zoraida.'],
+jaula:['F','I, 46-51: el carro encantado, el canónigo de Toledo y la historia de Leandra.'],
+disciplinantes:['F','I, 52: los disciplinantes y el regreso a la aldea; fin de la primera parte.'],
+sanson:['F','II, 1-7: Sansón Carrasco anuncia que la primera parte anda impresa; Teresa y Sanchica.'],
+toboso:['F','II, 9-10: «Con la iglesia hemos dado, Sancho»; Sancho encanta a Dulcinea en una labradora.'],
+muerte:['F','II, 11: la carreta de las Cortes de la Muerte, de la compañía de Angulo el Malo.'],
+espejos:['F','II, 12-15: el Caballero de los Espejos es Sansón Carrasco; su escudero, Tomé Cecial, lleva nariz postiza.'],
+torneo:['H','Rama inventada a la manera de II, 14.'],
+gaban:['F','II, 16: don Diego de Miranda, el Caballero del Verde Gabán.'],
+sancho_cuenta:['H','Rama inventada; Sancho sí reclama salario en II, 7 y II, 28.'],
+leones:['F','II, 17: el león se vuelve de espaldas; nace el Caballero de los Leones.'],
+diego_frio:['H','Variación inventada de la hospitalidad de II, 18.'],
+lorenzo:['F','II, 18: la glosa de don Lorenzo y los cuatro días en casa de don Diego.'],
+cirujano:['H','Rama inventada a la manera de I, 18.'],
+camacho:['F','II, 19-21: la industria de Basilio y las ollas de Camacho.'],
+montesinos:['F','II, 22-23: «tres días» abajo frente a poco más de una hora arriba; Dulcinea encantada pide seis reales.'],
+retablo:['F','II, 25-27: el retablo de Melisendra; maese Pedro resulta ser Ginés de Pasamonte.'],
+barco:['F','II, 29: el barco encantado acaba en las aceñas del Ebro.'],
+duques:['F','II, 30-32: los duques, lectores de la primera parte, convierten a amo y escudero en espectáculo.'],
+desencanto:['F','II, 34-35: Merlín dicta los tres mil trescientos azotes.'],
+trifaldi:['F','II, 36-40: la Dueña Dolorida y las dueñas barbudas por Malambruno.'],
+booktrap:['F','II, 41: Clavileño, con los ojos vendados y fuelles por viento.'],
+rodriguez:['F','II, 44-48: Altisidora, los gatos y la visita nocturna de doña Rodríguez.'],
+barataria:['F','II, 42-43 y 45-53: los consejos a Sancho y su gobierno de la ínsula.'],
+ricote:['F','II, 54: Ricote, morisco expulsado por el bando de 1609, vuelve disfrazado de peregrino.'],
+tosilos:['F','II, 56: el lacayo Tosilos se rinde por amor a la hija de doña Rodríguez.'],
+avellaneda:['F','II, 59: don Quijote conoce el libro de Avellaneda y decide no ir a Zaragoza.'],
+impostor:['H','Rama inventada: el encuentro con el don Quijote de Avellaneda no ocurre en ninguna de las dos novelas.'],
+roque:['F','II, 60: Roque Guinart, trasunto del bandolero histórico Perot Rocaguinarda.'],
+claudia:['F','II, 60: Claudia Jerónima y la muerte de don Vicente Torrellas.'],
+barcelona:['F','II, 61: «vieron el mar, hasta entonces dellos no visto»; los acoge don Antonio Moreno.'],
+cabeza:['F','II, 62: la cabeza encantada; ese mismo capítulo visita una imprenta.'],
+galeras:['F','II, 63: Ana Félix, hija de Ricote, ante el virrey.'],
+duelo:['F','II, 64: «Dulcinea del Toboso es la más hermosa mujer del mundo, y yo el más desdichado caballero de la tierra».'],
+arcadia:['F','II, 67: el sueño pastoril: Quijótiz, Pancino, Carrascón y Curiambro.'],
+cerdos:['F','II, 68: la piara de más de seiscientos puercos.'],
+altisidora:['F','II, 69-70: la fingida muerte y resurrección de Altisidora.'],
+tarfe:['F','II, 72: Cervantes toma un personaje de Avellaneda, don Álvaro Tarfe, para desautorizar el libro apócrifo desde dentro.'],
+home:['F','II, 73: los agüeros de la entrada en la aldea: la liebre y la jaula de grillos.'],
+lecho:['F','II, 74: muerte de Alonso Quijano el Bueno, testamento y despedida de la pluma de Cide Hamete.'],
+salida:['H','Final inventado. Cervantes cierra la novela precisamente para impedir otra salida.'],
+amor:['H','Final inventado. Aldonza Lorenzo solo aparece nombrada en I, 1 y I, 25.'],
+a_arg:['V','Avellaneda, caps. I-III: el hidalgo recae en Argamasilla con la visita de don Álvaro Tarfe.'],
+a_venta:['V','Avellaneda, caps. IV-VI: nace el Caballero Desamorado.'],
+a_melonar:['V','Avellaneda, cap. VI: el guarda del melonar.'],
+ateca:['V','Avellaneda, caps. VI-VII: mosén Valentín en Ateca.'],
+a_azotado:['V','Avellaneda, caps. VIII-IX: la cárcel de Zaragoza.'],
+zaragoza:['V','Avellaneda, caps. X-XI: la sortija del Coso.'],
+a_carlos:['V','Avellaneda, caps. XII-XIII: la cena de don Carlos y el reto de Bramidán.'],
+a_bracamonte:['V','Avellaneda, caps. XIV-XVI: la novela intercalada de El rico desesperado.'],
+a_ermitano:['V','Avellaneda, caps. XVII-XXI: la novela intercalada de Los felices amantes.'],
+a_pinar:['V','Avellaneda, caps. XXII-XXIII: Bárbara, tomada por la reina Zenobia.'],
+siguenza:['V','Avellaneda, cap. XXIV: Sigüenza.'],
+a_estudiantes:['V','Avellaneda, caps. XXV-XXVII: estudiantes y comediantes.'],
+a_alcala:['V','Avellaneda, cap. XXVIII: Alcalá de Henares.'],
+madrid:['V','Avellaneda, caps. XXIX-XXXI: la llegada a la corte.'],
+a_archi:['V','Avellaneda, caps. XXXII-XXXIII: el Archipámpano y las ínfulas caballerescas de Sancho.'],
+a_bramidan:['V','Avellaneda, cap. XXXIV: la burla de Bramidán; Bárbara, en las Arrepentidas.'],
+a_sancho:['V','Avellaneda, cap. XXXV: Sancho se queda en la corte.'],
+a_sanchono:['V','Avellaneda, cap. XXXV: Sancho se queda en la corte.'],
+toledo:['V','Avellaneda, cap. XXXVI: la Casa del Nuncio de Toledo.'],
+a_epilogo:['V','Avellaneda, cap. XXXVI, y la respuesta de Cervantes en II, 59 y II, 72.']
+};
+const GT={F:['Fiel a Cervantes','fiel'],A:['Adaptado','adap'],H:['Rama hipotética','hipo'],V:['Avellaneda, 1614','apoc'],I:['Incidente del juego','inc']};
+function glosa(id){let g=GL[id];if(!g){if(id.startsWith('ev_c_')||/^ev_(faint|fever|adios|deshonra|muerte|locura)$/.test(id))g=['I','Episodio de la mecánica del juego: no procede de las novelas.'];else if(id.startsWith('ev_'))g=['I','Incidente inventado para el juego, en el tono de los capítulos de camino de la primera parte.'];else return ''}
+ const t=GT[g[0]];return `<details class="glosa g-${t[1]}"><summary><span class="g-tipo">${t[0]}</span> Glosa del cronista</summary><p>${g[1]}</p></details>`}
+window.glosaHTML=glosa;
+const _r9b=render;render=function(){const r=_r9b.apply(this,arguments);try{const sc=document.getElementById('scene'),ch=sc&&sc.querySelector('.choices');if(ch&&!sc.querySelector('.glosa')&&state.scene!=='end'){const d=document.createElement('div');d.innerHTML=glosa(state.scene);if(d.firstChild)ch.parentNode.insertBefore(d.firstChild,ch)}}catch(e){}return r};
+})();
 document.addEventListener('keydown',e=>{if(MENUON()){if(document.getElementById('intro').classList.contains('on')){if(e.key==='Escape')introSkip();else if(['Enter',' ','ArrowRight'].includes(e.key)){e.preventDefault();introNext()}}else if(e.key==='Escape')closeBook();return}if(e.key==='Escape'){closeBook();closeMkt()}if((e.key==='m'||e.key==='M')&&!/INPUT|TEXTAREA/.test((e.target||{}).tagName||'')&&!document.querySelector('#modal.show,#mktModal.show')){BK.open?closeBook():openBook();return}if(document.querySelector('#bookModal.show,#mktModal.show'))return;let n=Number(e.key);if(n>=1&&n<=4){let buttons=document.querySelectorAll('.choice');if(buttons[n-1])buttons[n-1].click()}if(e.key==='Enter'&&document.getElementById('modal').classList.contains('show'))closeRoll()});try{let sv=JSON.parse(localStorage.getItem('hidalgo'));if(sv&&sv.evs&&sv.scene!=='end'&&scenes[sv.scene])state=sv}catch(e){}applyCfg();render();dbInit();showMenu();
 </script><!--VIS:INI--><style id="vis-css">
 /* ===== VIS · escenario en lienzo y cajas de diálogo ===== */
@@ -1216,6 +1437,19 @@ html.vis-on body.modo-libro[data-theme=noche] .lj-pag::after{mix-blend-mode:over
 html.vis-on body.modo-libro[data-theme=noche] .bridge.nota-margen{color:#cdbb93;background:none}
 @media(prefers-reduced-motion:reduce){html.vis-on .track .prev{animation:none}}
 @media(max-width:699px){.lj-pag.der .lj-cinta{display:none}}
+
+/* ===== glosas del cronista ===== */
+.glosa{margin:18px 0 6px;border:1px solid #c9a35a;background:#f6ecd0;font-size:14px;line-height:1.55}
+.glosa summary{cursor:pointer;list-style:none;padding:6px 10px;font:600 11px 'DM Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#6b4a2a;display:flex;align-items:center;gap:8px}
+.glosa summary::-webkit-details-marker{display:none}
+.glosa summary::before{content:'❧';font-size:15px;color:#b8892f;transition:transform .2s}
+.glosa[open] summary::before{transform:rotate(90deg)}
+.glosa p{margin:0;padding:0 12px 10px 30px;font-style:italic;color:#4a3d27}
+.glosa .g-tipo{padding:1px 6px;border-radius:2px;color:#fbf0d2;font-size:10px;letter-spacing:.06em}
+.g-fiel .g-tipo{background:#4f7a38}.g-adap .g-tipo{background:#a8742a}.g-hipo .g-tipo{background:#7a4b6a}.g-apoc .g-tipo{background:#34508a}.g-inc .g-tipo{background:#6b5a3e}
+html.vis-on body.modo-libro[data-theme=noche] .glosa{background:#33281c;border-color:#6b5434}
+html.vis-on body.modo-libro[data-theme=noche] .glosa p{color:#cdbb93}
+html.vis-on body.modo-libro[data-theme=noche] .glosa summary{color:#e2d5b6}
 </style><script id="vis-js">
 /* ===== VIS · núcleo: paletas, búfer indexado, utilidades ===== */
 /* Todo el arte se pinta con índices de paleta (0-31) sobre búferes Uint8.
@@ -2320,7 +2554,10 @@ ev_peregrinos|camino|mediodia|||peregrino*2|talk|
 torneo|plaza|mediodia|polvo||estudiante+cabrero|toss|
 sancho_cuenta|camino|tarde||||talk|
 diego_frio|casanoble|tarde|||diego|talk|
-cirujano|plaza|mediodia|||barbero|talk|`;
+cirujano|plaza|mediodia|||barbero|talk|
+primera_venta|venta|noche|luciernagas||ventero+maritornes+moza|bow|
+andres|llanura|mediodia|||labrador+cabrero|talk|
+escrutinio|biblioteca|tarde|||cura+barbero+ama|watch|alonso`;
   const E = {};
   T.split('\n').forEach(l => {
     const p = l.split('|');
