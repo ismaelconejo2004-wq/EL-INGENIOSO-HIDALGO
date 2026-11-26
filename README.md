@@ -33,7 +33,7 @@ Esta sección es importante para cualquier persona o IA que vaya a modificar el 
   - `scenes` y los bloques `NEW`, `NEW2`… `NEW6` contienen las escenas;
   - `BR` contiene las frases que enlazan una decisión con la escena siguiente;
   - `RD` y `RDF` contienen los desvíos entre escenas;
-  - los bloques `FASE 9` y `FASE 10` contienen la primera salida, los ecos entre historias, los textos de los finales, las glosas del cronista y la página de fuentes.
+  - los bloques `FASE 9`, `FASE 10` y `FASE 10b` contienen la primera salida, los ecos entre historias, los textos de los finales, las glosas del cronista y la página de fuentes.
 - **Aspecto visual.** Se edita en `src/vis/` y `src/vis.css`, nunca dentro de `index.html`. Después hay que ejecutar `npm run build`.
   - El bloque entre `<!--VIS:INI-->` y `<!--VIS:FIN-->` de `index.html` se **sobrescribe** en cada construcción, así que cualquier cambio hecho ahí a mano se pierde.
 - **Qué fondo, hora, clima y personajes tiene cada escena.** Está en `src/vis/30-escenas.js`.
@@ -53,7 +53,7 @@ Para probar y construir hace falta Node.js. Jugar no necesita nada.
 ```
 npm install          # instala jsdom, solo para las pruebas
 npm run build        # incrusta src/ en index.html
-npm test             # prueba de mercados y miles de partidas simuladas
+npm test             # mercados, recomendaciones del tribunal y miles de partidas simuladas
 npm run capturas     # capturas de todas las escenas en tests/capturas/ (no se suben a GitHub)
 npm run rendimiento  # tamaño, carga y fps → tests/rendimiento.json
 npm run dossier      # regenera el dossier en PDF

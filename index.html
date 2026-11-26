@@ -1170,6 +1170,18 @@ S.lecho.x=Object.assign(S.lecho.x||{},{});
 S.tosilos.body[0]='Antes de esta plaza, al volver de la ínsula, Sancho cayó con el rucio en una sima y lo sacaste de allí con sogas y gente del castillo. Ahora, en el palacio ducal, los duques organizan un combate: el lacayo Tosilos, armado de caballero, debe defender al labrador burlador de la hija de doña Rodríguez contra ti, que lo prometiste. El duque le ha avisado de que, si de verdad ve peligro, lo mejor es huir.';
 S.ricote.x=Object.assign(S.ricote.x||{},{md_teresa:'Además, la duquesa envió con un paje a Teresa Panza un sartal de corales y la carta de su marido; Teresa responde con otra carta y unas bellotas para la duquesa, y en el lugar ya la llaman señora gobernadora.'});
 })();
+/* ===== FASE 10b · puentes revisados contra la escena real de llegada (desvíos RD y RDF) ===== */
+(function(){
+const fin=(k,t)=>{const b=BR[k];if(b)b[b.length-1]=t};
+fin('duques#0','Los duques celebran tu valor y aplazan el vuelo: antes, dicen, habrá una montería en el bosque.');
+BR['duques#0'][0]='Aceptas la aventura de los cielos sin pedir más explicaciones, y los duques disimulan la risa con una elegancia que casi parece cariño.';
+fin('duques#1','Antes de entregarle la ínsula, los duques os invitan a una montería en el bosque.');
+fin('impostor#2','El camino de Barcelona cruza antes los bosques de Cataluña, y el mar todavía os espera.');
+['curioso#0','curioso#1','curioso#2'].forEach((k,i)=>fin(k,['Con las voces aún en los oídos, llegan a la venta huéspedes nuevos.','Salga como salga, la venta se llena de huéspedes nuevos.','Con las deudas medio saldadas, la venta recibe huéspedes nuevos.'][i]));
+['gaban#0','gaban#1','gaban#2'].forEach((k,i)=>fin(k,['Con la conversación a medias, seguís camino.','Mal que bien, el camino sigue y trae nuevas pruebas.','La mesa promete reposo, pero antes el camino os reserva otras pruebas.'][i]));
+['lorenzo#0','lorenzo#1','lorenzo#2'].forEach((k,i)=>fin(k,['Con el consejo dado, el camino te lleva a una aldea donde se prepara una boda.','La casa verde te cura sin que te des cuenta, y una aldea en fiestas os llama.','La casa se queda atrás, y el trecho siguiente os acerca a una aldea donde se prepara una boda.'][i]));
+['ricote#0','ricote#1','ricote#2'].forEach((k,i)=>fin(k,['La senda os conduce hacia nuevas pruebas.','El reproche pesa más de lo que debería, y el trecho siguiente os acerca a nuevas pruebas.','El secreto queda entre vosotros, y el camino os lleva a nuevas pruebas.'][i]));
+})();
 document.addEventListener('keydown',e=>{if(MENUON()){if(document.getElementById('intro').classList.contains('on')){if(e.key==='Escape')introSkip();else if(['Enter',' ','ArrowRight'].includes(e.key)){e.preventDefault();introNext()}}else if(e.key==='Escape')closeBook();return}if(e.key==='Escape'){closeBook();closeMkt()}if((e.key==='m'||e.key==='M')&&!/INPUT|TEXTAREA/.test((e.target||{}).tagName||'')&&!document.querySelector('#modal.show,#mktModal.show')){BK.open?closeBook():openBook();return}if(document.querySelector('#bookModal.show,#mktModal.show'))return;let n=Number(e.key);if(n>=1&&n<=4){let buttons=document.querySelectorAll('.choice');if(buttons[n-1])buttons[n-1].click()}if(e.key==='Enter'&&document.getElementById('modal').classList.contains('show'))closeRoll()});try{let sv=JSON.parse(localStorage.getItem('hidalgo'));if(sv&&sv.evs&&sv.scene!=='end'&&scenes[sv.scene])state=sv}catch(e){}applyCfg();render();dbInit();showMenu();
 </script><!--VIS:INI--><style id="vis-css">
 /* ===== VIS · escenario en lienzo y cajas de diálogo ===== */

@@ -52,3 +52,10 @@ Las correcciones que provocó el informe se recogen al final.
 ## Correcciones aplicadas
 
 Se aplicaron todas las recomendaciones en el commit siguiente a `d06f81f` (ver `CHANGELOG.md`). Con ellas, el informe subiría la nota a **9,0–9,2 (sobresaliente)**. Lo que impediría la matrícula de honor ya no es técnico, sino de alcance: la defensa oral del criterio de selección de episodios y una edición crítica cotejada del apócrifo, que no se ha podido consultar desde este entorno.
+
+### Verificación de las nueve recomendaciones
+
+`tests/tribunal.js` comprueba en cada `npm test` que las nueve recomendaciones siguen aplicadas: la voz narrativa, los puentes, las voces del ánimo, los finales sin mercado, los saltos y desvíos, los cierres variados, la página de Fuentes, los epílogos y los ecos.
+
+Al revisar sistemáticamente todos los puentes que llevan a una escena distinta de la indicada (por los desvíos `RD` y `RDF`), aparecieron otros nueve que contradecían la escena de llegada. Por ejemplo, Clavileño se describía antes de la montería de Merlín, la jaula se anunciaba como el cautivo y la boda aparecía antes que el barbero. Se corrigieron en el bloque `FASE 10b`.
+
