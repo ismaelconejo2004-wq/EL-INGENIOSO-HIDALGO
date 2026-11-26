@@ -140,7 +140,7 @@
   }
 
   /* ---------- mapa, alforjas y perfil con el mismo lenguaje ---------- */
-  const RIB = { perfil: 'honor', alforjas: 'gana', logros: 'reales', diario: 'libro', ruta: 'ruta', ajustes: 'ajustes' };
+  const RIB = { perfil: 'honor', alforjas: 'gana', logros: 'reales', diario: 'libro', ruta: 'ruta', fuentes: 'continuar', ajustes: 'ajustes' };
   function cintas() {
     document.querySelectorAll('#bkRibbons .rib').forEach(r => {
       if (r.querySelector('.pxi')) return;

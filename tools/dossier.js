@@ -18,6 +18,7 @@ async function capturas(b) {
   const shot = async (p, opt) => jpg(await p.screenshot(Object.assign({ type: 'jpeg', quality: 78 }, opt || {})));
   // escritorio
   let [c, p] = await nueva({ viewport: { width: 1366, height: 768 } });
+  I.cuentas = await p.evaluate(() => { const ks = Object.keys(scenes); return { esc: ks.length, dec: ks.reduce((a, k) => a + scenes[k].choices.length, 0), tir: ks.reduce((a, k) => a + scenes[k].choices.filter(c => c[2]).length, 0) }; });
   await p.waitForTimeout(1200); I.menu = await shot(p);
   await p.evaluate(() => mShow('modes')); await p.waitForTimeout(300); I.modos = await shot(p);
   await p.evaluate(() => { PF.clasico = 1; mPlay('clasico'); }); await p.waitForTimeout(2600); I.intro = await shot(p);
@@ -88,7 +89,7 @@ code{font:8.8pt 'DejaVu Sans Mono',monospace;background:#efe2c0;padding:0 1mm}
 
 <section style="break-before:auto"><h2><small>1 · Presentación</small>Qué es el juego</h2>
 <p><i>El ingenioso hidalgo</i> es una ficción interactiva de decisiones sobre don Quijote. El jugador guía al hidalgo por los episodios de la <b>Primera parte</b> (1605) y la <b>Segunda parte</b> (1615) de Cervantes y por la continuación apócrifa de <b>Avellaneda</b> (1614), con ramas hipotéticas señaladas como tales. Cada decisión cambia cinco estadísticas (Salud, Cordura, Honor, Saciedad y la lealtad de Sancho) y puede abrir rutas, objetos, relaciones y finales distintos.</p>
-<div class="cifras"><div><b>119</b><span>escenas</span></div><div><b>341</b><span>decisiones</span></div><div><b>72</b><span>pruebas de dados</span></div><div><b>2</b><span>modos: Clásico y Pesadilla</span></div></div>
+<div class="cifras"><div><b>${I.cuentas.esc}</b><span>escenas</span></div><div><b>${I.cuentas.dec}</b><span>decisiones</span></div><div><b>${I.cuentas.tir}</b><span>pruebas de dados</span></div><div><b>2</b><span>modos: Clásico y Pesadilla</span></div></div>
 <p>Todo el juego es <b>un único archivo HTML sin dependencias externas</b>: el arte, la música, los sonidos y la interfaz se generan por código al cargar. Pesa ${kb(R.bytes)} (${kb(R.gzip)} comprimido) y las partidas se guardan solas en el navegador.</p>
 ${fig(I.menu, 'Menú principal: la escena de fondo (molinos al ocaso, don Quijote y Sancho cabalgando) la dibuja el propio motor del juego.')}
 <div class="dos">${fig(I.modos, 'Elección de modo. El Modo Pesadilla se desbloquea al terminar el Clásico.')}${fig(I.intro, 'Introducción: de la noche al amanecer sobre la misma escena; el texto va sobre una banda oscura para leerse sobre cualquier fondo.')}</div>
@@ -123,11 +124,14 @@ ${fig(I.detalle, 'Detalle a resolución interna ampliada: haces de luz, bruma, s
 </section>
 
 <section><h2><small>4 · Narrativa</small>Cómo se presenta el relato</h2>
-<p>Los textos, las opciones y las rutas no han cambiado en este rediseño; lo que ha cambiado es cómo se leen.</p>
+<p>La narrativa se ha revisado escena a escena contra las dos novelas de Cervantes y la de Avellaneda: se han corregido datos (los treinta o cuarenta molinos, la hora de Montesinos, los corsarios franceses del cautivo, el final de Claudia Jerónima, el desenlace de Tosilos), se ha añadido la <b>primera salida</b> que faltaba (la venta del armado caballero, Andrés y los mercaderes, el escrutinio de la librería) y se han tejido <b>ecos entre historias</b>: Andrés reaparece en Sierra Morena, Ginés roba el rucio y Sansón comenta el descuido, la bacía se convierte en baciyelmo, Tarfe pasa de Avellaneda a Cervantes.</p>
+<ul><li><b>Glosa del cronista</b> en cada escena: declara si es fiel a Cervantes, adaptada, del apócrifo, rama hipotética o incidente del juego, con su referencia (I, 8; II, 74). El Libro del hidalgo incluye una página de <b>Fuentes y criterios</b> con las ediciones de referencia.</li>
+<li><b>Finales con texto propio</b>: el canónico (la muerte de Alonso Quijano, con el epitafio de Sansón Carrasco y la despedida de la pluma de Cide Hamete) es el desenlace habitual; las ramas hipotéticas (Aldonza, la cuarta salida) y los tres finales del apócrifo explican en qué se apartan de la novela.</li>
+<li><b>Voz narrativa única</b>: el jugador es el hidalgo, en segunda persona, salvo en el lecho de muerte, donde el paso a la tercera persona marca que ya no es don Quijote.</li></ul>
 <ul><li><b>Capitular iluminada</b> en el primer párrafo de cada escena, orla con florón bajo el título y la frase que enlaza con la decisión anterior como <b>nota al margen</b>.</li>
 <li><b>Texto letra a letra</b> que se completa con un toque o una tecla; los personajes mueven la boca mientras hablan.</li>
 <li><b>Voces interiores con retrato</b>: Sancho en un marco de madera; <b>La Razón</b> como alegoría de plata (dama con compás y lámpara) y <b>El Caballero</b> como alegoría de oro y fuego (yelmo cerrado con llama tras la visera), a la manera de los libros de emblemas del Siglo de Oro.</li>
-<li><b>Escena coherente con el texto</b>: cada una de las 119 escenas tiene fondo, hora, clima, accesorios y reparto propios.</li></ul>
+<li><b>Escena coherente con el texto</b>: cada una de las escenas tiene fondo, hora, clima, accesorios y reparto propios.</li></ul>
 <h2 style="margin-top:6mm"><small>5 · Mecánicas</small>Estadísticas, dados y mercados</h2>
 <ul><li><b>Cinco estadísticas</b> con barras animadas, estela al bajar y cifras flotantes (+5, −3) en el panel y sobre la escena.</li>
 <li><b>Vista previa</b> del efecto de cada decisión en las barras antes de elegir.</li>

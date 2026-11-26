@@ -366,3 +366,6 @@ html.vis-on body.modo-libro[data-theme=noche] .bridge.nota-margen{color:#cdbb93;
 html.vis-on body.modo-libro[data-theme=noche] .glosa{background:#33281c;border-color:#6b5434}
 html.vis-on body.modo-libro[data-theme=noche] .glosa p{color:#cdbb93}
 html.vis-on body.modo-libro[data-theme=noche] .glosa summary{color:#e2d5b6}
+.fuente{font-size:14px;line-height:1.6;margin:4px 0 10px}
+.g-tipo.gt-fiel,.g-tipo.gt-adap,.g-tipo.gt-hipo,.g-tipo.gt-apoc,.g-tipo.gt-inc{display:inline-block;padding:1px 6px;border-radius:2px;color:#fbf0d2;font:600 10px 'DM Mono',ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase}
+.gt-fiel{background:#4f7a38}.gt-adap{background:#a8742a}.gt-hipo{background:#7a4b6a}.gt-apoc{background:#34508a}.gt-inc{background:#6b5a3e}

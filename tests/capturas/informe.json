@@ -1,5 +1,5 @@
 {
- "fecha": "2026-11-26T13:40:32.419Z",
+ "fecha": "2026-11-26T16:46:57.139Z",
  "vistas": {
   "escritorio": {
    "start": {
@@ -1303,6 +1303,39 @@
      "sancho",
      "rucio",
      "barbero"
+    ],
+    "prob": []
+   },
+   "primera_venta": {
+    "fondo": "venta",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "rocinante",
+     "ventero",
+     "maritornes",
+     "moza"
+    ],
+    "prob": []
+   },
+   "andres": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "labrador",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "escrutinio": {
+    "fondo": "biblioteca",
+    "hora": "mediodia",
+    "actores": [
+     "alonso",
+     "cura",
+     "barbero",
+     "ama"
     ],
     "prob": []
    },
@@ -2610,6 +2643,39 @@
      "sancho",
      "rucio",
      "barbero"
+    ],
+    "prob": []
+   },
+   "primera_venta": {
+    "fondo": "venta",
+    "hora": "noche",
+    "actores": [
+     "dq",
+     "rocinante",
+     "ventero",
+     "maritornes",
+     "moza"
+    ],
+    "prob": []
+   },
+   "andres": {
+    "fondo": "llanura",
+    "hora": "mediodia",
+    "actores": [
+     "dq",
+     "labrador",
+     "cabrero"
+    ],
+    "prob": []
+   },
+   "escrutinio": {
+    "fondo": "biblioteca",
+    "hora": "mediodia",
+    "actores": [
+     "alonso",
+     "cura",
+     "barbero",
+     "ama"
     ],
     "prob": []
    },

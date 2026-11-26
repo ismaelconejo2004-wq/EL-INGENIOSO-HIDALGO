@@ -1,5 +1,50 @@
 # Registro de cambios
 
+## Narrativa revisada para el tribunal
+
+**Primera ronda (`d06f81f`)**
+- **Primera salida** (I, 2-7), que faltaba: la primera venta y el armado caballero, Andrés y los mercaderes toledanos, el escrutinio de la librería y el sabio Frestón. El hidalgo sale solo y Sancho se une en la segunda salida, como en la novela.
+- **Fidelidad**. Se han corregido datos y añadido citas:
+  - los treinta o cuarenta molinos y Frestón;
+  - Cide Hamete y el Alcaná de Toledo;
+  - la Edad de Oro;
+  - el Caballero de la Triste Figura;
+  - la cueva de Montesinos (una hora, el primo humanista);
+  - los corsarios franceses del cautivo;
+  - Ana Félix y don Gregorio;
+  - la muerte de don Vicente;
+  - el desenlace de Tosilos;
+  - el escudero de Avellaneda, que también se llama Sancho;
+  - los consejos a Sancho;
+  - los agüeros de II, 73 y el testamento de II, 74;
+  - los capítulos exactos.
+- **Ecos entre historias**:
+  - Andrés vuelve en Sierra Morena;
+  - Ginés roba el rucio y Sansón comenta el descuido;
+  - el baciyelmo;
+  - los azotes cumplidos en las hayas;
+  - el doble de tinta;
+  - la carta y el saludo a Aldonza;
+  - Tarfe entre las dos novelas.
+- **Finales**:
+  - el canónico (la muerte de Alonso Quijano) es el habitual: basta Cordura 50 al volver a casa;
+  - cada desenlace tiene su propio texto, con el epitafio de Sansón y la pluma de Cide Hamete;
+  - los finales del apócrifo contrastan las dos segundas partes.
+- **Glosa del cronista** en cada escena: fiel, adaptado, hipotético, Avellaneda o incidente del juego.
+
+**Segunda ronda: correcciones del informe del tribunal simulado (`docs/EVALUACION_TRIBUNAL.md`)**
+- Voz narrativa única en segunda persona, salvo el lecho de muerte.
+- Puentes coherentes con la escena de llegada.
+- Voces del ánimo variadas, espaciadas y fuera de los desenlaces.
+- Sin mercado ni consejos en las escenas finales.
+- Saltos de lectura señalados dentro de la ficción.
+- Desvíos del modo Pesadilla solo hacia delante y dentro de la misma parte.
+- Cierres de los puentes variados.
+- Página **Fuentes y criterios** en el Libro del hidalgo.
+- Epílogos ajustados.
+- Ecos del rebuzno (II, 25-27), la sima (II, 55) y las cartas de Teresa (II, 50-52).
+- En el lecho, el ama y el cura velan al enfermo desde el otro lado de la alcoba.
+
 ## Más calidad y dossier en PDF
 
 Mejoras gráficas y estéticas sin cambiar textos, reglas ni números:

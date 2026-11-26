@@ -120,6 +120,7 @@
       const o = { id: n, rol: 'npc', m: (der.length === 1 ? 0.72 : ini + paso * i) + (V.esAnimal(n) ? 0 : 0), pose: 'reposo', flip: 1, k: i };
       if (id === 'manteo') o.m = i ? 0.84 : 0.56;
       if (n === 'oveja' || n === 'cerdo') o.y = GY + (i % 2) * 4 - 2;
+      if (e.f === 'alcoba' && e.l === 'alonso') { o.m = 0.16 + 0.12 * i; o.flip = 0; } // junto a la cama, mirando al enfermo
       A.push(o);
     });
     return A;
