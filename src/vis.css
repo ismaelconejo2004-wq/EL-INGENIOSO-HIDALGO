@@ -400,19 +400,19 @@ html.vis-on body.modo-libro[data-theme=noche]{background-image:radial-gradient(e
 
 /* ===== FASE 11 · mesa de escritorio con pluma y tintero ===== */
 .mesa-obj{display:none}
-body.modo-libro .mesa-obj{display:block;position:fixed;z-index:0;pointer-events:none;background:no-repeat center/100% 100%;image-rendering:pixelated;filter:drop-shadow(6px 8px 6px #0009)}
+body.modo-libro .mesa-obj{display:block;position:fixed;z-index:0;pointer-events:none;background:no-repeat center/100% 100%;image-rendering:pixelated}
 body.modo-libro .libro-juego{z-index:1}
 body.modo-libro{--lw:min(1480px,calc(100vw - 72px))}
-body.modo-libro .mesa-obj.pluma{background-image:var(--px-pluma);width:200px;height:320px;left:calc((100vw - var(--lw)) / 4 - 100px);top:calc(50% - 190px)}
-body.modo-libro .mesa-obj.tintero{background-image:var(--px-tintero);width:168px;height:144px;right:calc((100vw - var(--lw)) / 4 - 84px);top:calc(58% - 72px)}
+body.modo-libro .mesa-obj.pluma{background-image:var(--px-pluma);width:252px;height:396px;left:calc((100vw - var(--lw)) / 4 - 126px);top:calc(50% - 210px)}
+body.modo-libro .mesa-obj.tintero{background-image:var(--px-tintero);width:216px;height:216px;right:calc((100vw - var(--lw)) / 4 - 108px);top:calc(58% - 72px)}
 @media (min-width:1200px){body.modo-libro{--lw:calc(100vw - 150px)}body.modo-libro .libro-juego{width:var(--lw)}
- body.modo-libro .mesa-obj.pluma{width:150px;height:240px;left:-6px;top:calc(50% - 150px)}
- body.modo-libro .mesa-obj.tintero{width:126px;height:108px;right:-14px}}
+ body.modo-libro .mesa-obj.pluma{width:168px;height:264px;left:-30px;top:calc(50% - 150px)}
+ body.modo-libro .mesa-obj.tintero{width:144px;height:144px;right:-40px}}
 @media (min-width:1500px){body.modo-libro{--lw:min(1340px,calc(100vw - 420px))}
- body.modo-libro .mesa-obj.pluma{width:200px;height:320px;left:calc((100vw - var(--lw)) / 4 - 100px);top:calc(50% - 190px)}
- body.modo-libro .mesa-obj.tintero{width:168px;height:144px;right:calc((100vw - var(--lw)) / 4 - 84px)}}
+ body.modo-libro .mesa-obj.pluma{width:252px;height:396px;left:calc((100vw - var(--lw)) / 4 - 126px);top:calc(50% - 210px)}
+ body.modo-libro .mesa-obj.tintero{width:216px;height:216px;right:calc((100vw - var(--lw)) / 4 - 108px)}}
 @media (max-width:1199px){body.modo-libro .mesa-obj{display:none}}
-html.vis-on body.modo-libro[data-theme=noche] .mesa-obj{filter:drop-shadow(6px 8px 6px #000c) brightness(.7)}
+html.vis-on body.modo-libro[data-theme=noche] .mesa-obj{filter:brightness(.7)}
 /* barra de Sancho cuando ya se ha ido */
 .meter.ausente .track{opacity:.25}.meter.ausente .stat-note{font-style:italic}
 .meter.ausente .meter-head span:last-child{margin-left:4px;font-size:.72em !important;white-space:nowrap;font-style:italic;font-size:.85em;letter-spacing:.04em}

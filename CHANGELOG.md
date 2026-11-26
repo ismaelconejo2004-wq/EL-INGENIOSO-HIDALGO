@@ -1,5 +1,11 @@
 # Registro de cambios
 
+## Pluma y tintero vistos desde arriba
+
+- **Perspectiva cenital.** La pluma y el tintero se dibujan ahora como se ven desde arriba, igual que la mesa. Ya no hay perfiles laterales ni sombras borrosas de CSS: cada objeto proyecta su propia sombra tramada en pixel art, desplazada en dirección contraria a la vela.
+- **Pluma:** está tumbada y ligeramente curvada, y se dibuja píxel a píxel. Tiene la barba ancha con sombreado tramado y barbas inclinadas hacia la punta, la barba estrecha en sombra, dos barbas separadas en el borde, plumón en la base, un cañón translúcido y el plumín mojado, con dos gotas de tinta.
+- **Tintero de loza de Talavera:** tiene planta ochavada con biseles iluminados según su orientación, vidriado blanco con flor y filete azules, collar de latón, la tinta con el reflejo de la vela, un reguero que resbala por la tapa y gotas en la mesa.
+
 ## Escritorio con pluma y tintero; Sancho se va de verdad; nueva Compañía
 
 - **Mesa, no suelo.** El tablero ahora son dos tablas anchas encoladas, con veta larga, arcos de catedral, un nudo por tabla y brillos de barniz gastado. Se quitaron los clavos, los topes entre tablas y los tablones estrechos que lo hacían parecer un entarimado. Los colores no cambian.

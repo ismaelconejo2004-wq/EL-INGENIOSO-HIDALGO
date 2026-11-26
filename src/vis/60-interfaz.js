@@ -93,38 +93,93 @@
     }
     return b.canvas('ocaso').toDataURL();
   }
-  /* la pluma de ave, dibujada ya en diagonal (rotarla con CSS la llenaría de dientes) */
+  /* utilidades para los objetos de la mesa: tramado ordenado y sombra proyectada en pixel art */
+  const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  const umbral = (x, y) => (BAYER[(y & 3) * 4 + (x & 3)] + 0.5) / 16;
+  // escala de colores con tramado: v en [0,1] elige entre los tonos de la lista sin bandas duras
+  const rampa = (lista, v, x, y) => { v = Math.max(0, Math.min(0.999, v)) * (lista.length - 1); const k = v | 0; return lista[k + ((v - k) > umbral(x, y) ? 1 : 0)] ?? lista[lista.length - 1]; };
+  // sombra cenital: la luz de la vela cae desde el centro de la mesa, la sombra va hacia fuera y abajo
+  function sombraDe(b, W, H, dentro, dx, dy) {
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++)
+      if (!dentro(x, y) && dentro(x - dx, y - dy)) { const borde = !dentro(x - dx + 1, y - dy) || !dentro(x - dx, y - dy + 1);
+        if (!borde || ((x + y) & 1)) b.p(x, y, ((x + y) & 1) ? C.negro : C.tierraP); }
+  }
+  /* la pluma de ave tumbada sobre la mesa, vista desde arriba */
   function pluma() {
-    const W = 80, H = 128, b = new B(W, H);
-    const x0 = 6, y0 = 124, x1 = 74, y1 = 4, L = Math.hypot(x1 - x0, y1 - y0), ux = (x1 - x0) / L, uy = (y1 - y0) / L;
-    const dentro = (x, y) => { const s = (x - x0) * ux + (y - y0) * uy, d = (x - x0) * -uy + (y - y0) * ux;   // d>0: lado izquierdo
-      if (s < 0 || s > L) return 0;
-      const t = s / L;
-      if (Math.abs(d) <= 0.7) return t < 0.07 ? 1 : t < 0.3 ? 2 : 3;                                        // plumín, cañón, raquis
-      if (t < 0.3) return 0;
-      const u = (t - 0.3) / 0.7, wa = Math.sin(Math.min(1, u * 1.1) * Math.PI * 0.9) * 10 + 0.5, wb = Math.sin(Math.min(1, u * 1.2) * Math.PI * 0.85) * 4.5;
-      if (d > 0 && d <= wa) { if (u > 0.42 && u < 0.46 && d > 4) return 0; return ((Math.round(s + d * 1.4)) % 5) ? 4 : 5; }
-      if (d < 0 && -d <= wb) return 6;
-      return 0; };
-    const COL = [0, C.negro, C.ocre, C.tierraL, C.lino, C.cal, C.calS];
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const k = dentro(x, y); if (!k) continue;
-      const borde = k >= 4 && (!dentro(x + 1, y) || !dentro(x, y - 1) || !dentro(x - 1, y) || !dentro(x, y + 1));
-      b.p(x, y, borde ? (k === 6 ? C.hierro : C.calS) : COL[k]); }
-    b.p(x0 - 1, y0 + 2, C.negro); b.p(x0 - 2, y0 + 3, C.negro); b.p(x0 + 2, y0 - 4, C.hierroL);   // gota en el plumín
+    const W = 84, H = 132, b = new B(W, H), r = V.rng(1615);
+    const x0 = 8, y0 = 124, x1 = 74, y1 = 6, L = Math.hypot(x1 - x0, y1 - y0), ux = (x1 - x0) / L, uy = (y1 - y0) / L;
+    const cortes = [0.52, 0.74].map(t => [t, 0.55 + r() * 0.2]);      // barbas separadas en el borde
+    const geo = (x, y) => {
+      const s = (x - x0) * ux + (y - y0) * uy; if (s < -1 || s > L + 0.5) return null;
+      const t = s / L, d = (x - x0) * -uy + (y - y0) * ux - Math.sin(Math.max(0, t) * Math.PI) * 4, u = (t - 0.27) / 0.73;
+      const wa = u > 0 ? Math.sin(Math.min(1, u * 1.08) * Math.PI * 0.93) * 12 + 0.6 : 0;
+      const wb = u > 0 ? Math.sin(Math.min(1, u * 1.15) * Math.PI * 0.88) * 5.5 : 0;
+      const raq = t < 0.08 ? 1.3 : t < 0.27 ? 1.2 : 1.1 - t * 0.6;
+      if (Math.abs(d) <= raq) return { k: t < 0.07 ? 'plumin' : t < 0.27 ? 'canon' : 'raquis', s, d, t };
+      if (d > 0 && d <= wa) { for (const [ct, cw] of cortes) if (Math.abs(t - ct - d * 0.004) < 0.004 && d > wa * cw) return null; return { k: 'ancha', s, d, t, w: wa }; }
+      if (d < 0 && -d <= wb) return { k: 'estrecha', s, d: -d, t, w: wb };
+      if (t > 0.2 && t < 0.3 && Math.abs(d) < 5 && ((x * 7 + y * 13) % 5) < 2) return { k: 'plumon', s, d, t };   // plumón de la base
+      return null; };
+    const dentro = (x, y) => !!geo(x, y);
+    sombraDe(b, W, H, dentro, 3, 3);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const g = geo(x, y); if (!g) continue;
+      const borde = !dentro(x + 1, y) || !dentro(x - 1, y) || !dentro(x, y + 1) || !dentro(x, y - 1);
+      let c;
+      if (g.k === 'plumin') c = g.t < 0.02 ? C.negro : (Math.round(g.d * 2) === 0 ? C.negro : C.pano);
+      else if (g.k === 'canon') c = g.d > 0.3 ? C.tierraS : g.d < -0.4 ? C.destello : C.ocre;
+      else if (g.k === 'raquis') c = g.d > 0.2 ? C.tierraL : C.lino;
+      else if (g.k === 'plumon') c = ((x + y) & 1) ? C.cal : C.calS;
+      else if (g.k === 'ancha') {
+        const barba = ((g.s - g.d * 1.3) % 3 + 3) % 3 < 0.9;                              // barbas inclinadas hacia la punta
+        const v = g.d / g.w * 0.8 + (1 - g.t) * 0.2; c = borde ? C.calS : rampa([C.lino, C.lino, C.cal, C.calS, C.hierroL], v + (barba && g.d > 1.2 ? 0.25 : 0), x, y);
+      } else {
+        const barba = ((g.s - g.d * 1.3) % 3 + 3) % 3 < 0.8;
+        c = borde ? C.hierro : barba ? C.hierroL : rampa([C.cal, C.calS, C.hierroL], g.d / g.w, x, y);
+      }
+      b.p(x, y, c);
+    }
+    // tinta: el plumín mojado y dos gotas que se le escaparon
+    b.r(x0 - 2, y0 + 1, 2, 2, C.negro); b.p(x0 - 1, y0 + 1, C.anil);
+    b.ell(x0 + 9, y0 + 3, 2, 1, C.negro); b.p(x0 + 8, y0 + 3, C.anil); b.p(x0 - 4, y0 - 5, C.negro);
     return b.canvas('ocaso').toDataURL();
   }
-  /* tintero de barro vidriado, con collar de latón y dos gotas en la mesa */
+  /* tintero de loza de Talavera visto desde arriba: planta ochavada con biseles, collar de latón y la tinta */
   function tintero() {
-    const W = 56, H = 48, b = new B(W, H), cx = 26, cy = 28, rx = 19, ry = 15;
-    b.ell(cx + 6, 42, 24, 5, C.tierraP);                                                     // sombra en la mesa
-    for (let y = 10; y <= 43; y++) for (let x = cx - rx - 1; x <= cx + rx + 1; x++) {
-      const nx = (x - cx) / rx, ny = (y - cy) / ry, r2 = nx * nx + ny * ny; if (r2 > 1 || y > 41) continue;
-      const nz = Math.sqrt(Math.max(0, 1 - r2)), luz = -nx * 0.55 - ny * 0.45 + nz * 0.7;            // luz de la vela arriba a la izquierda
-      b.p(x, y, r2 > 0.86 ? C.negro : luz > 0.975 ? C.destello : luz > 0.94 ? C.ocre : luz > 0.86 ? C.maderaO : luz > 0.5 ? C.tierraP : C.negro); }
-    b.r(cx - 14, 41, 29, 1, C.negro);
-    b.r(cx - 6, 9, 13, 6, C.oro); b.r(cx + 3, 9, 4, 6, C.tierraS); b.r(cx - 5, 10, 2, 4, C.destello); b.r(cx - 6, 14, 13, 1, C.tierraP);  // collar
-    b.ell(cx, 9, 6, 2, C.oro); b.ell(cx, 9, 4, 1, C.negro); b.p(cx + 2, 9, C.anil);       // boca con la tinta
-    b.ell(50, 44, 3, 1, C.negro); b.p(54, 41, C.negro); b.ell(4, 45, 2, 1, C.negro);     // gotas
+    const W = 72, H = 72, b = new B(W, H), cx = 33, cy = 33, R = 23, RT = 16;
+    const lx = -0.62, ly = -0.78;                                                          // la vela queda arriba a la izquierda
+    const oct = (dx, dy) => Math.max(Math.abs(dx), Math.abs(dy), (Math.abs(dx) + Math.abs(dy)) / 1.3);
+    const dentro = (x, y) => oct(x - cx, y - cy) <= R;
+    sombraDe(b, W, H, dentro, 5, 5);
+    for (const [gx, gy, gr] of [[64, 60, 2.6], [58, 67, 1.5], [7, 63, 1.8], [67, 47, 1.1]]) for (let y = -3; y <= 3; y++) for (let x = -3; x <= 3; x++)
+      if (x * x + y * y <= gr * gr) b.p(gx + x, gy + y, x === -1 && y === -1 ? C.anil : C.negro);
+    for (let y = cy - R; y <= cy + R; y++) for (let x = cx - R; x <= cx + R; x++) {
+      const dx = x - cx, dy = y - cy, m = oct(dx, dy); if (m > R) continue;
+      const r = Math.hypot(dx, dy);
+      if (m > RT) {                                                                         // bisel: cada cara recibe la luz según su orientación
+        const ax = Math.abs(dx), ay = Math.abs(dy), d3 = (ax + ay) / 1.3;
+        let nx = 0, ny = 0; if (ax >= ay && ax >= d3) nx = Math.sign(dx); else if (ay >= d3) ny = Math.sign(dy); else { nx = Math.sign(dx) * 0.707; ny = Math.sign(dy) * 0.707; }
+        const cara = nx * lx + ny * ly, aris = m > R - 1;
+        b.p(x, y, aris ? C.hierro : rampa([C.hierro, C.calS, C.cal, C.lino], cara * 0.5 + 0.5 - (m - RT) / (R - RT) * 0.15, x, y));
+        if (Math.abs(m - RT - 0.5) < 0.5) b.p(x, y, cara > 0.2 ? C.lino : C.calS);
+        if (Math.abs(m - (R - 2.5)) < 0.5 && ((x + y) % 3)) b.p(x, y, C.anil);        // filete azul del bisel                 // filo superior del bisel
+      } else if (r > 9.5) {                                                                 // tapa plana vidriada, con un reflejo largo
+        const v = 0.45 - (dx + dy) / (RT * 3.5);
+        const refl = Math.abs(dx - dy * 0.2 + 8) < 1 && dy < -2 && dy > -12, ang = Math.atan2(dy, dx);
+        const Q = Math.PI / 4, da = (ang - Math.round(ang / Q) * Q) * r, db = (ang - (Math.round(ang / Q - 0.5) + 0.5) * Q) * r;
+        const flor = Math.abs(r - 13.6) < 2.3 && Math.abs(da) < 1.5 * (1 - Math.abs(r - 13.6) / 2.6) || (Math.abs(r - 13) < 0.7 && Math.abs(db) < 0.7), aro = Math.abs(r - 10.6) < 0.5;   // decoración de Talavera en azul
+        b.p(x, y, refl ? C.destello : flor ? (r > 14.6 ? C.violeta : C.anil) : aro ? C.anil : rampa([C.calS, C.cal, C.lino, C.lino], v, x, y));
+      } else if (r > 6.5) {                                                                 // collar de latón
+        const ang = Math.atan2(dy, dx), cara = Math.cos(ang - Math.atan2(ly, lx));
+        b.p(x, y, r > 9 ? C.tierraS : r < 7.3 ? (cara > 0 ? C.tierraP : C.oro) : rampa([C.tierraS, C.oro, C.oro, C.destello], cara * 0.5 + 0.5, x, y));
+      } else {                                                                              // tinta, con el reflejo de la vela
+        const gl = Math.hypot(dx + 2.5, dy + 2.5);
+        b.p(x, y, gl < 0.8 ? C.destello : gl < 1.8 ? C.anil : C.negro);
+      }
+    }
+    // reguero de tinta que resbaló desde la boca por la tapa y el bisel
+    for (let k = 0; k < 15; k++) { const px = cx + 7 + k, py = cy + 5 + Math.round(k * 0.55 + Math.sin(k * 0.9) * 0.6);
+      if (!dentro(px, py)) break; b.p(px, py, C.negro); if (k < 9) b.p(px, py + 1, C.negro); if (k === 4) b.p(px, py - 1, C.anil); }
     return b.canvas('ocaso').toDataURL();
   }
   function hojaEstilo() {
