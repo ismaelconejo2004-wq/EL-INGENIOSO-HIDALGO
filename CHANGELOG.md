@@ -1,5 +1,11 @@
 # Registro de cambios
 
+## Agilidad: página, texto y arranque
+
+- **Cambio de página sin restos.** La hoja de la decisión anterior se retira a los 0,56 s con un temporizador exacto, sin depender del evento `animationend`, que algunos navegadores retrasaban hasta 1,6 s. Su cara se apaga a mitad del giro (aunque el navegador no oculte bien la cara trasera en 3D) y termina transparente. Si se decide muy deprisa, la hoja anterior desaparece al instante.
+- **Texto estático.** Se elimina el efecto de letra a letra y su ajuste: el relato aparece completo al llegar a cada página.
+- **Arranque sin destello.** Un script mínimo en `<head>` oculta la página hasta que el motor ha pintado el primer fotograma del menú, así que ya no se ve un instante la interfaz antigua. Si algo fallara, la página se muestra igualmente a los 4 s.
+
 ## Narrativa revisada para el tribunal
 
 **Primera ronda (`d06f81f`)**

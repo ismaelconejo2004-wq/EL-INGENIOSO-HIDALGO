@@ -190,8 +190,8 @@
     V.cambiar(state.scene, { pagina: cambioParte });
     eraPrev = eraBase;
     // texto letra a letra solo al llegar a una escena nueva
-    if (nueva && !V.menosMov() && CFG.tw !== 0 && !CFG.fast) empezar(objetivos, clave);
-    else { terminar(true); objetivos.forEach(o => o.ret && dibRet(o.ret, 0)); }
+    // el texto aparece completo y estático (el efecto letra a letra ralentizaba la partida)
+    terminar(true); objetivos.forEach(o => o.ret && dibRet(o.ret, 0));
     ultimaClave = clave;
     // números flotantes
     const ahora = statsDe();
@@ -230,13 +230,6 @@
     };
     const _cr = window.closeRoll;
     window.closeRoll = function () { const r = _cr.apply(this, arguments); V.limpiarDados(); return r; };
-    // ajustes: interruptor del texto letra a letra
-    if (typeof cfgHTML === 'function') {
-      const _cfg = window.cfgHTML;
-      window.cfgHTML = function () {
-        return _cfg.apply(this, arguments) + `<div class='crow'><span>Texto letra a letra</span><span><button class='tg${CFG.tw !== 0 ? ' on' : ''}' onclick="setC('tw',${CFG.tw !== 0 ? 0 : 1})">${CFG.tw !== 0 ? 'Sí' : 'No'}</button></span></div>`;
-      };
-    }
     // teclado: Espacio o Intro completan el texto
     addEventListener('keydown', ev => {
       if (!D.activo || (typeof MENUON === 'function' && MENUON())) return;

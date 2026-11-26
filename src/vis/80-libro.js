@@ -63,7 +63,9 @@
     orig.forEach((o, i) => { const d = copia[i]; if (d && o.width) { const x = d.getContext('2d'); if (x) x.drawImage(o, 0, 0); } });
     hojaPend = { nodo: c, scroll: cuerpoDer.scrollTop };
   }
+  V.DUR_HOJA = 560;
   function pasarPagina() {
+    libro.querySelectorAll('.hoja').forEach(x => x.remove()); // si se decide muy deprisa, la hoja anterior se va ya
     const h = hojaPend; hojaPend = null; if (!h) return;
     const hoja = el('div', 'hoja');
     const cara = el('div', 'cara'); cara.appendChild(h.nodo);
@@ -74,10 +76,9 @@
     libro.appendChild(hoja);
     const cu = h.nodo.querySelector('.lj-cuerpo'); if (cu) cu.scrollTop = h.scroll;
     if (typeof sfx === 'function') try { sfx('page'); } catch (e) { }
-    const fin = () => hoja.remove();
-    hoja.addEventListener('animationend', fin, { once: true }); setTimeout(fin, 1600);
+    // retirada exacta al acabar el giro, sin depender de animationend (que algunos navegadores retrasan)
+    setTimeout(() => hoja.remove(), V.DUR_HOJA + 30);
     // el texto empieza a escribirse cuando la hoja ya ha descubierto la página
-    const D = V.dialogo; if (D && D.activo) { const t = performance.now() + 420; D.t = t; D.pausa = t; }
   }
 
   V.instalarLibro = function () {

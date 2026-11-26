@@ -13,5 +13,10 @@ const bloque = `<!--VIS:INI--><style id="vis-css">\n${css}\n</style><script id="
 const re = /<!--VIS:INI-->[\s\S]*?<!--VIS:FIN-->/;
 if (re.test(html)) html = html.replace(re, () => bloque);
 else html = html.replace(/<\/body>\s*<\/html>\s*$/, () => bloque + '\n</body></html>\n');
+// en <head>: oculta la página hasta que el motor visual esté listo (sin destello de la interfaz antigua)
+const pre = `<!--VIS:PRE--><script>try{if(!/jsdom/i.test(navigator.userAgent)){var d=document.documentElement;d.classList.add('vis-cargando');setTimeout(function(){d.classList.remove('vis-cargando')},4000)}}catch(e){}</script><style>html.vis-cargando{background:#22122a}html.vis-cargando body{visibility:hidden}</style><!--VIS:PREFIN-->`;
+const rePre = /<!--VIS:PRE-->[\s\S]*?<!--VIS:PREFIN-->/;
+if (rePre.test(html)) html = html.replace(rePre, () => pre);
+else html = html.replace(/<head>/i, () => '<head>' + pre);
 fs.writeFileSync(f, html);
 console.log('index.html: ' + (Buffer.byteLength(html) / 1024).toFixed(1) + ' KB (bloque visual ' + (Buffer.byteLength(bloque) / 1024).toFixed(1) + ' KB)');
