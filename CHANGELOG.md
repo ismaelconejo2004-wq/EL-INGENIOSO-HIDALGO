@@ -1,5 +1,12 @@
 # Registro de cambios
 
+## Libro de dos páginas en cualquier pantalla
+
+- El libro abierto, con la hoja que gira en cada decisión, se mantiene desde 700 px de ancho: portátiles con zoom, tablets y móviles en horizontal. Antes, por debajo de 960 px las páginas se apilaban en una sola columna y parecía que el libro había desaparecido.
+- El alto del libro se ajusta a la ventana en vez de exigir 600 px. En pantallas bajas se compactan las estadísticas (solo icono y cifra), se ocultan las voces y el folio, y la página izquierda se desplaza si no cabe.
+- En pantallas medianas, la letra, los márgenes y los botones de decisión se ajustan para que quepan dos páginas.
+- Solo los móviles en vertical (menos de 700 px) apilan las páginas. Allí la hoja también gira sobre su borde izquierdo.
+
 ## Restauración, pantalla completa e introducción legible
 
 - **Restaurado el aspecto del libro abierto con el arte generado por código.** El commit `0fedcd2` de `main` lo había sustituido por sprites PNG de un pack. Las imágenes siguen en el historial y en las ramas `sprites-*`.

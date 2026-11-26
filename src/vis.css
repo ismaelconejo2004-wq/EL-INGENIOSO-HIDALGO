@@ -140,7 +140,7 @@ html.vis-on input[type=range]{accent-color:#a8483a}
 /* ===== VIS · el juego como libro abierto ===== */
 body.modo-libro{background:#2a1810 radial-gradient(ellipse at 50% 30%,#4a2c1a 0,#1c0f0a 75%) fixed;overflow:hidden}
 body.modo-libro .app{display:none}
-.libro-juego{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);width:min(1520px,calc(100vw - 28px));height:max(600px,calc(100dvh - 28px));margin:14px auto;padding:14px 16px 16px;perspective:2400px;
+.libro-juego{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);width:min(1520px,calc(100vw - 28px));height:calc(100vh - 28px);height:calc(100dvh - 28px);min-height:340px;margin:14px auto;padding:14px 16px 16px;perspective:2400px;
  background:linear-gradient(90deg,#3b1f12,#5a3018 6%,#4a2614 50%,#5a3018 94%,#3b1f12);border-radius:10px 14px 14px 10px;box-shadow:0 0 0 2px #2a140b,inset 0 0 0 3px #7a4a26,inset 0 0 0 5px #3b1f12,0 30px 70px #000c}
 .libro-juego::before{content:'';position:absolute;inset:8px 10px 6px;border-radius:4px;background:#e9dcbc;box-shadow:-3px 3px 0 #d9c9a0,-6px 6px 0 #c8b68a,3px 3px 0 #d9c9a0,6px 6px 0 #c8b68a;z-index:0}
 .lj-pag{position:relative;z-index:1;min-height:0;display:flex;flex-direction:column;background:#f3e8cb;color:#2c2417}
@@ -203,7 +203,7 @@ html.vis-on body.modo-libro[data-theme=bosque] .dlg{filter:none}
 html.vis-on body.modo-libro[data-theme=contraste] .lj-pag.der,html.vis-on body.modo-libro[data-theme=contraste] .lj-izq-inf,html.vis-on body.modo-libro[data-theme=contraste] .lj-izq-sup>:not(.lj-escena){filter:contrast(1.35) saturate(.5)}
 html.vis-on body.modo-libro[data-theme=contraste] .dlg{filter:none}
 /* pantallas estrechas: las páginas se apilan (escena, relato, alforjas) */
-@media(max-width:960px){
+@media(max-width:699px){
  body.modo-libro{overflow:auto}
  .libro-juego{display:flex;flex-direction:column;height:auto;width:auto;margin:0;padding:8px;border-radius:0}
  .libro-juego::before,.lj-lomo{display:none}
@@ -216,9 +216,8 @@ html.vis-on body.modo-libro[data-theme=contraste] .dlg{filter:none}
  .lj-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
  .lj-paneles{overflow:visible}
  .lj-tab{padding:5px 7px 4px;font-size:10px}
- .hoja{transform-origin:left top;animation-name:pasarHojaM}
+ .hoja{transform-origin:left center;animation-duration:.7s}
  body.modo-libro .hint,.lj-folio{display:none}
- @keyframes pasarHojaM{0%{transform:rotateY(0);opacity:1}100%{transform:rotateY(-95deg);opacity:0}}
 }
 @media(prefers-reduced-motion:reduce){.hoja{display:none}}
 /* tema noche en el libro: paleta oscura propia (invertir por partes rompía el contraste) */
@@ -252,7 +251,7 @@ html.vis-on body.modo-libro[data-theme=bosque] #scene>*,html.vis-on body.modo-li
 .lj-cab .fs-btn{padding:3px 6px!important}
 .lj-pag.der .lj-cab>span:last-child{white-space:nowrap}
 body.is-fs .hint{display:none}
-body.is-fs .libro-juego{height:max(600px,calc(100dvh - 20px));margin:10px auto}
+body.is-fs .libro-juego{height:calc(100vh - 20px);height:calc(100dvh - 20px);margin:10px auto}
 @media(max-width:620px){.lj-cab .fs-btn .fs-label{display:none}}
 /* ===== VIS · introducción legible sobre cualquier fondo ===== */
 html.vis-on #i-text{padding:18px 28px 20px;background:rgba(14,10,20,.68);border:1px solid #c9a35a66;border-radius:6px;box-shadow:0 10px 40px #0009;color:#fbf0d2;
@@ -262,3 +261,29 @@ html.vis-on #i-title{background:radial-gradient(ellipse at 50% 50%,#0a0812e6 0,#
 html.vis-on #i-title *{text-shadow:0 2px 0 #000,0 0 22px #000}
 html.vis-on #i-hint{padding:6px 14px;background:rgba(14,10,20,.7);border-radius:4px;color:#f6e7bd}
 html.vis-on .i-skip{background:rgba(14,10,20,.8);color:#f6e7bd}
+/* libro abierto también en pantallas medianas y bajas (portátiles con zoom, tablets, móviles en horizontal) */
+.lj-pag.izq{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#b8955a transparent}
+.lj-izq-inf{min-height:230px}
+@media(min-width:700px) and (max-width:1180px){
+ .libro-juego{width:calc(100vw - 16px);margin:8px auto;padding:10px 10px 12px;grid-template-columns:minmax(0,1fr) 16px minmax(0,1fr);height:calc(100vh - 16px);height:calc(100dvh - 16px)}
+ .lj-izq-sup{padding:8px 14px 0 12px}.lj-izq-inf{padding:6px 14px 8px 12px}
+ .lj-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .lj-cuerpo{padding:4px 12px 10px 16px}.lj-pag.der .lj-cab{margin:8px 12px 0 16px}
+ .lj-cuerpo .content{padding:12px 2px 20px}
+ .lj-cuerpo .title{font-size:clamp(24px,3.4vw,36px)}
+ .lj-cuerpo .narration{font-size:min(var(--fs,18px),16px);line-height:1.65}
+ .lj-tab{padding:4px 6px 3px;font-size:10px}.lj-tab .pxi{display:none}
+ html.vis-on .lj-cuerpo .choice.px-op{grid-template-columns:24px 44px minmax(0,1fr);gap:8px;padding:6px 8px}
+ html.vis-on .lj-cuerpo .choice-art.px,html.vis-on .lj-cuerpo .choice-art.px img{width:40px;height:40px}
+ html.vis-on .lj-cuerpo .choice.px-op .check{grid-column:3;justify-self:start}
+ .lj-pag.der .lj-cab>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+@media(min-width:700px) and (max-height:520px){
+ .libro-juego{height:calc(100vh - 8px);height:calc(100dvh - 8px);margin:4px auto;padding:6px 8px 8px}
+ .lj-voces,.lj-folio{display:none}
+ .lj-stats{grid-template-columns:repeat(5,minmax(0,1fr));gap:2px 8px}
+ .lj-stats .meter-head span:first-child{font-size:0!important}
+ .lj-stats .meter-head span:first-child .pxi{margin:0}
+ .lj-izq-inf{min-height:200px}
+ body.modo-libro .hint{display:none}
+}
