@@ -44,6 +44,7 @@ Esta sección es importante para cualquier persona o IA que vaya a modificar el 
 - **No se pueden romper las partidas guardadas**. Las claves de `localStorage` son `hidalgo`, `hidalgo_prof`, `hidalgo_cfg` y `hidalgo_gm`. Los datos nuevos que se añadan han de ser opcionales.
 - **Textos en español.** En las cadenas JavaScript entre comillas simples no se usan comillas rectas ni apóstrofos: las citas van con comillas angulares «».
 - **Fidelidad a las obras.** Lo que procede de las novelas se cita con parte y capítulo (por ejemplo, I, 8). Lo inventado se declara como «Rama hipotética» o «Incidente del juego», y cada escena lo indica en su glosa del cronista.
+- **Versión en cada cambio.** Cualquier cambio que se suba a `main`, por pequeño que sea, sube el número de versión. El número está en `const VERSION_JUEGO` de `index.html` y en `package.json`. Además, hay que añadir una entrada al principio de `VERSIONES.md`. La versión se ve en el menú principal y en los ajustes, y `npm test` falla si no coincide en los tres sitios.
 - Tamaño por debajo de 1,2 MB, 60 fps y el bucle de animación detenido con la pestaña oculta y con `prefers-reduced-motion`.
 
 ## Comandos

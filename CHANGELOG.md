@@ -1,5 +1,12 @@
 # Registro de cambios
 
+## Número de versión (2.7.0)
+
+- El menú principal muestra la versión del juego bajo el pie, y los ajustes del Libro del hidalgo también.
+- Nuevo `VERSIONES.md` con el historial numerado desde la 1.0.0, que es el juego original de texto.
+- La versión se define en `const VERSION_JUEGO` (`index.html`) y en `package.json`. La prueba `tests/version.js` exige que coincidan con la primera entrada de `VERSIONES.md` y que el historial esté ordenado.
+- `CLAUDE.md` y el README recogen la regla: cada cambio sube la versión.
+
 ## Pluma y tintero vistos desde arriba
 
 - **Perspectiva cenital.** La pluma y el tintero se dibujan ahora como se ven desde arriba, igual que la mesa. Ya no hay perfiles laterales ni sombras borrosas de CSS: cada objeto proyecta su propia sombra tramada en pixel art, desplazada en dirección contraria a la vela.
