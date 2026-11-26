@@ -39,6 +39,7 @@
     const mast = main.querySelector('.mast'); mast.classList.add('lj-cab'); der.appendChild(mast);
     cuerpoDer = el('div', 'lj-cuerpo'); cuerpoDer.appendChild(main.querySelector('#scene')); der.appendChild(cuerpoDer);
     der.appendChild(el('div', 'lj-folio der', ''));
+    der.appendChild(el('div', 'lj-cinta', ''));
     libro.appendChild(izq); libro.appendChild(el('div', 'lj-lomo')); libro.appendChild(der);
     app.parentNode.insertBefore(libro, app);
     document.body.classList.add('modo-libro');

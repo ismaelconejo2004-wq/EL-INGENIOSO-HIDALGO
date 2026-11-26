@@ -318,3 +318,38 @@ html.vis-on .i-skip{background:rgba(14,10,20,.8);color:#f6e7bd}
  .lj-izq-inf{min-height:200px}
  body.modo-libro .hint{display:none}
 }
+
+/* ===== VIS · pulido estético y de lectura ===== */
+/* capitular iluminada en el primer párrafo de cada escena */
+.narration>p.capitular::first-letter{float:left;font:400 3.5em/.86 'IM Fell English',Georgia,serif;color:#9b2a1c;margin:.06em .12em 0 0;padding:.1em .12em .02em;background:linear-gradient(#f6ecd0,#ead7a8);border:2px solid #b8892f;outline:1px solid #6b4a2a;outline-offset:1px;text-shadow:1px 1px 0 #d8a640}
+/* orla en lugar de la raya simple */
+.rule.orla{width:auto;height:auto;background:none;display:flex;align-items:center;gap:10px;color:#b8892f;margin:14px 0 20px}
+.rule.orla::before,.rule.orla::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,#b8892f 40%,#b8892f 60%,transparent)}
+.rule.orla span{font-size:18px;line-height:1}
+/* la frase puente como nota al margen */
+.bridge.nota-margen{position:relative;border-left:0;background:none;padding:6px 0 6px 26px;border-radius:0;color:#6b5a3e}
+.bridge.nota-margen::before{content:'❧';position:absolute;left:2px;top:4px;color:#b8892f;font-style:normal;font-size:18px}
+/* papel con fibra y manchas del tiempo, y esquinas ornamentadas */
+.lj-pag::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;
+ background:radial-gradient(circle at 8% 92%,#b8892f1f 0,transparent 18%),radial-gradient(circle at 94% 6%,#8a5a2e18 0,transparent 14%),radial-gradient(circle at 70% 78%,#b8892f12 0,transparent 10%),var(--px-papel);background-size:auto,auto,auto,96px 96px;mix-blend-mode:multiply;opacity:.55}
+.lj-pag>*{position:relative;z-index:1}
+.lj-pag::before{content:'';position:absolute;inset:6px;pointer-events:none;z-index:0;border:1px solid #c9a35a55;
+ background:radial-gradient(circle,#b8892f 1.5px,transparent 2px) 0 0/10px 10px no-repeat,radial-gradient(circle,#b8892f 1.5px,transparent 2px) 100% 0/10px 10px no-repeat,radial-gradient(circle,#b8892f 1.5px,transparent 2px) 0 100%/10px 10px no-repeat,radial-gradient(circle,#b8892f 1.5px,transparent 2px) 100% 100%/10px 10px no-repeat}
+/* cinta marcapáginas que cuelga sobre la página derecha */
+.lj-pag.der .lj-cinta{position:absolute;bottom:-26px;right:64px;width:16px;height:58px;z-index:3;pointer-events:none;background:linear-gradient(90deg,#7b1f16,#a8483a 45%,#7b1f16);clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);box-shadow:0 2px 3px #0005;filter:drop-shadow(1px 2px 1px #0004)}
+/* vista previa de lo que haría cada decisión sobre las barras */
+html.vis-on .track .prev{position:absolute;top:0;bottom:0;z-index:2;display:none;pointer-events:none;animation:latePrev 1s steps(2) infinite}
+html.vis-on .track .prev.sube{background:repeating-linear-gradient(135deg,#9fcf7a 0 3px,#4f8a38 3px 6px)}
+html.vis-on .track .prev.baja{background:repeating-linear-gradient(135deg,#f0907a 0 3px,#b3261e 3px 6px)}
+html.vis-on .track .prev.tirada{opacity:.65}
+@keyframes latePrev{50%{opacity:.55}}
+/* probabilidad de las tiradas */
+.effect-roll .pct{font:700 10px 'DM Mono',ui-monospace,monospace;padding:1px 5px;margin-left:4px;border-radius:2px;color:#fbf0d2}
+.effect-roll .pct.alta{background:#4f7a38}.effect-roll .pct.media{background:#a8742a}.effect-roll .pct.baja{background:#a8261b}
+/* decisiones: un poco más de aire y foco visible tipo lacre */
+html.vis-on .choice.px-op:focus-visible .num{box-shadow:0 0 0 3px #f3e6c4,0 0 0 5px #a8483a}
+html.vis-on body.modo-libro[data-theme=noche] .narration>p.capitular::first-letter{background:linear-gradient(#3a2e20,#2a2118);color:#e0866e;text-shadow:none}
+html.vis-on body.modo-libro[data-theme=noche] .lj-pag::after{mix-blend-mode:overlay;opacity:.2}
+html.vis-on body.modo-libro[data-theme=noche] .bridge.nota-margen{color:#cdbb93;background:none}
+@media(prefers-reduced-motion:reduce){html.vis-on .track .prev{animation:none}}
+@media(max-width:699px){.lj-pag.der .lj-cinta{display:none}}

@@ -1181,6 +1181,41 @@ html.vis-on .i-skip{background:rgba(14,10,20,.8);color:#f6e7bd}
  .lj-izq-inf{min-height:200px}
  body.modo-libro .hint{display:none}
 }
+
+/* ===== VIS · pulido estético y de lectura ===== */
+/* capitular iluminada en el primer párrafo de cada escena */
+.narration>p.capitular::first-letter{float:left;font:400 3.5em/.86 'IM Fell English',Georgia,serif;color:#9b2a1c;margin:.06em .12em 0 0;padding:.1em .12em .02em;background:linear-gradient(#f6ecd0,#ead7a8);border:2px solid #b8892f;outline:1px solid #6b4a2a;outline-offset:1px;text-shadow:1px 1px 0 #d8a640}
+/* orla en lugar de la raya simple */
+.rule.orla{width:auto;height:auto;background:none;display:flex;align-items:center;gap:10px;color:#b8892f;margin:14px 0 20px}
+.rule.orla::before,.rule.orla::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,#b8892f 40%,#b8892f 60%,transparent)}
+.rule.orla span{font-size:18px;line-height:1}
+/* la frase puente como nota al margen */
+.bridge.nota-margen{position:relative;border-left:0;background:none;padding:6px 0 6px 26px;border-radius:0;color:#6b5a3e}
+.bridge.nota-margen::before{content:'❧';position:absolute;left:2px;top:4px;color:#b8892f;font-style:normal;font-size:18px}
+/* papel con fibra y manchas del tiempo, y esquinas ornamentadas */
+.lj-pag::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;
+ background:radial-gradient(circle at 8% 92%,#b8892f1f 0,transparent 18%),radial-gradient(circle at 94% 6%,#8a5a2e18 0,transparent 14%),radial-gradient(circle at 70% 78%,#b8892f12 0,transparent 10%),var(--px-papel);background-size:auto,auto,auto,96px 96px;mix-blend-mode:multiply;opacity:.55}
+.lj-pag>*{position:relative;z-index:1}
+.lj-pag::before{content:'';position:absolute;inset:6px;pointer-events:none;z-index:0;border:1px solid #c9a35a55;
+ background:radial-gradient(circle,#b8892f 1.5px,transparent 2px) 0 0/10px 10px no-repeat,radial-gradient(circle,#b8892f 1.5px,transparent 2px) 100% 0/10px 10px no-repeat,radial-gradient(circle,#b8892f 1.5px,transparent 2px) 0 100%/10px 10px no-repeat,radial-gradient(circle,#b8892f 1.5px,transparent 2px) 100% 100%/10px 10px no-repeat}
+/* cinta marcapáginas que cuelga sobre la página derecha */
+.lj-pag.der .lj-cinta{position:absolute;bottom:-26px;right:64px;width:16px;height:58px;z-index:3;pointer-events:none;background:linear-gradient(90deg,#7b1f16,#a8483a 45%,#7b1f16);clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);box-shadow:0 2px 3px #0005;filter:drop-shadow(1px 2px 1px #0004)}
+/* vista previa de lo que haría cada decisión sobre las barras */
+html.vis-on .track .prev{position:absolute;top:0;bottom:0;z-index:2;display:none;pointer-events:none;animation:latePrev 1s steps(2) infinite}
+html.vis-on .track .prev.sube{background:repeating-linear-gradient(135deg,#9fcf7a 0 3px,#4f8a38 3px 6px)}
+html.vis-on .track .prev.baja{background:repeating-linear-gradient(135deg,#f0907a 0 3px,#b3261e 3px 6px)}
+html.vis-on .track .prev.tirada{opacity:.65}
+@keyframes latePrev{50%{opacity:.55}}
+/* probabilidad de las tiradas */
+.effect-roll .pct{font:700 10px 'DM Mono',ui-monospace,monospace;padding:1px 5px;margin-left:4px;border-radius:2px;color:#fbf0d2}
+.effect-roll .pct.alta{background:#4f7a38}.effect-roll .pct.media{background:#a8742a}.effect-roll .pct.baja{background:#a8261b}
+/* decisiones: un poco más de aire y foco visible tipo lacre */
+html.vis-on .choice.px-op:focus-visible .num{box-shadow:0 0 0 3px #f3e6c4,0 0 0 5px #a8483a}
+html.vis-on body.modo-libro[data-theme=noche] .narration>p.capitular::first-letter{background:linear-gradient(#3a2e20,#2a2118);color:#e0866e;text-shadow:none}
+html.vis-on body.modo-libro[data-theme=noche] .lj-pag::after{mix-blend-mode:overlay;opacity:.2}
+html.vis-on body.modo-libro[data-theme=noche] .bridge.nota-margen{color:#cdbb93;background:none}
+@media(prefers-reduced-motion:reduce){html.vis-on .track .prev{animation:none}}
+@media(max-width:699px){.lj-pag.der .lj-cinta{display:none}}
 </style><script id="vis-js">
 /* ===== VIS · núcleo: paletas, búfer indexado, utilidades ===== */
 /* Todo el arte se pinta con índices de paleta (0-31) sobre búferes Uint8.
@@ -3605,6 +3640,7 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     const mast = main.querySelector('.mast'); mast.classList.add('lj-cab'); der.appendChild(mast);
     cuerpoDer = el('div', 'lj-cuerpo'); cuerpoDer.appendChild(main.querySelector('#scene')); der.appendChild(cuerpoDer);
     der.appendChild(el('div', 'lj-folio der', ''));
+    der.appendChild(el('div', 'lj-cinta', ''));
     libro.appendChild(izq); libro.appendChild(el('div', 'lj-lomo')); libro.appendChild(der);
     app.parentNode.insertBefore(libro, app);
     document.body.classList.add('modo-libro');
@@ -3669,6 +3705,67 @@ cirujano|plaza|mediodia|||barbero|talk|`;
       libro.querySelector('.lj-folio.izq').textContent = 'fol. ' + (2 * t + 1);
       libro.querySelector('.lj-folio.der').textContent = 'fol. ' + (2 * t + 2);
     };
+  };
+})(VIS);
+/* ===== VIS · pulido: presentación de la narrativa y de las mecánicas (sin cambiar textos ni reglas) ===== */
+(function (V) {
+  'use strict';
+  const NOM = { salud: 'health', cordura: 'sanity', honor: 'honor', saciedad: 'hunger', sancho: 'loyalty' };
+  // probabilidad de sacar n o más con dos dados de seis caras
+  function prob(n) { let c = 0; for (let a = 1; a <= 6; a++) for (let b = 1; b <= 6; b++) if (a + b >= n) c++; return Math.round(c / 36 * 100); }
+  V.prob2d6 = prob;
+
+  function valor(k) { return k === 'hunger' ? 100 - state.hunger : state[k]; }
+  // efectos visibles de una opción, leídos de sus propias etiquetas (lo mismo que ve el jugador)
+  function efectos(btn) {
+    const row = btn.querySelector('.effect-row'), base = row || btn.querySelector('.effects');
+    const out = {}; if (!base) return out;
+    base.querySelectorAll('.effect').forEach(e => {
+      const m = e.textContent.trim().match(/^(Salud|Cordura|Honor|Saciedad|Sancho)\s*([+−-])\s*(\d+)/i);
+      if (m) out[NOM[m[1].toLowerCase()]] = (m[2] === '+' ? 1 : -1) * +m[3];
+    });
+    return { d: out, tirada: !!row };
+  }
+  function mostrar(btn) {
+    const { d, tirada } = efectos(btn);
+    for (const k in NOM) {
+      const id = NOM[k], tr = document.querySelector('#m_' + id + ' .track'); if (!tr) continue;
+      let pv = tr.querySelector('.prev'); if (!pv) { pv = document.createElement('div'); pv.className = 'prev'; pv.setAttribute('aria-hidden', 'true'); tr.appendChild(pv); }
+      const dv = d[id]; if (!dv) { pv.style.display = 'none'; continue; }
+      const v = valor(id), a = Math.max(0, Math.min(100, v + dv));
+      pv.style.display = 'block'; pv.style.left = Math.min(v, a) + '%'; pv.style.width = Math.abs(a - v) + '%';
+      pv.className = 'prev ' + (dv > 0 ? 'sube' : 'baja') + (tirada ? ' tirada' : '');
+    }
+  }
+  function ocultar() { document.querySelectorAll('.track .prev').forEach(p => { p.style.display = 'none'; }); }
+
+  function narrativa(sc) {
+    const nar = sc.querySelector('.narration');
+    const p = nar && nar.querySelector(':scope > p'); if (p) p.classList.add('capitular');
+    const r = sc.querySelector('.rule'); if (r && !r.classList.contains('orla')) { r.classList.add('orla'); r.innerHTML = '<span>❦</span>'; }
+    const br = sc.querySelector('.bridge'); if (br) br.classList.add('nota-margen');
+  }
+  function mecanicas(sc) {
+    sc.querySelectorAll('.effect-roll:not(.prob)').forEach(e => {
+      e.classList.add('prob');
+      const m = e.textContent.match(/necesitas (\d+) o m[aá]s/); if (!m) return;
+      const p = prob(+m[1]);
+      e.insertAdjacentHTML('beforeend', ` <b class="pct ${p >= 67 ? 'alta' : p >= 34 ? 'media' : 'baja'}" title="Probabilidad de superar la prueba con dos dados">≈ ${p} %</b>`);
+    });
+    sc.querySelectorAll('.choice').forEach(b => {
+      b.addEventListener('mouseenter', () => mostrar(b)); b.addEventListener('focus', () => mostrar(b));
+      b.addEventListener('mouseleave', ocultar); b.addEventListener('blur', ocultar);
+    });
+    // la carta de la tirada también muestra la probabilidad
+    const rt = document.getElementById('rollText');
+    if (rt && !rt._obs) { rt._obs = new MutationObserver(() => { const m = rt.textContent.match(/Necesitas (\d+) o m[aá]s\.$/); if (m) rt.textContent += ' Probabilidad: ' + prob(+m[1]) + ' %.'; }); rt._obs.observe(rt, { childList: true }); }
+  }
+
+  const _t = V.trasRender;
+  V.trasRender = function () {
+    _t.apply(this, arguments);
+    const sc = document.getElementById('scene'); if (!sc) return;
+    ocultar(); narrativa(sc); mecanicas(sc);
   };
 })(VIS);
 /* ===== VIS · arranque ===== */
