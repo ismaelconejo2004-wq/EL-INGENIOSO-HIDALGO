@@ -1,5 +1,11 @@
 # Registro de cambios
 
+## Pasar página como un libro de verdad, y una mesa de madera
+
+- **La página anterior ya no se queda tapando la nueva.** La hoja que gira era una copia completa de la página (texto, retratos y lienzos): en dispositivos lentos tardaba en empezar a moverse y, mientras tanto, mostraba la decisión anterior. Ahora es un papel ligero con el título y el comienzo del texto anterior, que arranca al instante.
+- **Giro con ritmo humano (0,95 s).** La hoja se despega despacio, acelera en el aire y se posa sobre la página izquierda, con una leve curvatura y una sombra sobre la página nueva. También se corrige un fallo de Chrome: al animar la opacidad de la hoja, el dorso desaparecía a mitad del giro; el desvanecimiento final pasa al dorso.
+- **Mesa de madera rústica** bajo el libro, en pixel art generado por código: tablones con veta, nudos, juntas y clavos, con un charco de luz cálida de vela y la sombra del libro. El libro deja un margen mayor en escritorio para que se vea la mesa.
+
 ## Agilidad: página, texto y arranque
 
 - **Cambio de página sin restos.** La hoja de la decisión anterior se retira a los 0,56 s con un temporizador exacto, sin depender del evento `animationend`, que algunos navegadores retrasaban hasta 1,6 s. Su cara se apaga a mitad del giro (aunque el navegador no oculte bien la cara trasera en 3D) y termina transparente. Si se decide muy deprisa, la hoja anterior desaparece al instante.

@@ -53,32 +53,32 @@
   }
 
   /* ---------- la hoja que se pasa ---------- */
+  // La hoja que gira es ligera: papel con el título y el comienzo del texto anterior, no una copia
+  // de toda la página. Así arranca al instante en cualquier dispositivo y nunca deja la página
+  // anterior tapando la nueva.
+  const esc = t => String(t || '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
   function capturar() {
     if (!der || V.menosMov()) return;
-    const c = der.cloneNode(true);
-    c.querySelectorAll('[id]').forEach(e => e.removeAttribute('id'));
-    c.querySelectorAll('[onclick]').forEach(e => e.removeAttribute('onclick'));
-    // los retratos son lienzos: se copian a mano
-    const orig = der.querySelectorAll('canvas'), copia = c.querySelectorAll('canvas');
-    orig.forEach((o, i) => { const d = copia[i]; if (d && o.width) { const x = d.getContext('2d'); if (x) x.drawImage(o, 0, 0); } });
-    hojaPend = { nodo: c, scroll: cuerpoDer.scrollTop };
+    const sc = document.getElementById('scene'); if (!sc) return;
+    const q = s => { const e = sc.querySelector(s); return e ? e.textContent.trim() : ''; };
+    const ps = [...sc.querySelectorAll('.narration > p')].map(p => p.textContent.trim()).filter(Boolean);
+    hojaPend = { lugar: q('.eyebrow'), titulo: q('.title'), texto: ps.slice(0, 2) };
   }
-  V.DUR_HOJA = 560;
+  V.DUR_HOJA = 950;
   function pasarPagina() {
     libro.querySelectorAll('.hoja').forEach(x => x.remove()); // si se decide muy deprisa, la hoja anterior se va ya
     const h = hojaPend; hojaPend = null; if (!h) return;
     const hoja = el('div', 'hoja');
-    const cara = el('div', 'cara'); cara.appendChild(h.nodo);
+    const cara = el('div', 'cara', `<div class="h-lugar">${esc(h.lugar)}</div><div class="h-titulo">${esc(h.titulo)}</div><div class="h-orla">❦</div>${h.texto.map(t => `<p>${esc(t)}</p>`).join('')}`);
     const dorso = el('div', 'dorso', `<div class="dorso-orn">❦</div>`);
     hoja.appendChild(cara); hoja.appendChild(dorso);
     hoja.style.left = der.offsetLeft + 'px'; hoja.style.top = der.offsetTop + 'px';
     hoja.style.width = der.offsetWidth + 'px'; hoja.style.height = der.offsetHeight + 'px';
     libro.appendChild(hoja);
-    const cu = h.nodo.querySelector('.lj-cuerpo'); if (cu) cu.scrollTop = h.scroll;
+    libro.classList.remove('pasando'); void libro.offsetWidth; libro.classList.add('pasando');
     if (typeof sfx === 'function') try { sfx('page'); } catch (e) { }
-    // retirada exacta al acabar el giro, sin depender de animationend (que algunos navegadores retrasan)
-    setTimeout(() => hoja.remove(), V.DUR_HOJA + 30);
-    // el texto empieza a escribirse cuando la hoja ya ha descubierto la página
+    // retirada exacta al acabar el giro, sin depender de animationend
+    setTimeout(() => { hoja.remove(); libro.classList.remove('pasando'); }, V.DUR_HOJA + 40);
   }
 
   V.instalarLibro = function () {

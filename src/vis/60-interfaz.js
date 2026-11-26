@@ -58,8 +58,34 @@
     for (let i = 0; i < 40; i++) b.p(r() * 32 | 0, r() * 32 | 0, r() < 0.7 ? C.cal : C.calS);
     return b.canvas('mediodia').toDataURL();
   }
+  // mesa de madera rústica: tablones con veta, nudos, juntas y clavos (pixel art, se repite sin costuras)
+  function mesa() {
+    const W = 256, H = 192, b = new B(W, H), r = V.rng(1605), PL = 48;
+    for (let t = 0; t < H / PL; t++) {
+      const y0 = t * PL, off = (r() * W) | 0, base = [C.madera, C.maderaO, C.tierraS][t % 3];
+      b.r(0, y0, W, PL, base);
+      // veta: líneas onduladas que se cierran sobre sí mismas en horizontal (periodo W)
+      for (let k = 0; k < 9; k++) {
+        const yy = y0 + 4 + k * 5 + ((r() * 3) | 0), amp = 1 + r() * 2.5, f = (1 + ((r() * 3) | 0)) * 2 * Math.PI / W, ph = r() * 6.3;
+        const col = r() < 0.5 ? C.maderaO : C.tierraP;
+        for (let x = 0; x < W; x++) { if (r() < 0.12) continue; b.p(x, Math.round(yy + Math.sin(x * f + ph) * amp), col); }
+      }
+      // brillos sueltos del barniz gastado
+      for (let k = 0; k < 40; k++) b.p((r() * W) | 0, y0 + 2 + ((r() * (PL - 4)) | 0), C.ocre);
+      // nudos
+      for (let k = 0; k < 2; k++) { const nx = (off + k * 128 + (r() * 60) | 0) % W, ny = y0 + 10 + ((r() * (PL - 20)) | 0);
+        b.ell(nx, ny, 5, 3, C.tierraP); b.ell(nx, ny, 3, 2, C.maderaO); b.p(nx, ny, C.negro);
+        for (let x = -14; x <= 14; x++) { const d = Math.abs(x) / 14; b.p((nx + x + W) % W, Math.round(ny - 4 - (1 - d) * 3), C.tierraP); b.p((nx + x + W) % W, Math.round(ny + 4 + (1 - d) * 3), C.tierraP); } }
+      // junta entre tablones y clavos en los extremos
+      b.r(0, y0, W, 1, C.negro); b.r(0, y0 + 1, W, 1, C.tierraP); b.r(0, y0 + PL - 1, W, 1, C.ocre);
+      for (const cx of [(off + 6) % W, (off + 6 + W / 2) % W]) { b.r(cx, y0 + 5, 2, 2, C.hierro); b.p(cx, y0 + 5, C.hierroL); b.r(cx, y0 + PL - 7, 2, 2, C.hierro); }
+      // tope entre dos tablas del mismo tablón
+      const jx = (off + 90) % W; b.r(jx, y0 + 1, 1, PL - 1, C.negro);
+    }
+    return b.canvas('ocaso').toDataURL();
+  }
   function hojaEstilo() {
-    const css = [`:root{--px-marco:url(${marco()});--px-marco-rojo:url(${marcoRojo()});--px-papel:url(${papel()})}`];
+    const css = [`:root{--px-mesa:url(${mesa()});--px-marco:url(${marco()});--px-marco-rojo:url(${marcoRojo()});--px-papel:url(${papel()})}`];
     for (const k in ICO) css.push(`.pxi-${k}{background-image:url(${icono(k)})}`);
     const st = document.createElement('style'); st.id = 'vis-iconos'; st.textContent = css.join('\n'); document.head.appendChild(st);
   }
