@@ -1,5 +1,16 @@
 # Registro de cambios
 
+## Más calidad y dossier en PDF
+
+Mejoras gráficas y estéticas sin cambiar textos, reglas ni números:
+- **Gráficos**: sombras de contacto bajo cada figura, luz de borde que da volumen a personajes y animales, parpadeo, bruma del color del horizonte entre los planos, haces de sol al amanecer y al ocaso, tinte rosado al alba y bandadas lejanas.
+- **Narrativa** (presentación): capitular iluminada en el primer párrafo de cada escena, orla con florón bajo el título y la frase puente como nota al margen.
+- **Mecánicas** (presentación):
+  - al señalar una decisión, las barras muestran con franjas cuánto subiría o bajaría cada estadística;
+  - las pruebas de dados indican su probabilidad (≈ %), tanto en la opción como en la carta de la tirada.
+- **Estética**: papel con fibra y manchas del tiempo, esquinas ornamentadas y cinta marcapáginas.
+- **Dossier**: `docs/El-ingenioso-hidalgo-dossier.pdf`, 9 páginas A4 con capturas actuales. Se regenera con `npm run dossier` (`tools/dossier.js`).
+
 ## Libro también en el móvil en vertical
 
 - En un móvil en vertical (menos de 700 px de ancho) el juego ya no se apila en una sola columna. Ahora es un **libro de encuadernación superior**, como un cuaderno abierto:

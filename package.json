@@ -6,7 +6,8 @@
     "build": "node tools/build.js",
     "test": "node tests/mercado.js && node tests/simular.js",
     "capturas": "node tests/capturas.js",
-    "rendimiento": "node tests/rendimiento.js"
+    "rendimiento": "node tests/rendimiento.js",
+    "dossier": "node tools/dossier.js"
   },
   "devDependencies": {
     "jsdom": "26.1.0"
