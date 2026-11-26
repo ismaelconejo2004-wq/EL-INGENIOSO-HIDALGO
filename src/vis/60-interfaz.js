@@ -59,33 +59,76 @@
     return b.canvas('mediodia').toDataURL();
   }
   // mesa de madera rústica: tablones con veta, nudos, juntas y clavos (pixel art, se repite sin costuras)
+  /* tablero de mesa visto desde arriba: dos tablas anchas encoladas, veta larga y
+     arcos de catedral, barniz gastado; sin clavos ni topes (eso lo hacía parecer suelo) */
   function mesa() {
-    const W = 256, H = 192, b = new B(W, H), r = V.rng(1605), PL = 48;
+    const W = 256, H = 192, b = new B(W, H), r = V.rng(1605), PL = 96;
     for (let t = 0; t < H / PL; t++) {
-      const y0 = t * PL, off = (r() * W) | 0, base = [C.madera, C.maderaO, C.tierraS][t % 3];
+      const y0 = t * PL, base = t ? C.maderaO : C.madera, osc = t ? C.tierraP : C.maderaO;
       b.r(0, y0, W, PL, base);
-      // veta: líneas onduladas que se cierran sobre sí mismas en horizontal (periodo W)
-      for (let k = 0; k < 9; k++) {
-        const yy = y0 + 4 + k * 5 + ((r() * 3) | 0), amp = 1 + r() * 2.5, f = (1 + ((r() * 3) | 0)) * 2 * Math.PI / W, ph = r() * 6.3;
-        const col = r() < 0.5 ? C.maderaO : C.tierraP;
-        for (let x = 0; x < W; x++) { if (r() < 0.12) continue; b.p(x, Math.round(yy + Math.sin(x * f + ph) * amp), col); }
+      // bandas suaves de tono a lo largo de la tabla (el tinte nunca es uniforme)
+      for (let k = 0; k < 5; k++) { const yy = y0 + 6 + ((r() * (PL - 16)) | 0), h = 3 + ((r() * 6) | 0);
+        for (let y = yy; y < Math.min(y0 + PL, yy + h); y++) for (let x = 0; x < W; x++) if (((x * 7 + y * 3) & 3) === 0) b.p(x, y, osc); }
+      // veta larga, de periodo W para que la textura case en horizontal
+      for (let k = 0; k < 16; k++) {
+        const yy = y0 + 3 + k * 6 + ((r() * 3) | 0), amp = 0.8 + r() * 2, f = 2 * Math.PI / W, ph = r() * 6.3;
+        const col = r() < 0.55 ? osc : C.tierraP;
+        for (let x = 0; x < W; x++) { if (r() < 0.22) continue; const y = Math.round(yy + Math.sin(x * f + ph) * amp + Math.sin(x * f * 3 + ph) * 0.6); if (y > y0 && y < y0 + PL - 1) b.p(x, y, col); }
       }
-      // brillos sueltos del barniz gastado
-      for (let k = 0; k < 40; k++) b.p((r() * W) | 0, y0 + 2 + ((r() * (PL - 4)) | 0), C.ocre);
-      // nudos
-      for (let k = 0; k < 2; k++) { const nx = (off + k * 128 + (r() * 60) | 0) % W, ny = y0 + 10 + ((r() * (PL - 20)) | 0);
-        b.ell(nx, ny, 5, 3, C.tierraP); b.ell(nx, ny, 3, 2, C.maderaO); b.p(nx, ny, C.negro);
-        for (let x = -14; x <= 14; x++) { const d = Math.abs(x) / 14; b.p((nx + x + W) % W, Math.round(ny - 4 - (1 - d) * 3), C.tierraP); b.p((nx + x + W) % W, Math.round(ny + 4 + (1 - d) * 3), C.tierraP); } }
-      // junta entre tablones y clavos en los extremos
-      b.r(0, y0, W, 1, C.negro); b.r(0, y0 + 1, W, 1, C.tierraP); b.r(0, y0 + PL - 1, W, 1, C.ocre);
-      for (const cx of [(off + 6) % W, (off + 6 + W / 2) % W]) { b.r(cx, y0 + 5, 2, 2, C.hierro); b.p(cx, y0 + 5, C.hierroL); b.r(cx, y0 + PL - 7, 2, 2, C.hierro); }
-      // tope entre dos tablas del mismo tablón
-      const jx = (off + 90) % W; b.r(jx, y0 + 1, 1, PL - 1, C.negro);
+      // arcos de catedral: la veta que se cierra en punta, típica del tablero aserrado
+      const cx = 64 + t * 128, cy = y0 + PL / 2;
+      for (let n = 0; n < 6; n++) { const a = 10 + n * 6, h = 8 + n * 5;
+        for (let x = -a * 3; x <= 0; x++) { const y = cy - h + Math.round((x * x) / (a * 9) * h / 4); const xx = (cx + x + W) % W;
+          if (y > y0 + 1 && r() > 0.15) b.p(xx, Math.min(y, cy + h), n % 2 ? C.tierraP : osc);
+          const y2 = cy + h - Math.round((x * x) / (a * 9) * h / 4); if (y2 < y0 + PL - 1 && r() > 0.15) b.p(xx, Math.max(y2, cy - h), n % 2 ? C.tierraP : osc); } }
+      // un nudo pequeño por tabla, con la veta que lo rodea
+      const nx = (cx + 70) % W, ny = y0 + 22 + ((r() * (PL - 44)) | 0);
+      b.ell(nx, ny, 4, 2, C.tierraP); b.ell(nx, ny, 2, 1, C.negro);
+      for (let x = -12; x <= 12; x++) { const d = Math.abs(x) / 12; b.p((nx + x + W) % W, Math.round(ny - 3 - (1 - d) * 3), C.tierraP); b.p((nx + x + W) % W, Math.round(ny + 3 + (1 - d) * 3), C.tierraP); }
+      // brillos del barniz y alguna marca de uso (vasos, roces)
+      for (let k = 0; k < 70; k++) b.p((r() * W) | 0, y0 + 2 + ((r() * (PL - 4)) | 0), C.ocre);
+      for (let k = 0; k < 3; k++) { const x0 = (r() * W) | 0, y = y0 + 8 + ((r() * (PL - 16)) | 0), l = 10 + ((r() * 20) | 0); for (let x = 0; x < l; x++) if (r() > 0.3) b.p((x0 + x) % W, y + ((x / 7) | 0), C.tierraL); }
+      // junta encolada: una sola línea fina, sin clavos
+      b.r(0, y0, W, 1, C.tierraP); for (let x = 0; x < W; x += 1) if (r() < 0.4) b.p(x, y0, C.negro);
     }
     return b.canvas('ocaso').toDataURL();
   }
+  /* la pluma de ave, dibujada ya en diagonal (rotarla con CSS la llenaría de dientes) */
+  function pluma() {
+    const W = 80, H = 128, b = new B(W, H);
+    const x0 = 6, y0 = 124, x1 = 74, y1 = 4, L = Math.hypot(x1 - x0, y1 - y0), ux = (x1 - x0) / L, uy = (y1 - y0) / L;
+    const dentro = (x, y) => { const s = (x - x0) * ux + (y - y0) * uy, d = (x - x0) * -uy + (y - y0) * ux;   // d>0: lado izquierdo
+      if (s < 0 || s > L) return 0;
+      const t = s / L;
+      if (Math.abs(d) <= 0.7) return t < 0.07 ? 1 : t < 0.3 ? 2 : 3;                                        // plumín, cañón, raquis
+      if (t < 0.3) return 0;
+      const u = (t - 0.3) / 0.7, wa = Math.sin(Math.min(1, u * 1.1) * Math.PI * 0.9) * 10 + 0.5, wb = Math.sin(Math.min(1, u * 1.2) * Math.PI * 0.85) * 4.5;
+      if (d > 0 && d <= wa) { if (u > 0.42 && u < 0.46 && d > 4) return 0; return ((Math.round(s + d * 1.4)) % 5) ? 4 : 5; }
+      if (d < 0 && -d <= wb) return 6;
+      return 0; };
+    const COL = [0, C.negro, C.ocre, C.tierraL, C.lino, C.cal, C.calS];
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const k = dentro(x, y); if (!k) continue;
+      const borde = k >= 4 && (!dentro(x + 1, y) || !dentro(x, y - 1) || !dentro(x - 1, y) || !dentro(x, y + 1));
+      b.p(x, y, borde ? (k === 6 ? C.hierro : C.calS) : COL[k]); }
+    b.p(x0 - 1, y0 + 2, C.negro); b.p(x0 - 2, y0 + 3, C.negro); b.p(x0 + 2, y0 - 4, C.hierroL);   // gota en el plumín
+    return b.canvas('ocaso').toDataURL();
+  }
+  /* tintero de barro vidriado, con collar de latón y dos gotas en la mesa */
+  function tintero() {
+    const W = 56, H = 48, b = new B(W, H), cx = 26, cy = 28, rx = 19, ry = 15;
+    b.ell(cx + 6, 42, 24, 5, C.tierraP);                                                     // sombra en la mesa
+    for (let y = 10; y <= 43; y++) for (let x = cx - rx - 1; x <= cx + rx + 1; x++) {
+      const nx = (x - cx) / rx, ny = (y - cy) / ry, r2 = nx * nx + ny * ny; if (r2 > 1 || y > 41) continue;
+      const nz = Math.sqrt(Math.max(0, 1 - r2)), luz = -nx * 0.55 - ny * 0.45 + nz * 0.7;            // luz de la vela arriba a la izquierda
+      b.p(x, y, r2 > 0.86 ? C.negro : luz > 0.975 ? C.destello : luz > 0.94 ? C.ocre : luz > 0.86 ? C.maderaO : luz > 0.5 ? C.tierraP : C.negro); }
+    b.r(cx - 14, 41, 29, 1, C.negro);
+    b.r(cx - 6, 9, 13, 6, C.oro); b.r(cx + 3, 9, 4, 6, C.tierraS); b.r(cx - 5, 10, 2, 4, C.destello); b.r(cx - 6, 14, 13, 1, C.tierraP);  // collar
+    b.ell(cx, 9, 6, 2, C.oro); b.ell(cx, 9, 4, 1, C.negro); b.p(cx + 2, 9, C.anil);       // boca con la tinta
+    b.ell(50, 44, 3, 1, C.negro); b.p(54, 41, C.negro); b.ell(4, 45, 2, 1, C.negro);     // gotas
+    return b.canvas('ocaso').toDataURL();
+  }
   function hojaEstilo() {
-    const css = [`:root{--px-mesa:url(${mesa()});--px-marco:url(${marco()});--px-marco-rojo:url(${marcoRojo()});--px-papel:url(${papel()})}`];
+    const css = [`:root{--px-mesa:url(${mesa()});--px-pluma:url(${pluma()});--px-tintero:url(${tintero()});--px-marco:url(${marco()});--px-marco-rojo:url(${marcoRojo()});--px-papel:url(${papel()})}`];
     for (const k in ICO) css.push(`.pxi-${k}{background-image:url(${icono(k)})}`);
     const st = document.createElement('style'); st.id = 'vis-iconos'; st.textContent = css.join('\n'); document.head.appendChild(st);
   }

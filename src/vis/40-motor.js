@@ -137,11 +137,12 @@
     o = o || {};
     if (!cv) crear();
     const e = V.escena(id);
-    const nuevo = !S || S.id !== id || o.forzar;
+    const solo = typeof state !== 'undefined' && !!state.alone;
+    const nuevo = !S || S.id !== id || o.forzar || S.solo !== solo;
     if (!nuevo) { S.e = e; S.L = null; refrescarReparto(); pedir(); return; }
     // fotograma anterior para la transición
     if (S && !V.menosMov() && cv.width) { snap.cv = snap.cv || document.createElement('canvas'); snap.cv.width = cv.width; snap.cv.height = cv.height; snap.cv.getContext('2d').drawImage(cv, 0, 0); }
-    S = { id, e, t: performance.now(), actores: [], part: [], trans: (S && !V.menosMov() && !V.sinIris) ? (o.pagina ? 'pagina' : 'iris') : null, quieto: false, habla: null };
+    S = { id, e, t: performance.now(), actores: [], part: [], trans: (S && !V.menosMov() && !V.sinIris) ? (o.pagina ? 'pagina' : 'iris') : null, quieto: false, habla: null, solo };
     S.actores = montarReparto(e, id);
     S.actores.forEach(a => { a.entrando = 1; a.x = a.rol === 'npc' ? W + 30 + (a.k || 0) * 14 : -40 - (a.rol === 'sancho' ? 30 : 0); });
     medir(); colocar(S, false);

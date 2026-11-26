@@ -141,7 +141,7 @@ html.vis-on input[type=range]{accent-color:#a8483a}
 /* el libro descansa sobre una mesa de madera rústica, a la luz de una vela */
 body.modo-libro{overflow:hidden;background-color:#1c0f0a;
  background-image:radial-gradient(ellipse 70% 65% at 50% 45%,#ffb05a30 0,#ffb05a14 35%,#0000 60%),radial-gradient(ellipse at 50% 50%,#0000 40%,#0b0503c0 100%),var(--px-mesa);
- background-size:auto,auto,768px 576px;background-position:center,center,center;background-attachment:fixed;image-rendering:pixelated}
+ background-size:auto,auto,1024px 768px;background-position:center,center,center;background-attachment:fixed;image-rendering:pixelated}
 body.modo-libro .app{display:none}
 .libro-juego{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);width:min(1480px,calc(100vw - 72px));height:calc(100vh - 56px);height:calc(100dvh - 56px);min-height:340px;margin:28px auto;padding:14px 16px 16px;perspective:2400px;
  background:linear-gradient(90deg,#3b1f12,#5a3018 6%,#4a2614 50%,#5a3018 94%,#3b1f12);border-radius:10px 14px 14px 10px;box-shadow:0 0 0 2px #2a140b,inset 0 0 0 3px #7a4a26,inset 0 0 0 5px #3b1f12,0 30px 70px #000c,0 6px 0 #0b0503,18px 26px 40px -10px #000a}
@@ -397,3 +397,50 @@ html.vis-cargando body{visibility:hidden}
  @keyframes pasarHojaV{0%{transform:rotateX(0)}18%{transform:rotateX(14deg)}62%{transform:rotateX(128deg)}100%{transform:rotateX(180deg)}}
 }
 html.vis-on body.modo-libro[data-theme=noche]{background-image:radial-gradient(ellipse 70% 65% at 50% 45%,#ffb05a18 0,#0000 55%),radial-gradient(ellipse at 50% 50%,#0000 30%,#050203e0 100%),var(--px-mesa)}
+
+/* ===== FASE 11 · mesa de escritorio con pluma y tintero ===== */
+.mesa-obj{display:none}
+body.modo-libro .mesa-obj{display:block;position:fixed;z-index:0;pointer-events:none;background:no-repeat center/100% 100%;image-rendering:pixelated;filter:drop-shadow(6px 8px 6px #0009)}
+body.modo-libro .libro-juego{z-index:1}
+body.modo-libro{--lw:min(1480px,calc(100vw - 72px))}
+body.modo-libro .mesa-obj.pluma{background-image:var(--px-pluma);width:200px;height:320px;left:calc((100vw - var(--lw)) / 4 - 100px);top:calc(50% - 190px)}
+body.modo-libro .mesa-obj.tintero{background-image:var(--px-tintero);width:168px;height:144px;right:calc((100vw - var(--lw)) / 4 - 84px);top:calc(58% - 72px)}
+@media (min-width:1200px){body.modo-libro{--lw:calc(100vw - 150px)}body.modo-libro .libro-juego{width:var(--lw)}
+ body.modo-libro .mesa-obj.pluma{width:150px;height:240px;left:-6px;top:calc(50% - 150px)}
+ body.modo-libro .mesa-obj.tintero{width:126px;height:108px;right:-14px}}
+@media (min-width:1500px){body.modo-libro{--lw:min(1340px,calc(100vw - 420px))}
+ body.modo-libro .mesa-obj.pluma{width:200px;height:320px;left:calc((100vw - var(--lw)) / 4 - 100px);top:calc(50% - 190px)}
+ body.modo-libro .mesa-obj.tintero{width:168px;height:144px;right:calc((100vw - var(--lw)) / 4 - 84px)}}
+@media (max-width:1199px){body.modo-libro .mesa-obj{display:none}}
+html.vis-on body.modo-libro[data-theme=noche] .mesa-obj{filter:drop-shadow(6px 8px 6px #000c) brightness(.7)}
+/* barra de Sancho cuando ya se ha ido */
+.meter.ausente .track{opacity:.25}.meter.ausente .stat-note{font-style:italic}
+.meter.ausente .meter-head span:last-child{margin-left:4px;font-size:.72em !important;white-space:nowrap;font-style:italic;font-size:.85em;letter-spacing:.04em}
+/* ===== panel de Compañía ===== */
+.compania{display:flex;flex-direction:column;gap:8px}
+.comp-lista{display:flex;flex-direction:column;gap:8px}
+.comp{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:start;padding:8px 10px;border:1px solid #8a6a3c66;border-radius:3px;background:linear-gradient(#fbf3dc,#f1e4c2);box-shadow:inset 0 0 0 2px #fff6,0 1px 0 #0001}
+.comp.apagada{opacity:.75;filter:grayscale(.6)}
+.comp-ret{width:52px;height:52px;image-rendering:pixelated;border:2px solid #6a4a26;border-radius:2px;background:#e4d3a8;object-fit:cover;box-shadow:inset 0 0 0 1px #fff8}
+.comp-ret.animal{object-fit:contain;background:#d9c79a}
+.comp-ret.vacio{display:grid;place-items:center;font-size:24px;color:#8a6a3c}
+.comp-cuerpo{min-width:0}
+.comp header{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;margin-bottom:3px}
+.comp header b{font-family:var(--display,serif);font-size:1.02em;color:#3a2412}
+.comp header span{font-size:.72em;letter-spacing:.08em;text-transform:uppercase;color:#8a3a24}
+.comp-barra{height:6px;background:#2c241722;border:1px solid #6a4a2655;border-radius:1px;overflow:hidden}
+.comp-barra span{display:block;height:100%;background:#7a5c8c}
+.comp-barra.media span{background:#b8862e}.comp-barra.baja span{background:#a8323a}
+.comp-estado{display:block;font-size:.74em;color:#5b4a33;margin:2px 0 3px}
+.comp ul{margin:2px 0 0;padding:0 0 0 14px;font-size:.8em;line-height:1.35;color:#3c3020}
+.comp li{margin:1px 0}.comp li::marker{content:'❧ ';color:#8a3a24}
+.comp q{display:block;margin-top:4px;font-style:italic;font-size:.8em;color:#6a4a26}
+.comp q::before{content:'«'}.comp q::after{content:'»'}
+.comp-aus{display:flex;flex-direction:column;padding:5px 8px;border-left:3px solid #a8323a88;background:#2c24170c;font-size:.82em;margin-bottom:4px}
+.comp-aus b{text-decoration:line-through;text-decoration-color:#a8323a99;color:#5b4a33}
+.comp-aus span{font-style:italic;color:#5b4a33}
+.comp-rel>div{display:flex;justify-content:space-between;gap:8px;font-size:.8em;padding:2px 0;border-bottom:1px dotted #8a6a3c55}
+.comp-rel i{font-style:normal;font-size:.9em}.comp-rel i.bien{color:#3c6a2c}.comp-rel i.mal{color:#a8323a}
+html.vis-on body.modo-libro[data-theme=noche] .comp{background:linear-gradient(#332818,#2a2016);border-color:#6a4a26}
+html.vis-on body.modo-libro[data-theme=noche] .comp header b,html.vis-on body.modo-libro[data-theme=noche] .comp ul{color:#ecdfc2}
+html.vis-on body.modo-libro[data-theme=noche] .comp-estado,html.vis-on body.modo-libro[data-theme=noche] .comp q,html.vis-on body.modo-libro[data-theme=noche] .comp-aus b,html.vis-on body.modo-libro[data-theme=noche] .comp-aus span{color:#c9b58c}

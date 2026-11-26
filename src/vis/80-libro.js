@@ -42,6 +42,7 @@
     der.appendChild(el('div', 'lj-cinta', ''));
     libro.appendChild(izq); libro.appendChild(el('div', 'lj-lomo')); libro.appendChild(der);
     app.parentNode.insertBefore(libro, app);
+    ['pluma', 'tintero'].forEach(k => { const o = el('div', 'mesa-obj ' + k, ''); o.setAttribute('aria-hidden', 'true'); document.body.appendChild(o); });
     document.body.classList.add('modo-libro');
     abrirPestana(pestana);
     return true;

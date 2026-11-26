@@ -1,5 +1,18 @@
 # Registro de cambios
 
+## Escritorio con pluma y tintero; Sancho se va de verdad; nueva Compañía
+
+- **Mesa, no suelo.** El tablero ahora son dos tablas anchas encoladas, con veta larga, arcos de catedral, un nudo por tabla y brillos de barniz gastado. Se quitaron los clavos, los topes entre tablas y los tablones estrechos que lo hacían parecer un entarimado. Los colores no cambian.
+- **Pluma y tintero.** A la izquierda del libro hay una pluma de ave con el cañón manchado de tinta; a la derecha, un tintero de barro vidriado con collar de latón y dos gotas en la mesa. Ambos se dibujan con código en pixel art y se ocultan en pantallas de menos de 1200 px, donde el libro necesita todo el ancho.
+- **Si la lealtad de Sancho llega a 0, se marcha para siempre.** Las dos opciones de la despedida aceptan su marcha (abrazarlo o volverle la espalda), y ya no se le puede retener con una promesa. A partir de ahí no aparece en la escena (tampoco el rucio), la barra de Sancho dice «se fue», desaparece su voz interior y sus intervenciones se convierten en «El recuerdo de Sancho».
+- **Nueva pestaña de Compañía.** Cada acompañante tiene una ficha con su retrato pixelado, su papel, su estado y una cita:
+  - **Sancho:** lealtad con barra y descripción, el rucio (o su robo), la ínsula, los encargos y si fue armado caballero.
+  - **Rocinante:** sus jornadas contigo y sus percances.
+  - **Compañeros temporales:** la comitiva de Micomicona, Bárbara de Villalobos y don Álvaro Tarfe en el apócrifo.
+  - **Aldonza Lorenzo:** si le pides que viaje contigo, te acompaña hasta el final, y su desenlace pasa a ser «Aldonza, en el camino» en lugar de colgar la armadura.
+  - **Ausentes y recuerdos:** los ausentes (Sancho, con la jornada en que se fue) y la lista de quién te recuerda con aprecio o rencor.
+- Nueva prueba `tests/compania.js` dentro de `npm test`.
+
 ## Pasar página como un libro de verdad, y una mesa de madera
 
 - **La página anterior ya no se queda tapando la nueva.** La hoja que gira era una copia completa de la página (texto, retratos y lienzos): en dispositivos lentos tardaba en empezar a moverse y, mientras tanto, mostraba la decisión anterior. Ahora es un papel ligero con el título y el comienzo del texto anterior, que arranca al instante.

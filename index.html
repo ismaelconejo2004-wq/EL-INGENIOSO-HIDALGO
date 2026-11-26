@@ -979,7 +979,7 @@ rumor:['Fin · Avellaneda, capítulo XXXVI','Curado por la paciencia',['El Quijo
 norte:['Fin · Avellaneda, capítulo XXXVI','Rumbo a Castilla la Vieja',['Avellaneda dejó la puerta abierta: el hidalgo, dicen, salió de la Casa del Nuncio y tomó el camino de Castilla la Vieja en busca de nuevas aventuras, que el autor prometía contar y nunca contó.','Cervantes cerró esa puerta en 1615 con la muerte de Alonso Quijano, para que ningún otro autor lo resucitase.'],['EL CABALLERO','Mientras haya camino, el libro no se acaba.']],
 nuncio:['Fin · Avellaneda, capítulo XXXVI','El patio de la Casa del Nuncio',['El don Quijote de Avellaneda termina donde empiezan los locos: entre rejas, en Toledo, mirando un patio. No hay testamento ni amigos junto a la cama; hay mayordomos y una sopa tibia.','Es la gran diferencia entre las dos segundas partes: Avellaneda encierra a su personaje; Cervantes lo deja morir cuerdo y libre.'],['LA RAZÓN','Te encerraron para curarte. Nadie te preguntó de qué.']]
 };
-function aplicarFin(){const f=FIN[state.fin];if(!f)return;const e=S.end;e.place=f[0];e.title=f[1];e.body=f[2].slice();e.voice=f[3];if(state.fin==='muerte'&&state.alone)e.body[1]='Nadie volvió a la aldea para contarlo: el escudero se había marchado antes, y el camino no sabe escribir.'}
+function aplicarFin(){const f=FIN[state.fin];if(!f)return;const e=S.end;e.place=f[0];e.title=f[1];e.body=f[2].slice();e.voice=f[3];if(state.fin==='muerte'&&state.alone)e.body[1]='Nadie volvió a la aldea para contarlo: el escudero se había marchado antes, y el camino no sabe escribir.';if(state.fin==='amor'&&state.flags.aldonza_viaja){e.title='Aldonza, en el camino';e.body=['La armadura no se quedó colgada en ningún clavo: Aldonza Lorenzo se ató el pañuelo, cargó un zurrón y echó a andar a tu lado, por los caminos de la Mancha.','Ella deshacía los encantamientos con dos voces y una carcajada; tú aprendiste a llamarla por su nombre. Nadie escribió esta historia, porque iba demasiado deprisa para la prosa.']}}
 const _r9=render;render=function(){if(state.scene==='end')aplicarFin();return _r9.apply(this,arguments)};
 /* --- 5 · glosas del cronista: qué es fiel, qué se adapta y qué se inventa --- */
 const GL={
@@ -1182,6 +1182,67 @@ fin('impostor#2','El camino de Barcelona cruza antes los bosques de Cataluña, y
 ['lorenzo#0','lorenzo#1','lorenzo#2'].forEach((k,i)=>fin(k,['Con el consejo dado, el camino te lleva a una aldea donde se prepara una boda.','La casa verde te cura sin que te des cuenta, y una aldea en fiestas os llama.','La casa se queda atrás, y el trecho siguiente os acerca a una aldea donde se prepara una boda.'][i]));
 ['ricote#0','ricote#1','ricote#2'].forEach((k,i)=>fin(k,['La senda os conduce hacia nuevas pruebas.','El reproche pesa más de lo que debería, y el trecho siguiente os acerca a nuevas pruebas.','El secreto queda entre vosotros, y el camino os lleva a nuevas pruebas.'][i]));
 })();
+/* ===== FASE 11 · Sancho se va para siempre y la compañía de camino ===== */
+(function(){
+const S=scenes;
+/* 1 · si la lealtad llega a 0, Sancho se marcha: la despedida ya no se puede deshacer */
+const A=S.ev_adios;
+A.body=['Sancho se detiene en mitad del camino. No grita ni reprocha: carga sus alforjas en el rucio y dice que ya ha servido bastante por una ínsula que nadie le ha dado. Que vuelve a su aldea, con Teresa y con Sanchica.','Es la primera vez que no habla con refranes. Ya no hay promesa que lo retenga.'];
+A.choices=[
+['Abrazarlo y dejar que se vaya con tu bendición.','Despedir bien a quien se va también es de caballeros.',null,{alone:1,honor:3,sanity:-3,next:'@back'}],
+['Volverle la espalda y seguir sin mirar atrás.','El orgullo camina en línea recta, y solo.',null,{alone:1,honor:-3,sanity:-6,next:'@back'}]];
+BR['ev_adios#0']=['Lo abrazas. Sancho llora sin disimulo y te pide que comas a tus horas y que no te fíes de los molinos.','Lo ves alejarse con el rucio por el camino de la aldea, hasta que es un punto, y luego nada. Sigues solo.'];
+BR['ev_adios#1']=['Le vuelves la espalda. Oyes cómo el rucio se aleja paso a paso, y no te vuelves.','El silencio que deja es más grande que todos sus refranes. Sigues solo.'];
+/* 2 · su ausencia: ni en la escena, ni en la barra, ni en las voces, ni en los diálogos */
+const _r11=render;
+render=function(){
+ if(state.alone&&!state.flags.sanchoFue&&state.scene!=='start')state.flags.sanchoFue=state.turn||1;
+ const s=S[state.scene];let orig=null;
+ if(state.alone&&s&&s.voice&&/^SANCHO/.test(s.voice[0])){orig=s.voice;s.voice=['EL RECUERDO DE SANCHO','Te parece oírle todavía: «'+orig[1].replace(/«|»/g,'')+'»']}
+ let r;try{r=_r11.apply(this,arguments)}finally{if(orig)s.voice=orig}
+ try{
+  const m=document.getElementById('m_loyalty');if(m){m.classList.toggle('ausente',!!state.alone);const n=document.getElementById('loyaltyNum');if(n&&state.alone)n.textContent='se fue'}
+  document.querySelectorAll('aside.left .item, .lj-voces .item').forEach(it=>{if(/Sancho/.test(it.textContent))it.style.display=state.alone?'none':''});
+  const pan=document.querySelector('.lj-panel[data-k=compania]')||document.querySelector('aside.right');
+  if(pan){let box=pan.querySelector('.compania');if(!box){pan.querySelectorAll(':scope > .item, :scope > .stat-note').forEach(i=>i.remove());box=document.createElement('div');box.className='compania';pan.appendChild(box)}box.innerHTML=companiaHTML()}
+ }catch(e){}
+ return r};
+/* 3 · la compañía de camino */
+const seen=k=>(state.seen||[]).includes(k);
+const RET={};
+function retrato(k){if(RET[k])return RET[k];try{if(window.VIS&&VIS.soportado&&VIS.soportado()){let c;if(['rocinante','rucio'].includes(k))c=VIS.actorCanvas(k,'reposo',0,'mediodia',true);else c=VIS.retrato(k,0);RET[k]=c.toDataURL()}}catch(e){}return RET[k]||''}
+const LEAL=v=>v>=80?['Fiel hasta la ínsula','alta']:v>=55?['Leal, aunque con hambre','alta']:v>=30?['Con dudas','media']:['A punto de irse','baja'];
+function tarjeta(o){const img=retrato(o.k);return `<article class="comp ${o.cls||''}">${img?`<img class="comp-ret${o.animal?' animal':''}" src="${img}" alt="">`:'<span class="comp-ret vacio">❦</span>'}<div class="comp-cuerpo"><header><b>${o.nombre}</b><span>${o.papel}</span></header>${o.barra?`<div class="comp-barra ${o.barra[2]}"><span style="width:${Math.max(0,Math.min(100,o.barra[1]))}%"></span></div><small class="comp-estado">${o.barra[0]}</small>`:''}<ul>${o.lineas.filter(Boolean).map(l=>`<li>${l}</li>`).join('')}</ul>${o.cita?`<q>${o.cita}</q>`:''}</div></article>`}
+function companiaHTML(){
+ const f=state.flags||{},apo=state.mode==='apo',sin=f.primera&&!f.sanchoUnido,out=[],aus=[];
+ // Sancho
+ if(sin)out.push(tarjeta({k:'sancho',nombre:'Sin escudero',papel:'Primera salida',cls:'apagada',lineas:['Sales solo, como en los capítulos II a VI.','Un labrador vecino tuyo espera en su casa, sin saberlo, a que lo llames.']}));
+ else if(!state.alone){const l=state.loyalty,d=LEAL(l),enc=(typeof MIS!=='undefined'?MIS:[]).filter(m=>f['m_'+m[0]]).map(m=>(f['md_'+m[0]]?'Cumplido: ':'Encargo: ')+m[1]);
+  out.push(tarjeta({k:'sancho',nombre:'Sancho Panza',papel:apo?'Escudero, según Avellaneda':'Escudero',barra:['Lealtad '+l+' · '+d[0],l,d[1]],
+   lineas:[f.rucio_robado&&!seen('dorotea')?'Va a pie: Ginés de Pasamonte le robó el rucio.':'Monta el rucio, su asno, con las alforjas siempre llenas o casi.',
+    seen('barataria')?'Gobernó la ínsula Barataria con más juicio que muchos.':'Espera la ínsula que le prometiste.',f.sanchoCaballero?'Armado caballero en la corte.':'',...enc,f.saludo_aldonza||seen('toboso')?'Conoce el secreto del encantamiento de Dulcinea.':''],
+   cita:l>=55?'Donde vaya vuestra merced, voy yo. Con alforjas, eso sí.':l>=30?'Yo sigo, señor, pero cuento los pasos.':'Callo, señor. A veces callar es lo único que le queda a un escudero.'}))}
+ else aus.push(f.sanchoQueda?['Sancho Panza','Se quedó en Madrid, al servicio del Archipámpano, con la boca llena.']:['Sancho Panza','Se marchó con el rucio en la jornada '+(f.sanchoFue||'?')+', camino de su aldea.']);
+ // Rocinante
+ out.push(tarjeta({k:'rocinante',animal:1,nombre:'Rocinante',papel:'Montura',lineas:['Rocín flaco, el primero de todos los rocines del mundo.','Lleva '+(state.turn||0)+' jornadas contigo.',seen('yangueses')?'No olvida a las jacas de los yangüeses.':'',seen('ev_rocin')?'Una vez se plantó ante un charco, y tuvo razón.':''],cita:''}));
+ // la comitiva de Micomicona (I, 29-47)
+ if(!apo&&seen('dorotea')&&!seen('disciplinantes')&&!seen('sanson'))out.push(tarjeta({k:'dorotea',nombre:'La comitiva de Micomicona',papel:'Compañeros de viaje (I, 29-47)',lineas:['Dorotea, que se finge la princesa Micomicona.','Cardenio, ya sereno.','El cura y el barbero, que traman llevarte a casa.',(state.rel&&state.rel.dorotea>0)?'Dorotea te tiene aprecio sincero.':''],cita:'Te inventan un reino para devolverte a tu aldea.'}));
+ // Avellaneda
+ if(apo&&f.barbara&&!seen('a_bramidan'))out.push(tarjeta({k:'barbara',nombre:'Bárbara de Villalobos',papel:'«Reina Zenobia»',lineas:['La sacaste atada de un pinar y no se ha separado de vosotros.','Tiene la lengua más afilada que la navaja de Sancho.'],cita:'Reina o no, ella decide su camino.'}));
+ if(apo&&seen('a_arg')&&!seen('toledo')){const r=(state.rel&&state.rel.tarfe)||0;out.push(tarjeta({k:'tarfe',nombre:'Don Álvaro Tarfe',papel:'Protector granadino',barra:['Aprecio '+(r>0?'+':'')+r,50+r*10,r>=0?'alta':'baja'],lineas:['Te sigue de Argamesilla a Zaragoza y a la corte.','Te saca de la cárcel y de alguna burla.'],cita:'Un año después jurará en otra novela que tú no eras tú.'}))}
+ // Aldonza, si te la llevas
+ if(f.aldonza_viaja)out.push(tarjeta({k:'aldonza',nombre:'Aldonza Lorenzo',papel:'Compañera de camino',lineas:['Dejó el Toboso para viajar contigo hasta el final del camino.','No la llamas Dulcinea: la llamas por su nombre.'],cita:'Que los gigantes se las vean conmigo también.'}));
+ if(f.aldonza_casa)out.push(tarjeta({k:'aldonza',nombre:'Aldonza Lorenzo',papel:'En el Toboso, contigo',lineas:['Colgaste la armadura junto a sus ristras de ajos.'],cita:''}));
+ // recuerdos del camino
+ const rel=state.rel||{},rk=Object.keys(rel).filter(k=>rel[k]&&RN[k]);
+ return `<div class="comp-lista">${out.join('')}</div>`+
+ (aus.length?`<div class="chapter">Ausentes</div>${aus.map(a=>`<div class="comp-aus"><b>${a[0]}</b><span>${a[1]}</span></div>`).join('')}`:'')+
+ (rk.length?`<div class="chapter">Quién te recuerda</div><div class="comp-rel">${rk.map(k=>`<div><span>${RN[k]}</span><i class="${rel[k]>0?'bien':'mal'}">${rel[k]>0?'aprecio':'rencor'} ${'●'.repeat(Math.min(5,Math.abs(rel[k])))}</i></div>`).join('')}</div>`:'')}
+window.companiaHTML=companiaHTML;
+/* 4 · Aldonza: quedarse o llevarla contigo cambia el final */
+S.amor.choices[0][3].flag='aldonza_casa';S.amor.choices[1][3].flag='aldonza_viaja';
+})();
+
 document.addEventListener('keydown',e=>{if(MENUON()){if(document.getElementById('intro').classList.contains('on')){if(e.key==='Escape')introSkip();else if(['Enter',' ','ArrowRight'].includes(e.key)){e.preventDefault();introNext()}}else if(e.key==='Escape')closeBook();return}if(e.key==='Escape'){closeBook();closeMkt()}if((e.key==='m'||e.key==='M')&&!/INPUT|TEXTAREA/.test((e.target||{}).tagName||'')&&!document.querySelector('#modal.show,#mktModal.show')){BK.open?closeBook():openBook();return}if(document.querySelector('#bookModal.show,#mktModal.show'))return;let n=Number(e.key);if(n>=1&&n<=4){let buttons=document.querySelectorAll('.choice');if(buttons[n-1])buttons[n-1].click()}if(e.key==='Enter'&&document.getElementById('modal').classList.contains('show'))closeRoll()});try{let sv=JSON.parse(localStorage.getItem('hidalgo'));if(sv&&sv.evs&&sv.scene!=='end'&&scenes[sv.scene])state=sv}catch(e){}applyCfg();render();dbInit();showMenu();
 </script><!--VIS:INI--><style id="vis-css">
 /* ===== VIS · escenario en lienzo y cajas de diálogo ===== */
@@ -1327,7 +1388,7 @@ html.vis-on input[type=range]{accent-color:#a8483a}
 /* el libro descansa sobre una mesa de madera rústica, a la luz de una vela */
 body.modo-libro{overflow:hidden;background-color:#1c0f0a;
  background-image:radial-gradient(ellipse 70% 65% at 50% 45%,#ffb05a30 0,#ffb05a14 35%,#0000 60%),radial-gradient(ellipse at 50% 50%,#0000 40%,#0b0503c0 100%),var(--px-mesa);
- background-size:auto,auto,768px 576px;background-position:center,center,center;background-attachment:fixed;image-rendering:pixelated}
+ background-size:auto,auto,1024px 768px;background-position:center,center,center;background-attachment:fixed;image-rendering:pixelated}
 body.modo-libro .app{display:none}
 .libro-juego{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);width:min(1480px,calc(100vw - 72px));height:calc(100vh - 56px);height:calc(100dvh - 56px);min-height:340px;margin:28px auto;padding:14px 16px 16px;perspective:2400px;
  background:linear-gradient(90deg,#3b1f12,#5a3018 6%,#4a2614 50%,#5a3018 94%,#3b1f12);border-radius:10px 14px 14px 10px;box-shadow:0 0 0 2px #2a140b,inset 0 0 0 3px #7a4a26,inset 0 0 0 5px #3b1f12,0 30px 70px #000c,0 6px 0 #0b0503,18px 26px 40px -10px #000a}
@@ -1583,6 +1644,53 @@ html.vis-cargando body{visibility:hidden}
  @keyframes pasarHojaV{0%{transform:rotateX(0)}18%{transform:rotateX(14deg)}62%{transform:rotateX(128deg)}100%{transform:rotateX(180deg)}}
 }
 html.vis-on body.modo-libro[data-theme=noche]{background-image:radial-gradient(ellipse 70% 65% at 50% 45%,#ffb05a18 0,#0000 55%),radial-gradient(ellipse at 50% 50%,#0000 30%,#050203e0 100%),var(--px-mesa)}
+
+/* ===== FASE 11 · mesa de escritorio con pluma y tintero ===== */
+.mesa-obj{display:none}
+body.modo-libro .mesa-obj{display:block;position:fixed;z-index:0;pointer-events:none;background:no-repeat center/100% 100%;image-rendering:pixelated;filter:drop-shadow(6px 8px 6px #0009)}
+body.modo-libro .libro-juego{z-index:1}
+body.modo-libro{--lw:min(1480px,calc(100vw - 72px))}
+body.modo-libro .mesa-obj.pluma{background-image:var(--px-pluma);width:200px;height:320px;left:calc((100vw - var(--lw)) / 4 - 100px);top:calc(50% - 190px)}
+body.modo-libro .mesa-obj.tintero{background-image:var(--px-tintero);width:168px;height:144px;right:calc((100vw - var(--lw)) / 4 - 84px);top:calc(58% - 72px)}
+@media (min-width:1200px){body.modo-libro{--lw:calc(100vw - 150px)}body.modo-libro .libro-juego{width:var(--lw)}
+ body.modo-libro .mesa-obj.pluma{width:150px;height:240px;left:-6px;top:calc(50% - 150px)}
+ body.modo-libro .mesa-obj.tintero{width:126px;height:108px;right:-14px}}
+@media (min-width:1500px){body.modo-libro{--lw:min(1340px,calc(100vw - 420px))}
+ body.modo-libro .mesa-obj.pluma{width:200px;height:320px;left:calc((100vw - var(--lw)) / 4 - 100px);top:calc(50% - 190px)}
+ body.modo-libro .mesa-obj.tintero{width:168px;height:144px;right:calc((100vw - var(--lw)) / 4 - 84px)}}
+@media (max-width:1199px){body.modo-libro .mesa-obj{display:none}}
+html.vis-on body.modo-libro[data-theme=noche] .mesa-obj{filter:drop-shadow(6px 8px 6px #000c) brightness(.7)}
+/* barra de Sancho cuando ya se ha ido */
+.meter.ausente .track{opacity:.25}.meter.ausente .stat-note{font-style:italic}
+.meter.ausente .meter-head span:last-child{margin-left:4px;font-size:.72em !important;white-space:nowrap;font-style:italic;font-size:.85em;letter-spacing:.04em}
+/* ===== panel de Compañía ===== */
+.compania{display:flex;flex-direction:column;gap:8px}
+.comp-lista{display:flex;flex-direction:column;gap:8px}
+.comp{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:start;padding:8px 10px;border:1px solid #8a6a3c66;border-radius:3px;background:linear-gradient(#fbf3dc,#f1e4c2);box-shadow:inset 0 0 0 2px #fff6,0 1px 0 #0001}
+.comp.apagada{opacity:.75;filter:grayscale(.6)}
+.comp-ret{width:52px;height:52px;image-rendering:pixelated;border:2px solid #6a4a26;border-radius:2px;background:#e4d3a8;object-fit:cover;box-shadow:inset 0 0 0 1px #fff8}
+.comp-ret.animal{object-fit:contain;background:#d9c79a}
+.comp-ret.vacio{display:grid;place-items:center;font-size:24px;color:#8a6a3c}
+.comp-cuerpo{min-width:0}
+.comp header{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;margin-bottom:3px}
+.comp header b{font-family:var(--display,serif);font-size:1.02em;color:#3a2412}
+.comp header span{font-size:.72em;letter-spacing:.08em;text-transform:uppercase;color:#8a3a24}
+.comp-barra{height:6px;background:#2c241722;border:1px solid #6a4a2655;border-radius:1px;overflow:hidden}
+.comp-barra span{display:block;height:100%;background:#7a5c8c}
+.comp-barra.media span{background:#b8862e}.comp-barra.baja span{background:#a8323a}
+.comp-estado{display:block;font-size:.74em;color:#5b4a33;margin:2px 0 3px}
+.comp ul{margin:2px 0 0;padding:0 0 0 14px;font-size:.8em;line-height:1.35;color:#3c3020}
+.comp li{margin:1px 0}.comp li::marker{content:'❧ ';color:#8a3a24}
+.comp q{display:block;margin-top:4px;font-style:italic;font-size:.8em;color:#6a4a26}
+.comp q::before{content:'«'}.comp q::after{content:'»'}
+.comp-aus{display:flex;flex-direction:column;padding:5px 8px;border-left:3px solid #a8323a88;background:#2c24170c;font-size:.82em;margin-bottom:4px}
+.comp-aus b{text-decoration:line-through;text-decoration-color:#a8323a99;color:#5b4a33}
+.comp-aus span{font-style:italic;color:#5b4a33}
+.comp-rel>div{display:flex;justify-content:space-between;gap:8px;font-size:.8em;padding:2px 0;border-bottom:1px dotted #8a6a3c55}
+.comp-rel i{font-style:normal;font-size:.9em}.comp-rel i.bien{color:#3c6a2c}.comp-rel i.mal{color:#a8323a}
+html.vis-on body.modo-libro[data-theme=noche] .comp{background:linear-gradient(#332818,#2a2016);border-color:#6a4a26}
+html.vis-on body.modo-libro[data-theme=noche] .comp header b,html.vis-on body.modo-libro[data-theme=noche] .comp ul{color:#ecdfc2}
+html.vis-on body.modo-libro[data-theme=noche] .comp-estado,html.vis-on body.modo-libro[data-theme=noche] .comp q,html.vis-on body.modo-libro[data-theme=noche] .comp-aus b,html.vis-on body.modo-libro[data-theme=noche] .comp-aus span{color:#c9b58c}
 </style><script id="vis-js">
 /* ===== VIS · núcleo: paletas, búfer indexado, utilidades ===== */
 /* Todo el arte se pinta con índices de paleta (0-31) sobre búferes Uint8.
@@ -2856,11 +2964,12 @@ escrutinio|biblioteca|tarde|||cura+barbero+ama|watch|alonso`;
     o = o || {};
     if (!cv) crear();
     const e = V.escena(id);
-    const nuevo = !S || S.id !== id || o.forzar;
+    const solo = typeof state !== 'undefined' && !!state.alone;
+    const nuevo = !S || S.id !== id || o.forzar || S.solo !== solo;
     if (!nuevo) { S.e = e; S.L = null; refrescarReparto(); pedir(); return; }
     // fotograma anterior para la transición
     if (S && !V.menosMov() && cv.width) { snap.cv = snap.cv || document.createElement('canvas'); snap.cv.width = cv.width; snap.cv.height = cv.height; snap.cv.getContext('2d').drawImage(cv, 0, 0); }
-    S = { id, e, t: performance.now(), actores: [], part: [], trans: (S && !V.menosMov() && !V.sinIris) ? (o.pagina ? 'pagina' : 'iris') : null, quieto: false, habla: null };
+    S = { id, e, t: performance.now(), actores: [], part: [], trans: (S && !V.menosMov() && !V.sinIris) ? (o.pagina ? 'pagina' : 'iris') : null, quieto: false, habla: null, solo };
     S.actores = montarReparto(e, id);
     S.actores.forEach(a => { a.entrando = 1; a.x = a.rol === 'npc' ? W + 30 + (a.k || 0) * 14 : -40 - (a.rol === 'sancho' ? 30 : 0); });
     medir(); colocar(S, false);
@@ -3719,33 +3828,76 @@ escrutinio|biblioteca|tarde|||cura+barbero+ama|watch|alonso`;
     return b.canvas('mediodia').toDataURL();
   }
   // mesa de madera rústica: tablones con veta, nudos, juntas y clavos (pixel art, se repite sin costuras)
+  /* tablero de mesa visto desde arriba: dos tablas anchas encoladas, veta larga y
+     arcos de catedral, barniz gastado; sin clavos ni topes (eso lo hacía parecer suelo) */
   function mesa() {
-    const W = 256, H = 192, b = new B(W, H), r = V.rng(1605), PL = 48;
+    const W = 256, H = 192, b = new B(W, H), r = V.rng(1605), PL = 96;
     for (let t = 0; t < H / PL; t++) {
-      const y0 = t * PL, off = (r() * W) | 0, base = [C.madera, C.maderaO, C.tierraS][t % 3];
+      const y0 = t * PL, base = t ? C.maderaO : C.madera, osc = t ? C.tierraP : C.maderaO;
       b.r(0, y0, W, PL, base);
-      // veta: líneas onduladas que se cierran sobre sí mismas en horizontal (periodo W)
-      for (let k = 0; k < 9; k++) {
-        const yy = y0 + 4 + k * 5 + ((r() * 3) | 0), amp = 1 + r() * 2.5, f = (1 + ((r() * 3) | 0)) * 2 * Math.PI / W, ph = r() * 6.3;
-        const col = r() < 0.5 ? C.maderaO : C.tierraP;
-        for (let x = 0; x < W; x++) { if (r() < 0.12) continue; b.p(x, Math.round(yy + Math.sin(x * f + ph) * amp), col); }
+      // bandas suaves de tono a lo largo de la tabla (el tinte nunca es uniforme)
+      for (let k = 0; k < 5; k++) { const yy = y0 + 6 + ((r() * (PL - 16)) | 0), h = 3 + ((r() * 6) | 0);
+        for (let y = yy; y < Math.min(y0 + PL, yy + h); y++) for (let x = 0; x < W; x++) if (((x * 7 + y * 3) & 3) === 0) b.p(x, y, osc); }
+      // veta larga, de periodo W para que la textura case en horizontal
+      for (let k = 0; k < 16; k++) {
+        const yy = y0 + 3 + k * 6 + ((r() * 3) | 0), amp = 0.8 + r() * 2, f = 2 * Math.PI / W, ph = r() * 6.3;
+        const col = r() < 0.55 ? osc : C.tierraP;
+        for (let x = 0; x < W; x++) { if (r() < 0.22) continue; const y = Math.round(yy + Math.sin(x * f + ph) * amp + Math.sin(x * f * 3 + ph) * 0.6); if (y > y0 && y < y0 + PL - 1) b.p(x, y, col); }
       }
-      // brillos sueltos del barniz gastado
-      for (let k = 0; k < 40; k++) b.p((r() * W) | 0, y0 + 2 + ((r() * (PL - 4)) | 0), C.ocre);
-      // nudos
-      for (let k = 0; k < 2; k++) { const nx = (off + k * 128 + (r() * 60) | 0) % W, ny = y0 + 10 + ((r() * (PL - 20)) | 0);
-        b.ell(nx, ny, 5, 3, C.tierraP); b.ell(nx, ny, 3, 2, C.maderaO); b.p(nx, ny, C.negro);
-        for (let x = -14; x <= 14; x++) { const d = Math.abs(x) / 14; b.p((nx + x + W) % W, Math.round(ny - 4 - (1 - d) * 3), C.tierraP); b.p((nx + x + W) % W, Math.round(ny + 4 + (1 - d) * 3), C.tierraP); } }
-      // junta entre tablones y clavos en los extremos
-      b.r(0, y0, W, 1, C.negro); b.r(0, y0 + 1, W, 1, C.tierraP); b.r(0, y0 + PL - 1, W, 1, C.ocre);
-      for (const cx of [(off + 6) % W, (off + 6 + W / 2) % W]) { b.r(cx, y0 + 5, 2, 2, C.hierro); b.p(cx, y0 + 5, C.hierroL); b.r(cx, y0 + PL - 7, 2, 2, C.hierro); }
-      // tope entre dos tablas del mismo tablón
-      const jx = (off + 90) % W; b.r(jx, y0 + 1, 1, PL - 1, C.negro);
+      // arcos de catedral: la veta que se cierra en punta, típica del tablero aserrado
+      const cx = 64 + t * 128, cy = y0 + PL / 2;
+      for (let n = 0; n < 6; n++) { const a = 10 + n * 6, h = 8 + n * 5;
+        for (let x = -a * 3; x <= 0; x++) { const y = cy - h + Math.round((x * x) / (a * 9) * h / 4); const xx = (cx + x + W) % W;
+          if (y > y0 + 1 && r() > 0.15) b.p(xx, Math.min(y, cy + h), n % 2 ? C.tierraP : osc);
+          const y2 = cy + h - Math.round((x * x) / (a * 9) * h / 4); if (y2 < y0 + PL - 1 && r() > 0.15) b.p(xx, Math.max(y2, cy - h), n % 2 ? C.tierraP : osc); } }
+      // un nudo pequeño por tabla, con la veta que lo rodea
+      const nx = (cx + 70) % W, ny = y0 + 22 + ((r() * (PL - 44)) | 0);
+      b.ell(nx, ny, 4, 2, C.tierraP); b.ell(nx, ny, 2, 1, C.negro);
+      for (let x = -12; x <= 12; x++) { const d = Math.abs(x) / 12; b.p((nx + x + W) % W, Math.round(ny - 3 - (1 - d) * 3), C.tierraP); b.p((nx + x + W) % W, Math.round(ny + 3 + (1 - d) * 3), C.tierraP); }
+      // brillos del barniz y alguna marca de uso (vasos, roces)
+      for (let k = 0; k < 70; k++) b.p((r() * W) | 0, y0 + 2 + ((r() * (PL - 4)) | 0), C.ocre);
+      for (let k = 0; k < 3; k++) { const x0 = (r() * W) | 0, y = y0 + 8 + ((r() * (PL - 16)) | 0), l = 10 + ((r() * 20) | 0); for (let x = 0; x < l; x++) if (r() > 0.3) b.p((x0 + x) % W, y + ((x / 7) | 0), C.tierraL); }
+      // junta encolada: una sola línea fina, sin clavos
+      b.r(0, y0, W, 1, C.tierraP); for (let x = 0; x < W; x += 1) if (r() < 0.4) b.p(x, y0, C.negro);
     }
     return b.canvas('ocaso').toDataURL();
   }
+  /* la pluma de ave, dibujada ya en diagonal (rotarla con CSS la llenaría de dientes) */
+  function pluma() {
+    const W = 80, H = 128, b = new B(W, H);
+    const x0 = 6, y0 = 124, x1 = 74, y1 = 4, L = Math.hypot(x1 - x0, y1 - y0), ux = (x1 - x0) / L, uy = (y1 - y0) / L;
+    const dentro = (x, y) => { const s = (x - x0) * ux + (y - y0) * uy, d = (x - x0) * -uy + (y - y0) * ux;   // d>0: lado izquierdo
+      if (s < 0 || s > L) return 0;
+      const t = s / L;
+      if (Math.abs(d) <= 0.7) return t < 0.07 ? 1 : t < 0.3 ? 2 : 3;                                        // plumín, cañón, raquis
+      if (t < 0.3) return 0;
+      const u = (t - 0.3) / 0.7, wa = Math.sin(Math.min(1, u * 1.1) * Math.PI * 0.9) * 10 + 0.5, wb = Math.sin(Math.min(1, u * 1.2) * Math.PI * 0.85) * 4.5;
+      if (d > 0 && d <= wa) { if (u > 0.42 && u < 0.46 && d > 4) return 0; return ((Math.round(s + d * 1.4)) % 5) ? 4 : 5; }
+      if (d < 0 && -d <= wb) return 6;
+      return 0; };
+    const COL = [0, C.negro, C.ocre, C.tierraL, C.lino, C.cal, C.calS];
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const k = dentro(x, y); if (!k) continue;
+      const borde = k >= 4 && (!dentro(x + 1, y) || !dentro(x, y - 1) || !dentro(x - 1, y) || !dentro(x, y + 1));
+      b.p(x, y, borde ? (k === 6 ? C.hierro : C.calS) : COL[k]); }
+    b.p(x0 - 1, y0 + 2, C.negro); b.p(x0 - 2, y0 + 3, C.negro); b.p(x0 + 2, y0 - 4, C.hierroL);   // gota en el plumín
+    return b.canvas('ocaso').toDataURL();
+  }
+  /* tintero de barro vidriado, con collar de latón y dos gotas en la mesa */
+  function tintero() {
+    const W = 56, H = 48, b = new B(W, H), cx = 26, cy = 28, rx = 19, ry = 15;
+    b.ell(cx + 6, 42, 24, 5, C.tierraP);                                                     // sombra en la mesa
+    for (let y = 10; y <= 43; y++) for (let x = cx - rx - 1; x <= cx + rx + 1; x++) {
+      const nx = (x - cx) / rx, ny = (y - cy) / ry, r2 = nx * nx + ny * ny; if (r2 > 1 || y > 41) continue;
+      const nz = Math.sqrt(Math.max(0, 1 - r2)), luz = -nx * 0.55 - ny * 0.45 + nz * 0.7;            // luz de la vela arriba a la izquierda
+      b.p(x, y, r2 > 0.86 ? C.negro : luz > 0.975 ? C.destello : luz > 0.94 ? C.ocre : luz > 0.86 ? C.maderaO : luz > 0.5 ? C.tierraP : C.negro); }
+    b.r(cx - 14, 41, 29, 1, C.negro);
+    b.r(cx - 6, 9, 13, 6, C.oro); b.r(cx + 3, 9, 4, 6, C.tierraS); b.r(cx - 5, 10, 2, 4, C.destello); b.r(cx - 6, 14, 13, 1, C.tierraP);  // collar
+    b.ell(cx, 9, 6, 2, C.oro); b.ell(cx, 9, 4, 1, C.negro); b.p(cx + 2, 9, C.anil);       // boca con la tinta
+    b.ell(50, 44, 3, 1, C.negro); b.p(54, 41, C.negro); b.ell(4, 45, 2, 1, C.negro);     // gotas
+    return b.canvas('ocaso').toDataURL();
+  }
   function hojaEstilo() {
-    const css = [`:root{--px-mesa:url(${mesa()});--px-marco:url(${marco()});--px-marco-rojo:url(${marcoRojo()});--px-papel:url(${papel()})}`];
+    const css = [`:root{--px-mesa:url(${mesa()});--px-pluma:url(${pluma()});--px-tintero:url(${tintero()});--px-marco:url(${marco()});--px-marco-rojo:url(${marcoRojo()});--px-papel:url(${papel()})}`];
     for (const k in ICO) css.push(`.pxi-${k}{background-image:url(${icono(k)})}`);
     const st = document.createElement('style'); st.id = 'vis-iconos'; st.textContent = css.join('\n'); document.head.appendChild(st);
   }
@@ -4033,6 +4185,7 @@ escrutinio|biblioteca|tarde|||cura+barbero+ama|watch|alonso`;
     der.appendChild(el('div', 'lj-cinta', ''));
     libro.appendChild(izq); libro.appendChild(el('div', 'lj-lomo')); libro.appendChild(der);
     app.parentNode.insertBefore(libro, app);
+    ['pluma', 'tintero'].forEach(k => { const o = el('div', 'mesa-obj ' + k, ''); o.setAttribute('aria-hidden', 'true'); document.body.appendChild(o); });
     document.body.classList.add('modo-libro');
     abrirPestana(pestana);
     return true;
