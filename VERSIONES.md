@@ -14,6 +14,9 @@ El detalle técnico de cada cambio está en `CHANGELOG.md`.
 
 ---
 
+## 2.7.1 · Los dados vuelven a dejar avanzar la jornada
+- Corregido: tras una tirada de dados, el cuadro con el resultado y el botón «Continuar» quedaba escondido detrás del libro, y la jornada no avanzaba. El fallo venía de la 2.6.0.
+
 ## 2.7.0 · Número de versión
 - El menú principal muestra la versión del juego, y los ajustes del Libro del hidalgo también.
 - Nuevo documento `VERSIONES.md` con el registro de cambios por versión.

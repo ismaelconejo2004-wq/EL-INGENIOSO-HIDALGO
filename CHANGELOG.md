@@ -1,5 +1,10 @@
 # Registro de cambios
 
+## Corrección: ventana de los dados detrás del libro (2.7.1)
+
+- En la 2.6.0, `.libro-juego` recibió `z-index:1` para quedar por encima de la pluma y el tintero. Eso lo colocó también por encima de las ventanas modales sin `z-index` (`#modal` de los dados): la tirada se veía en el escenario, pero el resultado y el botón «Continuar» quedaban debajo del libro, y `closeRoll()` nunca se llamaba.
+- Ahora el libro vuelve a no tener `z-index` y los objetos de la mesa usan `z-index:-1`, por debajo de todo y encima del fondo. Se comprobó en el navegador que la ventana de los dados y la del mercado quedan encima y que, al continuar, la jornada avanza.
+
 ## Número de versión (2.7.0)
 
 - El menú principal muestra la versión del juego bajo el pie, y los ajustes del Libro del hidalgo también.

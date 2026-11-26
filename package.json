@@ -1,6 +1,6 @@
 {
   "name": "el-ingenioso-hidalgo",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "private": true,
   "description": "Juego narrativo de decisiones sobre don Quijote. Un solo index.html; estas dependencias son solo para construir y probar.",
   "scripts": {
