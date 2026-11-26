@@ -81,6 +81,7 @@
     return b.outline(C.negro);
   }
   function retrato(k, f) {
+    const sp = V.retratoSprite && V.retratoSprite(k); if (sp) return sp; // retratos del pack (25-sprites.js)
     return cache('ret|' + k + '|' + f, () => {
       let b;
       if (['razon', 'caballero', 'estomago', 'cuerpo'].includes(k)) b = alegoria(k, f);

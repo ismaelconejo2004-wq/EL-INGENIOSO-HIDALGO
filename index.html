@@ -201,7 +201,7 @@ body.noanim .bk,body.noanim #bkPage.turn{animation:none!important}
 <div id="cond"></div>
 <div class="chapter" style="margin-top:38px">Voces interiores</div><div class="item"><i>✦</i> La Razón <span class="tag">serena</span></div><div class="item"><i>✦</i> El Caballero <span class="tag">ardiente</span></div><div class="item"><i>✦</i> Sancho <span class="tag">práctico</span></div>
 </aside>
-<main><header class="mast"><span id="era">Primera parte · 1605</span><span><button onclick="openBook()">📖 Menú</button> <button onclick="restart()">↺ &nbsp;Volver al principio</button></span></header><div class="content" id="scene"></div></main>
+<main><header class="mast"><span id="era">Primera parte · 1605</span><span><button onclick="openBook()">📖 Menú</button> <button onclick="restart()">↺ &nbsp;Volver al principio</button> <button id="fsBtn" class="fs-btn" onclick="toggleFullscreen()" aria-pressed="false" title="Pantalla completa (F)"><svg class="fs-in" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M1 6V1h5v2H3v3zM10 1h5v5h-2V3h-3zM1 10h2v3h3v2H1zM13 10h2v5h-5v-2h3z" fill="currentColor"/></svg><svg class="fs-out" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 1h2v5H1V4h3zM10 1h2v3h3v2h-5zM1 10h5v5H4v-3H1zM10 10h5v2h-3v3h-2z" fill="currentColor"/></svg><span class="fs-label">Pantalla completa</span></button></span></header><div class="content" id="scene"></div></main>
 <aside class="right"><div class="chapter" style="margin-top:3px">Cuaderno de campaña</div><div class="journal" id="journal"><p><b>Una vocación:</b> el mundo necesita que alguien lo enderece.</p><p><b>Una duda:</b> ¿y si los gigantes fueran molinos?</p></div><div class="chapter inventory">Ruta por las Españas</div><div id="mapbox"></div><div id="inventory"></div><div class="chapter inventory">Compañía</div><div class="item"><i>♟</i> Sancho Panza <span class="tag">cerca</span></div></aside>
 </div><div id="toast"></div><div class="modal" id="bookModal" onclick="if(event.target===this)closeBook()"><div class="bk" role="dialog" aria-label="Menú del libro"><div id="bkRibbons"></div><div class="bk-cover"><div class="bk-pages"><div class="bk-left" id="bkLeft"></div><div class="bk-right"><div id="bkPage"></div></div></div></div><button class="bk-x" onclick="closeBook()" aria-label="Cerrar el libro">✕</button></div></div><div class="modal" id="mktModal"><div class="card cfg"><div class="eyebrow" id="mktT">Mercado</div><div class="mktbody"></div></div></div><div class="hint">Pulsa 1, 2 o 3 para elegir · M abre el libro · se guarda solo</div><div class="modal" id="modal"><div class="card"><div class="eyebrow">Prueba de carácter · 2d6</div><h2 id="rollTitle">La fortuna decide</h2><div class="dice-row" aria-label="Dos dados de seis caras"><div class="die face-1" id="dieOne"><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span></div><div class="die face-1" id="dieTwo"><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span></div></div><div class="roll" id="rollNum" aria-live="polite">Tirando…</div><p id="rollText"></p><button id="rollContinue" onclick="closeRoll()" disabled>Los dados ruedan</button></div></div>
 <script>
@@ -955,6 +955,26 @@ html.vis-on #bkPage .chapter.pxd{display:flex;align-items:center}
 @media(prefers-reduced-motion:reduce){html.vis-on .flot{animation:none;opacity:1}html.vis-on .meter.pulso-up .track,html.vis-on .meter.pulso-down .track{animation:none}html.vis-on .track .fill,html.vis-on .track .ghost{transition:none}}
 body.noanim .flot{animation:none!important}
 @media(hover:none) and (pointer:coarse){html.vis-on .hint{display:none}}
+
+/* ---- sprites del pack: objetos y retratos ---- */
+.px-item{display:block;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated;max-width:100%;max-height:100%;margin:auto;-webkit-user-drag:none}
+.loot-art{display:flex;align-items:center;justify-content:center}
+.loot-art .px-item{width:36px;height:36px}
+.bk-art{display:flex;align-items:center;justify-content:center}
+.bk-art .px-item{width:64px;height:64px}
+.cart .med .px-item{width:36px;height:36px}
+.crow.mk .med .px-item{width:32px;height:32px}
+.dlg .retrato{image-rendering:pixelated}
+html.vis-on body[data-theme=noche] .dlg .retrato,html.vis-on body[data-theme=noche] .loot-art .px-item{filter:hue-rotate(180deg) invert(1)}
+
+/* ---- pantalla completa ---- */
+.fs-btn{display:inline-flex;align-items:center;gap:6px;color:var(--ink)!important;border-color:var(--gold)!important}
+.fs-btn svg{display:block}
+.fs-btn .fs-out{display:none}
+body.is-fs .fs-btn .fs-in{display:none}
+body.is-fs .fs-btn .fs-out{display:block}
+body.is-fs .hint{display:none}
+@media(max-width:620px){.fs-label{display:none}}
 </style><script id="vis-js">
 /* ===== VIS · núcleo: paletas, búfer indexado, utilidades ===== */
 /* Todo el arte se pinta con índices de paleta (0-31) sobre búferes Uint8.
@@ -1916,6 +1936,207 @@ var VIS = window.VIS = window.VIS || {};
   V.SILLA = SILLA; V.FIG = { FW, FH, AX, AY };
   V.altura = id => V.esAnimal(id) ? (id === 'oveja' || id === 'cerdo' ? 12 : id === 'leon' ? 20 : 34) : spec(id).alto;
 })(VIS);
+/* ===== VIS · recuadro útil (x,y,ancho,alto) de cada sprite del pack =====
+   Calculado al preparar los recursos: así se alinean los pies al suelo sin leer píxeles en el navegador. */
+(function (V) {
+  'use strict';
+  V.SPRBB = {
+    'h:don_quijote':[0,0,56,70],
+    'h:sancho':[0,0,72,53],
+    'p:alonso_quijano':[25,13,32,71],
+    'p:alvaro_tarfe':[20,5,38,79],
+    'p:ambrosio':[27,16,24,68],
+    'p:antonio_de_bracamonte':[26,7,32,77],
+    'p:archipampano':[22,12,30,72],
+    'p:arriero':[26,13,30,71],
+    'p:barbara':[20,16,32,68],
+    'p:barbero_bacia':[25,13,26,71],
+    'p:basilio_el_pobre':[27,16,31,68],
+    'p:blanca_luna':[26,7,33,77],
+    'p:bramidan_rey_de_chipre':[19,10,39,74],
+    'p:caballero_de_los_espejos':[26,6,33,78],
+    'p:caballero_de_tinta':[26,7,32,77],
+    'p:cabrero':[26,13,25,71],
+    'p:camacho_el_rico':[20,5,34,79],
+    'p:cardenio':[25,16,26,68],
+    'p:comediante':[19,12,39,72],
+    'p:corregidor_de_siguenza':[27,12,25,72],
+    'p:cura':[25,12,32,72],
+    'p:don_carlos':[20,5,38,79],
+    'p:dorotea':[20,16,32,68],
+    'p:dulcinea_aldonza':[20,15,32,69],
+    'p:duque':[19,5,39,79],
+    'p:duquesa':[20,16,32,68],
+    'p:ermitano':[24,15,28,69],
+    'p:escudero_vizcaino':[26,13,32,71],
+    'p:estudiante_de_alcala':[19,12,38,72],
+    'p:fraile_benito':[24,15,28,69],
+    'p:galeote':[27,16,24,68],
+    'p:gines_de_pasamonte':[27,16,30,68],
+    'p:guarda_del_melonar_roldan':[20,6,39,78],
+    'p:guarda_del_rey':[26,6,33,78],
+    'p:la_razon':[24,15,28,69],
+    'p:leon':[3,17,57,48],
+    'p:leonero':[20,9,32,75],
+    'p:maese_pedro':[20,9,32,75],
+    'p:marcela':[20,16,32,68],
+    'p:merlin':[23,4,29,80],
+    'p:mono_adivino':[3,6,35,36],
+    'p:mosen_valentin':[25,12,32,72],
+    'p:princesa_micomicona':[20,10,32,74],
+    'p:quijote_desamorado':[20,5,39,79],
+    'p:quiteria':[20,15,32,69],
+    'p:sancho_gobernador':[22,12,30,72],
+    'p:titular_de_madrid':[20,5,34,79],
+    'p:ventero':[22,13,35,71]
+  };
+})(VIS);
+/* ===== VIS · sprites del pack: sustituyen al dibujo por código donde existe un sprite =====
+   - Los PNG están en assets/ (1x). Se pintan sin suavizar sobre el lienzo, que ya escala por enteros.
+   - Cada hora del día tiñe el sprite (multiplicar + recorte por su propia silueta), como hacía la paleta.
+   - Si un sprite no carga, o no existe para ese actor, se sigue usando el dibujo por código (20-actores.js).
+   - Don Quijote y Sancho se dibujan con sus caballería/rucio incluidos en el mismo sprite. */
+(function (V) {
+  'use strict';
+  const RUTA = 'assets/';
+  const BB = V.SPRBB || {};
+
+  /* id de actor del motor -> sprite del pack (personajes/) */
+  const MAPA = {
+    alonso: 'alonso_quijano', alonso_noche: 'alonso_quijano', impostor: 'quijote_desamorado',
+    arriero: 'arriero', labrador: 'cabrero', carretero: 'arriero', pescador: 'arriero', ventero: 'ventero', cabrero: 'cabrero',
+    dama: 'princesa_micomicona', zoraida: 'princesa_micomicona', ana: 'princesa_micomicona',
+    cura: 'cura', canonigo: 'cura', bandolero: 'gines_de_pasamonte', roque: 'gines_de_pasamonte', galeote: 'galeote',
+    duque: 'duque', duquesa: 'duquesa', duena: 'duquesa',
+    moza: 'barbara', ama: 'barbara', teresa: 'barbara', maritornes: 'barbara', barbara: 'barbara',
+    marcela: 'marcela', dorotea: 'dorotea', altisidora: 'dorotea', claudia: 'dorotea', aldonza: 'dulcinea_aldonza',
+    clerigo: 'mosen_valentin', ermitano: 'ermitano', encamisado: 'fraile_benito', penitente: 'fraile_benito', muerte: 'fraile_benito',
+    peregrino: 'ermitano', ricote: 'ermitano',
+    estudiante: 'estudiante_de_alcala', sanson: 'estudiante_de_alcala', escribano: 'estudiante_de_alcala',
+    basilio: 'basilio_el_pobre', cardenio: 'cardenio', comediante: 'comediante',
+    soldado: 'guarda_del_rey', alguacil: 'guarda_del_rey', pregonero: 'guarda_del_rey', tosilos: 'guarda_del_rey',
+    vizcaino: 'escudero_vizcaino', espejos: 'caballero_de_los_espejos', blanca_luna: 'blanca_luna', bramidan: 'bramidan_rey_de_chipre',
+    diego: 'don_carlos', moreno: 'don_carlos', anselmo: 'don_carlos', tarfe: 'alvaro_tarfe', archipampano: 'archipampano',
+    bracamonte: 'antonio_de_bracamonte', corregidor: 'corregidor_de_siguenza', camacho: 'camacho_el_rico',
+    barbero: 'barbero_bacia', leonero: 'leonero', titiritero: 'maese_pedro', merlin: 'merlin', leon: 'leon'
+  };
+  /* objetos del inventario -> objetos/ */
+  const OBJ = {
+    panqueso: 'panqueso', vino: 'vino', unguento: 'unguento', balsamo: 'balsamo', remedio: 'remedio', yelmo: 'bacia_yelmo',
+    carta: 'carta_sierra_morena', pliego: 'quijote_apocrifo', declaracion: 'declaracion_tarfe', queso: 'queso_manchego',
+    libro: 'libro_caballerias', regalo: 'regalo_sancho', cartel: 'cartel_desamorado', cartaaldonza: 'carta_aldonza'
+  };
+  const RETR = { sancho: 'retrato_sancho', razon: 'retrato_la_razon', caballero: 'retrato_el_caballero', impostor: 'retrato_el_impostor' };
+
+  /* ---------- carga ---------- */
+  const IMG = {}; // 'p:cura' -> { img, ok }
+  function cargar(ref, ruta) {
+    if (IMG[ref]) return;
+    const o = IMG[ref] = { img: new Image(), ok: false };
+    o.img.onload = () => {
+      o.ok = true; V.spritesOn = true; V.pedir && V.pedir(); V.dibujarYa && V.dibujarYa();
+      if (ref[0] === 'o') { try { if (typeof renderInventory === 'function') renderInventory(); } catch (e) { } } // el inventario ya pintado usaba el dibujo antiguo
+    };
+    o.img.onerror = () => { o.ok = false; };
+    o.img.src = RUTA + ruta;
+  }
+  const listo = ref => !!(IMG[ref] && IMG[ref].ok);
+  V.spriteListo = listo;
+
+  /* ---------- tinte por hora ---------- */
+  const TINTE = { mediodia: null, amanecer: 'rgb(255,228,208)', ocaso: 'rgb(255,186,142)', noche: 'rgb(112,122,190)', lumbre: 'rgb(238,176,126)', luna: 'rgb(156,170,218)' };
+
+  const VACIO = (ax, ay) => { const c = document.createElement('canvas'); c.width = 1; c.height = 1; c._ax = ax || 0; c._ay = ay || 0; return c; };
+
+  /* Lienzo de un sprite en una pose. Ancla: centro del recuadro útil, pies en la última fila. */
+  function lienzo(ref, pose, f, hora, flip) {
+    const bb = BB[ref.replace('h:dq', 'h:don_quijote')];
+    const o = IMG[ref]; if (!o || !o.ok) return null;
+    const [bx, by, bw, bh] = bb || [0, 0, o.img.width, o.img.height];
+    const PAD = 6, TOP = 6;
+    const cv = document.createElement('canvas'); cv.width = bw + PAD * 2; cv.height = bh + TOP;
+    const x = cv.getContext('2d'); if (!x) return null; x.imageSmoothingEnabled = false;
+    // movimiento: el sprite es de un solo fotograma, así que se anima con desplazamientos de 1-2 px
+    let dx = 0, dy = 0;
+    const dir = flip ? -1 : 1;
+    if (pose === 'caminar') { dy = -(f & 1) * 2; }
+    else if (pose === 'hablar') { dy = -(f & 1) * 2; }
+    else if (pose === 'reposo') { dy = -(f & 1); }
+    else if (pose === 'golpe') { dx = (f === 0 ? -3 : 4) * dir; }
+    else if (pose === 'arrodillado') { dy = Math.round(bh * 0.14); }
+    const dibujar = () => {
+      x.save();
+      const ox = PAD + dx, oy = cv.height - bh + dy;
+      if (flip) { x.translate(cv.width, 0); x.scale(-1, 1); x.drawImage(o.img, bx, by, bw, bh, cv.width - (ox + bw), oy, bw, bh); }
+      else x.drawImage(o.img, bx, by, bw, bh, ox, oy, bw, bh);
+      x.restore();
+    };
+    dibujar();
+    const t = TINTE[hora];
+    if (t) { x.globalCompositeOperation = 'multiply'; x.fillStyle = t; x.fillRect(0, 0, cv.width, cv.height); x.globalCompositeOperation = 'destination-in'; dibujar(); x.globalCompositeOperation = 'source-over'; }
+    cv._ax = cv.width >> 1; cv._ay = cv.height - 1;
+    return cv;
+  }
+
+  /* ¿qué sprite le toca a este actor? null = dibujo por código */
+  function elegir(id, pose, extra) {
+    extra = extra || '';
+    if (id === 'dq') {
+      if (pose === 'montado') return /@rocinante/.test(extra) && listo('h:dq') ? 'VACIO' : null; // el jinete va dentro del sprite del caballo
+      return listo('p:quijote_desamorado') ? 'p:quijote_desamorado' : null; // a pie (aún no hay un Don Quijote a pie)
+    }
+    if (id === 'rocinante') return extra === 'mont' && listo('h:dq') ? 'h:dq' : null;
+    if (id === 'sancho') return (pose === 'montado' && /@(clavileno|barca)/.test(extra)) || !listo('h:sancho') ? null : 'h:sancho';
+    if (id === 'rucio') return listo('h:sancho') ? 'RUCIO' : null; // el rucio ya está en el sprite de Sancho
+    const f = MAPA[id]; return f && listo('p:' + f) ? 'p:' + f : null;
+  }
+
+  const _ac = V.actorCanvas;
+  V.actorCanvas = function (id, pose, f, hora, flip, extra) {
+    // tumbado: el sprite (de pie, 70-90 px) quedaría más largo que la cama; se mantiene el dibujo por código
+    if (pose === 'tendido') return _ac.call(this, id, 'reposo', f, hora, flip, String(extra || '').replace(/@.*$/, '').replace(/^mont$/, ''));
+    if (V.spritesOn) {
+      const r = elegir(id, pose, extra);
+      if (r === 'VACIO') return V.cache('s|vacio', () => VACIO(0, 0));
+      if (r === 'RUCIO') return V.cache('s|rucio', () => VACIO(30, 39)); // punto de silla de V.SILLA.rucio + cadera de Sancho
+      if (r) {
+        const k = 's|' + r + '|' + pose + '|' + (f & 1) + '|' + hora + '|' + (flip ? 1 : 0);
+        const c = V.cache(k, () => lienzo(r, pose, f, hora, flip));
+        if (c) return c;
+      }
+    }
+    const limpio = String(extra || '').replace(/@.*$/, '').replace(/^mont$/, '');
+    return _ac.call(this, id, pose, f, hora, flip, limpio);
+  };
+
+  /* ---------- retratos de las voces (40x40) ---------- */
+  V.retratoSprite = function (k) {
+    const n = RETR[k]; if (!n) return null; const ref = 'r:' + n;
+    if (!listo(ref)) return null;
+    return V.cache('sr|' + n, () => { const c = document.createElement('canvas'); c.width = 40; c.height = 40; const x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(IMG[ref].img, 0, 0); return c; });
+  };
+
+  /* ---------- objetos del inventario ---------- */
+  function instalarObjetos() {
+    const _ia = window.itemArt; if (typeof _ia !== 'function') return;
+    window.itemArt = function (item) {
+      let id = null;
+      try { id = Object.keys(items).find(k => items[k] === item); } catch (e) { }
+      const f = id && OBJ[id];
+      if (!f || !listo('o:' + f)) return _ia(item);
+      return `<img class="px-item" src="${RUTA}objetos/${f}.png" alt="${String(item.name).replace(/"/g, '&quot;')}" draggable="false">`;
+    };
+  }
+
+  V.instalarSprites = function () {
+    cargar('h:dq', 'heroes/don_quijote.png'); cargar('h:sancho', 'heroes/sancho.png');
+    const unicos = {}; for (const k in MAPA) unicos[MAPA[k]] = 1;
+    for (const n in unicos) cargar('p:' + n, 'personajes/' + n + '.png');
+    for (const k in RETR) cargar('r:' + RETR[k], 'retratos/' + RETR[k] + '.png');
+    for (const k in OBJ) cargar('o:' + OBJ[k], 'objetos/' + OBJ[k] + '.png');
+    instalarObjetos();
+  };
+})(VIS);
 /* ===== VIS · escenas: qué fondo, hora, clima, props y reparto lleva cada una =====
    Formato: id|fondo|hora|clima|props|derecha|actuación|izquierda
    - hora: mediodia|amanecer|ocaso|noche|tarde (tarde = mediodía templado hacia ocaso)
@@ -2323,19 +2544,19 @@ cirujano|plaza|mediodia|||barbero|talk|`;
       if (mid === 'barca') return barcaConJinetes(a, x, y + dy, t, hora);
       const mPose = (a.entrando || (an === 'walk' && !a.flip) || a.carga) ? 'caminar' : 'reposo';
       const mf = mPose === 'caminar' ? Math.floor(t * (a.carga ? 12 : FPS_ANIM)) & 3 : (an === 'plantado' && (t % 3) > 2.2 ? 1 : Math.floor(t * 0.8) & 1);
-      const mc = V.actorCanvas(mid, mPose, mf, hora, false);
+      const mc = V.actorCanvas(mid, mPose, mf, hora, false, 'mont'); // 'mont': es la montura de un jinete (25-sprites.js)
       const bob = mPose === 'caminar' ? (mf & 1) : 0;
       if (a.detras) x -= 13;
       if (!(a.detras && mid === 'clavileno')) ctx.drawImage(mc, x - mc._ax, y + dy - mc._ay);
       const sp = V.SILLA[mid], hx = x - mc._ax + sp[0], hy = y + dy - mc._ay + sp[1] - bob;
-      const rc = V.actorCanvas(a.id, 'montado', 0, hora, false, a.extra);
+      const rc = V.actorCanvas(a.id, 'montado', 0, hora, false, (a.extra || '') + '@' + mid); // '@montura' lo lee 25-sprites.js
       // la cadera del jinete (alto*0.44 sobre los pies) va en la silla
       const sp2 = V.spec(a.id), cad = Math.round(sp2.alto * (sp2.cuerpo === 'grueso' ? 0.36 : 0.44));
       ctx.drawImage(rc, hx - rc._ax, hy + cad - rc._ay);
       brillos(a, hx, hy + cad, t, sp2);
       return;
     }
-    const c = V.actorCanvas(a.id, pose === 'tendido' ? 'reposo' : pose, f, hora, !!a.flip, a.extra);
+    const c = V.actorCanvas(a.id, a.pose === 'tendido' ? 'tendido' : pose, f, hora, !!a.flip, a.extra); // 'tendido': 25-sprites.js lo deja al dibujo por código
     if (a.pose === 'tendido') {
       ctx.save(); ctx.translate(x, y + dy); ctx.rotate(-Math.PI / 2); ctx.drawImage(c, -c._ax + 4, -Math.round(c._ay / 2)); ctx.restore();
       if (!V.menosMov() && Math.floor(t) % 3 === 0 && (t % 1) < 0.03) S.part.push({ k: 'z', x: x + 6, y: y - 12, vx: 4, vy: -8, v: 2.2, t: 0 });
@@ -2350,6 +2571,7 @@ cirujano|plaza|mediodia|||barbero|talk|`;
   function brillos(a, hx, hy, t, sp) {
     // brillo que recorre el yelmo o la bacía cada pocos segundos
     if (a.id !== 'dq' || V.menosMov()) return;
+    if (V.spriteListo && V.spriteListo('h:dq') && a.pose === 'montado' && a.mont === 'rocinante') return; // el sprite ya trae su propio yelmo
     const k = t % 4.2; if (k > 0.5) return;
     const top = hy - Math.round(sp.alto * 0.3) - 10, x = hx - 3 + Math.round(k * 16);
     ctx.fillStyle = HEX[S.e.pal][31]; ctx.fillRect(x, top - 1, 1, 1); if (k > 0.1 && k < 0.35) { ctx.fillRect(x - 1, top - 1, 3, 1); ctx.fillRect(x, top - 2, 1, 3); }
@@ -2694,6 +2916,7 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     return b.outline(C.negro);
   }
   function retrato(k, f) {
+    const sp = V.retratoSprite && V.retratoSprite(k); if (sp) return sp; // retratos del pack (25-sprites.js)
     return cache('ret|' + k + '|' + f, () => {
       let b;
       if (['razon', 'caballero', 'estomago', 'cuerpo'].includes(k)) b = alegoria(k, f);
@@ -3015,9 +3238,58 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     V.trasRender = function () { _t.apply(this, arguments); panel(); opciones(); };
   };
 })(VIS);
+/* ===== VIS · pantalla completa: botón de la cabecera, tecla F y opción en Ajustes ===== */
+(function (V) {
+  'use strict';
+  const el = () => document.documentElement;
+  const soportada = () => !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+  const activa = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  V.pantallaCompleta = activa;
+
+  window.toggleFullscreen = function () {
+    if (!soportada()) { if (typeof toast === 'function') toast('Este navegador no permite pantalla completa. En iPhone: Compartir → Añadir a pantalla de inicio.'); return; }
+    try {
+      if (activa()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      else {
+        const p = (el().requestFullscreen || el().webkitRequestFullscreen).call(el(), { navigationUI: 'hide' });
+        if (p && p.catch) p.catch(() => { if (typeof toast === 'function') toast('No se pudo activar la pantalla completa'); });
+      }
+    } catch (e) { if (typeof toast === 'function') toast('No se pudo activar la pantalla completa'); }
+  };
+
+  function sincronizar() {
+    const on = activa(), b = document.getElementById('fsBtn');
+    document.body.classList.toggle('is-fs', on);
+    if (b) {
+      b.setAttribute('aria-pressed', on);
+      b.title = on ? 'Salir de pantalla completa (F o Esc)' : 'Pantalla completa (F)';
+      const t = b.querySelector('.fs-label'); if (t) t.textContent = on ? 'Salir' : 'Pantalla completa';
+    }
+    // si Ajustes está abierto, refresca el interruptor
+    try { if (typeof BK !== 'undefined' && BK.open && BK.tab === 'ajustes' && typeof drawBook === 'function') drawBook(1); } catch (e) { }
+    if (V.pedir) setTimeout(() => { V.pedir(); V.dibujarYa && V.dibujarYa(); }, 120); // el lienzo cambia de tamaño al entrar/salir
+  }
+
+  V.instalarPantalla = function () {
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, sincronizar));
+    document.addEventListener('keydown', e => {
+      if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey && !/^(INPUT|TEXTAREA|SELECT)$/.test((e.target || {}).tagName || '')) { e.preventDefault(); window.toggleFullscreen(); }
+    });
+    // fila al principio de Ajustes
+    const _c = window.cfgHTML;
+    if (typeof _c === 'function') window.cfgHTML = function () {
+      const on = activa();
+      const ctl = soportada() ? `<button class='tg ${on ? 'on' : ''}' onclick="toggleFullscreen()">${on ? 'Sí' : 'No'}</button>` : `<span class='stat-note'>No disponible en este navegador</span>`;
+      return `<div class='crow'><span>Pantalla completa (tecla F)</span><span>${ctl}</span></div>` + _c.apply(this, arguments);
+    };
+    sincronizar();
+  };
+})(VIS);
 /* ===== VIS · arranque ===== */
 (function () {
+  try { VIS.instalarSprites && VIS.instalarSprites(); } catch (e) { console.error('VIS: no se pudieron cargar los sprites', e); }
   try { VIS.instalar(); } catch (e) { console.error('VIS: no se pudo instalar el motor visual', e); }
+  try { VIS.instalarPantalla && VIS.instalarPantalla(); } catch (e) { console.error('VIS: no se pudo instalar la pantalla completa', e); }
 })();
 </script><!--VIS:FIN-->
 </body></html>

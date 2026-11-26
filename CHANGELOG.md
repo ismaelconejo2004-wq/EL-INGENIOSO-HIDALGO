@@ -1,5 +1,18 @@
 # Registro de cambios
 
+## Sprites del pack y pantalla completa
+
+No cambian la historia, las escenas, las opciones ni los efectos numéricos.
+
+- **Sprites en el escenario** (`src/vis/25-sprites.js`, `assets/`): los actores del pack sustituyen al dibujo por código.
+  - Don Quijote a caballo y Sancho con el rucio usan los sprites de Piskel; unos 45 personajes del pack cubren los tipos del motor.
+  - Cada hora del día tiñe el sprite (mediodía, amanecer, ocaso, noche, lumbre y luna) y se animan con rebotes de 1-2 px.
+  - Si un sprite no carga, o no existe para ese actor (ovejas, cerdos, Clavileño, personajes tumbados…), se usa el dibujo por código de siempre.
+- **Retratos de las voces** (La Razón, El Caballero, Sancho, El Impostor) y **objetos del inventario** salen del pack.
+- `src/vis/22-sprites-datos.js`: recuadro útil de cada sprite, para alinear los pies al suelo.
+- **Pantalla completa** (`src/vis/70-pantalla.js`): botón en la cabecera, tecla **F** e interruptor al principio de Ajustes. En iPhone Safari no existe la API; el botón lo avisa.
+- Cambios mínimos en el motor: `40-motor.js` marca montura y jinete para el sprite combinado; `50-dialogo.js` usa los retratos del pack.
+- Limitación: aún no hay un Don Quijote a pie; cuando desmonta se usa el sprite del Caballero Desamorado.
 ## Rediseño visual (rama `claude/hidalgo-visual-upgrade-pip31k`)
 
 No cambian la historia, las escenas, las opciones, los efectos numéricos ni el equilibrio: solo cómo se ve y se anima el juego. Las partidas guardadas (`hidalgo`, `hidalgo_prof`, `hidalgo_cfg`, `hidalgo_gm`) siguen valiendo. Solo se añade a `hidalgo_cfg` la clave opcional `tw` (texto letra a letra), con valor 1 por defecto.

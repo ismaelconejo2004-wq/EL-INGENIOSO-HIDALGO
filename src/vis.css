@@ -97,3 +97,23 @@ html.vis-on #bkPage .chapter.pxd{display:flex;align-items:center}
 @media(prefers-reduced-motion:reduce){html.vis-on .flot{animation:none;opacity:1}html.vis-on .meter.pulso-up .track,html.vis-on .meter.pulso-down .track{animation:none}html.vis-on .track .fill,html.vis-on .track .ghost{transition:none}}
 body.noanim .flot{animation:none!important}
 @media(hover:none) and (pointer:coarse){html.vis-on .hint{display:none}}
+
+/* ---- sprites del pack: objetos y retratos ---- */
+.px-item{display:block;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated;max-width:100%;max-height:100%;margin:auto;-webkit-user-drag:none}
+.loot-art{display:flex;align-items:center;justify-content:center}
+.loot-art .px-item{width:36px;height:36px}
+.bk-art{display:flex;align-items:center;justify-content:center}
+.bk-art .px-item{width:64px;height:64px}
+.cart .med .px-item{width:36px;height:36px}
+.crow.mk .med .px-item{width:32px;height:32px}
+.dlg .retrato{image-rendering:pixelated}
+html.vis-on body[data-theme=noche] .dlg .retrato,html.vis-on body[data-theme=noche] .loot-art .px-item{filter:hue-rotate(180deg) invert(1)}
+
+/* ---- pantalla completa ---- */
+.fs-btn{display:inline-flex;align-items:center;gap:6px;color:var(--ink)!important;border-color:var(--gold)!important}
+.fs-btn svg{display:block}
+.fs-btn .fs-out{display:none}
+body.is-fs .fs-btn .fs-in{display:none}
+body.is-fs .fs-btn .fs-out{display:block}
+body.is-fs .hint{display:none}
+@media(max-width:620px){.fs-label{display:none}}

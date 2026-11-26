@@ -251,19 +251,19 @@
       if (mid === 'barca') return barcaConJinetes(a, x, y + dy, t, hora);
       const mPose = (a.entrando || (an === 'walk' && !a.flip) || a.carga) ? 'caminar' : 'reposo';
       const mf = mPose === 'caminar' ? Math.floor(t * (a.carga ? 12 : FPS_ANIM)) & 3 : (an === 'plantado' && (t % 3) > 2.2 ? 1 : Math.floor(t * 0.8) & 1);
-      const mc = V.actorCanvas(mid, mPose, mf, hora, false);
+      const mc = V.actorCanvas(mid, mPose, mf, hora, false, 'mont'); // 'mont': es la montura de un jinete (25-sprites.js)
       const bob = mPose === 'caminar' ? (mf & 1) : 0;
       if (a.detras) x -= 13;
       if (!(a.detras && mid === 'clavileno')) ctx.drawImage(mc, x - mc._ax, y + dy - mc._ay);
       const sp = V.SILLA[mid], hx = x - mc._ax + sp[0], hy = y + dy - mc._ay + sp[1] - bob;
-      const rc = V.actorCanvas(a.id, 'montado', 0, hora, false, a.extra);
+      const rc = V.actorCanvas(a.id, 'montado', 0, hora, false, (a.extra || '') + '@' + mid); // '@montura' lo lee 25-sprites.js
       // la cadera del jinete (alto*0.44 sobre los pies) va en la silla
       const sp2 = V.spec(a.id), cad = Math.round(sp2.alto * (sp2.cuerpo === 'grueso' ? 0.36 : 0.44));
       ctx.drawImage(rc, hx - rc._ax, hy + cad - rc._ay);
       brillos(a, hx, hy + cad, t, sp2);
       return;
     }
-    const c = V.actorCanvas(a.id, pose === 'tendido' ? 'reposo' : pose, f, hora, !!a.flip, a.extra);
+    const c = V.actorCanvas(a.id, a.pose === 'tendido' ? 'tendido' : pose, f, hora, !!a.flip, a.extra); // 'tendido': 25-sprites.js lo deja al dibujo por código
     if (a.pose === 'tendido') {
       ctx.save(); ctx.translate(x, y + dy); ctx.rotate(-Math.PI / 2); ctx.drawImage(c, -c._ax + 4, -Math.round(c._ay / 2)); ctx.restore();
       if (!V.menosMov() && Math.floor(t) % 3 === 0 && (t % 1) < 0.03) S.part.push({ k: 'z', x: x + 6, y: y - 12, vx: 4, vy: -8, v: 2.2, t: 0 });
@@ -278,6 +278,7 @@
   function brillos(a, hx, hy, t, sp) {
     // brillo que recorre el yelmo o la bacía cada pocos segundos
     if (a.id !== 'dq' || V.menosMov()) return;
+    if (V.spriteListo && V.spriteListo('h:dq') && a.pose === 'montado' && a.mont === 'rocinante') return; // el sprite ya trae su propio yelmo
     const k = t % 4.2; if (k > 0.5) return;
     const top = hy - Math.round(sp.alto * 0.3) - 10, x = hx - 3 + Math.round(k * 16);
     ctx.fillStyle = HEX[S.e.pal][31]; ctx.fillRect(x, top - 1, 1, 1); if (k > 0.1 && k < 0.35) { ctx.fillRect(x - 1, top - 1, 3, 1); ctx.fillRect(x, top - 2, 1, 3); }
