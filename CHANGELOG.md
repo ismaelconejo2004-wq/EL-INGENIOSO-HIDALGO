@@ -1,5 +1,16 @@
 # Registro de cambios
 
+## Restauración, pantalla completa e introducción legible
+
+- **Restaurado el aspecto del libro abierto con el arte generado por código.** El commit `0fedcd2` de `main` lo había sustituido por sprites PNG de un pack. Las imágenes siguen en el historial y en las ramas `sprites-*`.
+- **Pantalla completa**:
+  - botón en la cabecera del libro (icono, con descripción emergente) y en el menú principal;
+  - tecla **F**;
+  - interruptor «Pantalla completa (tecla F)» en Ajustes;
+  - el libro se ajusta al alto de la pantalla y se oculta la ayuda de teclado;
+  - en navegadores sin la función (iPhone) aparece un aviso.
+- **Introducción legible sobre cualquier fondo**: el texto va sobre una banda oscura translúcida con borde dorado y contorno en las letras. El título final lleva un halo oscuro y la ayuda y «Saltar» tienen fondo propio.
+
 ## El juego como libro abierto y mercados limitados
 
 - **Toda la interfaz es un libro abierto** con tapa de cuero, lomo, cantos de hojas y folio al pie de cada página, que avanza con las jornadas:

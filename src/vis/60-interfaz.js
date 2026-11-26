@@ -24,6 +24,7 @@
     ajustes(b) { b.circ(8, 8, 6, C.hierro); b.circ(8, 8, 3, C.lino); for (const [x, y] of [[8, 1], [8, 15], [1, 8], [15, 8], [3, 3], [13, 13], [3, 13], [13, 3]]) b.r(x - 1, y - 1, 2, 2, C.hierro); b.circ(8, 8, 1, C.hierro); },
     salida(b) { b.r(4, 2, 9, 13, C.maderaO); b.r(5, 3, 7, 12, C.madera); b.p(10, 9, C.oro); b.r(2, 14, 13, 1, C.tierraS); },
     calavera(b) { b.ell(8, 7, 6, 5, C.lino); b.r(5, 11, 7, 3, C.lino); b.r(5, 6, 2, 2, C.negro); b.r(9, 6, 2, 2, C.negro); b.p(8, 9, C.negro); b.p(6, 13, C.calS); b.p(8, 13, C.calS); b.p(10, 13, C.calS); },
+    pantalla(b) { for (const [x, y, dx, dy] of [[2, 2, 1, 1], [13, 2, -1, 1], [2, 13, 1, -1], [13, 13, -1, -1]]) { b.r(x - (dx < 0 ? 3 : 0), y, 4, 1, C.lino); b.r(x, y - (dy < 0 ? 3 : 0), 1, 4, C.lino); } b.r(5, 5, 6, 6, C.anil); b.r(6, 6, 4, 2, C.cieloM); },
     continuar(b) { b.r(3, 3, 10, 10, C.lino); b.r(3, 3, 3, 10, C.rojo); b.r(7, 6, 5, 1, C.calS); b.r(7, 9, 4, 1, C.calS); },
     libro(b) { b.r(2, 3, 12, 10, C.rojoO); b.r(3, 4, 5, 8, C.lino); b.r(8, 4, 5, 8, C.lino); b.r(8, 3, 1, 10, C.maderaO); }
   };

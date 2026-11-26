@@ -252,6 +252,7 @@
     if (V.instalarUI) V.instalarUI();
     if (V.instalarLibro) V.instalarLibro();
     if (V.instalarMenu) V.instalarMenu();
+    if (V.instalarPantalla) V.instalarPantalla();
     window.render();
     return true;
   };

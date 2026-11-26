@@ -244,3 +244,21 @@ html.vis-on body.modo-libro[data-theme=noche] #scene>*,html.vis-on body.modo-lib
 html.vis-on body.modo-libro[data-theme=noche] .vis-cv{filter:brightness(.88) var(--vis-sat,saturate(1))}
 html.vis-on body.modo-libro[data-theme=noche] .lj-pag.der .lj-cab button{color:#e2d5b6;border-color:#6b5434}
 html.vis-on body.modo-libro[data-theme=bosque] #scene>*,html.vis-on body.modo-libro[data-theme=bosque] .mast,html.vis-on body.modo-libro[data-theme=contraste] #scene>*,html.vis-on body.modo-libro[data-theme=contraste] .mast{filter:none}
+
+/* ===== VIS · pantalla completa ===== */
+.fs-btn{display:inline-flex;align-items:center;gap:6px}
+.fs-btn .pxi{margin:0}
+.lj-cab .fs-btn .fs-label{display:none}
+.lj-cab .fs-btn{padding:3px 6px!important}
+.lj-pag.der .lj-cab>span:last-child{white-space:nowrap}
+body.is-fs .hint{display:none}
+body.is-fs .libro-juego{height:max(600px,calc(100dvh - 20px));margin:10px auto}
+@media(max-width:620px){.lj-cab .fs-btn .fs-label{display:none}}
+/* ===== VIS · introducción legible sobre cualquier fondo ===== */
+html.vis-on #i-text{padding:18px 28px 20px;background:rgba(14,10,20,.68);border:1px solid #c9a35a66;border-radius:6px;box-shadow:0 10px 40px #0009;color:#fbf0d2;
+ text-shadow:0 1px 0 #000,1px 0 0 #000,-1px 0 0 #000,0 -1px 0 #000,0 2px 10px #000c}
+html.vis-on #i-text:empty{background:none;border-color:transparent;box-shadow:none}
+html.vis-on #i-title{background:radial-gradient(ellipse at 50% 50%,#0a0812e6 0,#0a0812b0 40%,#0a081240 75%)}
+html.vis-on #i-title *{text-shadow:0 2px 0 #000,0 0 22px #000}
+html.vis-on #i-hint{padding:6px 14px;background:rgba(14,10,20,.7);border-radius:4px;color:#f6e7bd}
+html.vis-on .i-skip{background:rgba(14,10,20,.8);color:#f6e7bd}

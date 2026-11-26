@@ -1107,6 +1107,24 @@ html.vis-on body.modo-libro[data-theme=noche] #scene>*,html.vis-on body.modo-lib
 html.vis-on body.modo-libro[data-theme=noche] .vis-cv{filter:brightness(.88) var(--vis-sat,saturate(1))}
 html.vis-on body.modo-libro[data-theme=noche] .lj-pag.der .lj-cab button{color:#e2d5b6;border-color:#6b5434}
 html.vis-on body.modo-libro[data-theme=bosque] #scene>*,html.vis-on body.modo-libro[data-theme=bosque] .mast,html.vis-on body.modo-libro[data-theme=contraste] #scene>*,html.vis-on body.modo-libro[data-theme=contraste] .mast{filter:none}
+
+/* ===== VIS · pantalla completa ===== */
+.fs-btn{display:inline-flex;align-items:center;gap:6px}
+.fs-btn .pxi{margin:0}
+.lj-cab .fs-btn .fs-label{display:none}
+.lj-cab .fs-btn{padding:3px 6px!important}
+.lj-pag.der .lj-cab>span:last-child{white-space:nowrap}
+body.is-fs .hint{display:none}
+body.is-fs .libro-juego{height:max(600px,calc(100dvh - 20px));margin:10px auto}
+@media(max-width:620px){.lj-cab .fs-btn .fs-label{display:none}}
+/* ===== VIS · introducción legible sobre cualquier fondo ===== */
+html.vis-on #i-text{padding:18px 28px 20px;background:rgba(14,10,20,.68);border:1px solid #c9a35a66;border-radius:6px;box-shadow:0 10px 40px #0009;color:#fbf0d2;
+ text-shadow:0 1px 0 #000,1px 0 0 #000,-1px 0 0 #000,0 -1px 0 #000,0 2px 10px #000c}
+html.vis-on #i-text:empty{background:none;border-color:transparent;box-shadow:none}
+html.vis-on #i-title{background:radial-gradient(ellipse at 50% 50%,#0a0812e6 0,#0a0812b0 40%,#0a081240 75%)}
+html.vis-on #i-title *{text-shadow:0 2px 0 #000,0 0 22px #000}
+html.vis-on #i-hint{padding:6px 14px;background:rgba(14,10,20,.7);border-radius:4px;color:#f6e7bd}
+html.vis-on .i-skip{background:rgba(14,10,20,.8);color:#f6e7bd}
 </style><script id="vis-js">
 /* ===== VIS · núcleo: paletas, búfer indexado, utilidades ===== */
 /* Todo el arte se pinta con índices de paleta (0-31) sobre búferes Uint8.
@@ -3116,6 +3134,7 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     if (V.instalarUI) V.instalarUI();
     if (V.instalarLibro) V.instalarLibro();
     if (V.instalarMenu) V.instalarMenu();
+    if (V.instalarPantalla) V.instalarPantalla();
     window.render();
     return true;
   };
@@ -3146,6 +3165,7 @@ cirujano|plaza|mediodia|||barbero|talk|`;
     ajustes(b) { b.circ(8, 8, 6, C.hierro); b.circ(8, 8, 3, C.lino); for (const [x, y] of [[8, 1], [8, 15], [1, 8], [15, 8], [3, 3], [13, 13], [3, 13], [13, 3]]) b.r(x - 1, y - 1, 2, 2, C.hierro); b.circ(8, 8, 1, C.hierro); },
     salida(b) { b.r(4, 2, 9, 13, C.maderaO); b.r(5, 3, 7, 12, C.madera); b.p(10, 9, C.oro); b.r(2, 14, 13, 1, C.tierraS); },
     calavera(b) { b.ell(8, 7, 6, 5, C.lino); b.r(5, 11, 7, 3, C.lino); b.r(5, 6, 2, 2, C.negro); b.r(9, 6, 2, 2, C.negro); b.p(8, 9, C.negro); b.p(6, 13, C.calS); b.p(8, 13, C.calS); b.p(10, 13, C.calS); },
+    pantalla(b) { for (const [x, y, dx, dy] of [[2, 2, 1, 1], [13, 2, -1, 1], [2, 13, 1, -1], [13, 13, -1, -1]]) { b.r(x - (dx < 0 ? 3 : 0), y, 4, 1, C.lino); b.r(x, y - (dy < 0 ? 3 : 0), 1, 4, C.lino); } b.r(5, 5, 6, 6, C.anil); b.r(6, 6, 4, 2, C.cieloM); },
     continuar(b) { b.r(3, 3, 10, 10, C.lino); b.r(3, 3, 3, 10, C.rojo); b.r(7, 6, 5, 1, C.calS); b.r(7, 9, 4, 1, C.calS); },
     libro(b) { b.r(2, 3, 12, 10, C.rojoO); b.r(3, 4, 5, 8, C.lino); b.r(8, 4, 5, 8, C.lino); b.r(8, 3, 1, 10, C.maderaO); }
   };
@@ -3363,6 +3383,65 @@ cirujano|plaza|mediodia|||barbero|talk|`;
       }
     });
     V.pedir();
+  };
+})(VIS);
+/* ===== VIS · pantalla completa: botón en la cabecera del libro y en el menú, tecla F y opción en Ajustes ===== */
+(function (V) {
+  'use strict';
+  const raiz = () => document.documentElement;
+  const soportada = () => !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+  const activa = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  V.pantallaCompleta = activa;
+  const aviso = t => { if (typeof toast === 'function') toast(t); };
+
+  window.toggleFullscreen = function () {
+    if (!soportada()) { aviso('Este navegador no permite pantalla completa. En iPhone: Compartir y luego Añadir a pantalla de inicio.'); return; }
+    try {
+      if (activa()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      else {
+        const p = (raiz().requestFullscreen || raiz().webkitRequestFullscreen).call(raiz(), { navigationUI: 'hide' });
+        if (p && p.catch) p.catch(() => aviso('No se pudo activar la pantalla completa'));
+      }
+    } catch (e) { aviso('No se pudo activar la pantalla completa'); }
+  };
+
+  function boton(id, cls) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.id = id; b.className = 'fs-btn ' + (cls || '');
+    b.innerHTML = '<i class="pxi pxi-pantalla" aria-hidden="true"></i><span class="fs-label">Pantalla completa</span>'; b.setAttribute('aria-label', 'Pantalla completa');
+    b.onclick = () => window.toggleFullscreen();
+    return b;
+  }
+  function sincronizar() {
+    const on = activa();
+    document.body.classList.toggle('is-fs', on);
+    document.querySelectorAll('.fs-btn').forEach(b => {
+      b.setAttribute('aria-pressed', on);
+      b.title = on ? 'Salir de pantalla completa (F o Esc)' : 'Pantalla completa (F)';
+      const t = b.querySelector('.fs-label'); if (t) t.textContent = on ? 'Salir de pantalla completa' : 'Pantalla completa';
+    });
+    try { if (typeof BK !== 'undefined' && BK.open && BK.tab === 'ajustes' && typeof drawBook === 'function') drawBook(); } catch (e) { }
+    if (V.pedir) setTimeout(() => { V.pedir(); if (V.dibujarYa) V.dibujarYa(); }, 150); // el lienzo cambia de tamaño
+  }
+
+  V.instalarPantalla = function () {
+    if (soportada()) {
+      const mast = document.querySelector('.mast > span:last-child');
+      if (mast) { mast.insertBefore(boton('fsBtn'), mast.firstChild); mast.insertBefore(document.createTextNode(' '), mast.children[1]); }
+      const m = document.querySelector('#m-main .m-btns');
+      if (m) m.appendChild(boton('fsBtnMenu', 'mbtn'));
+    }
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, sincronizar));
+    document.addEventListener('keydown', e => {
+      if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey && !/^(INPUT|TEXTAREA|SELECT)$/.test((e.target || {}).tagName || '')) { e.preventDefault(); window.toggleFullscreen(); }
+    });
+    const _c = window.cfgHTML;
+    if (typeof _c === 'function') window.cfgHTML = function () {
+      const on = activa();
+      const ctl = soportada() ? `<button class='tg${on ? ' on' : ''}' onclick="toggleFullscreen()">${on ? 'Sí' : 'No'}</button>` : `<span class='stat-note'>No disponible en este navegador</span>`;
+      return `<div class='crow'><span>Pantalla completa (tecla F)</span><span>${ctl}</span></div>` + _c.apply(this, arguments);
+    };
+    sincronizar();
   };
 })(VIS);
 /* ===== VIS · el juego como libro abierto: página izquierda (estado y escena) y derecha (texto y decisiones) ===== */
